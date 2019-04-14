@@ -1,4 +1,4 @@
-package men.brakh.bsuirapi
+package men.brakh.bsuirapi.freeauds.controller
 
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest

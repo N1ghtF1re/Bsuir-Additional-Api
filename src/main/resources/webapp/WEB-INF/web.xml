@@ -8,7 +8,7 @@
     
     <servlet>
         <servlet-name>testServlet</servlet-name>
-        <servlet-class>men.brakh.bsuirapi.AudsServlet</servlet-class>
+        <servlet-class>men.brakh.bsuirapi.freeauds.controller.AudsServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
