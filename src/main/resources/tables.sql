@@ -7,3 +7,14 @@ CREATE TABLE IF NOT EXISTS `auditoriums` (
 
    PRIMARY KEY  (`id`)
 );
+
+CREATE TABLE IF NOT EXISTS `lessons` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `auditorium` INT NOT NULL,
+  `weeks` INT NOT NULL,
+  `start_time` TIME NOT NULL,
+  `end_time` TIME NOT NULL,
+  `group` VARCHAR(255) NOT NULL,
+
+   PRIMARY KEY  (`id`)
+);

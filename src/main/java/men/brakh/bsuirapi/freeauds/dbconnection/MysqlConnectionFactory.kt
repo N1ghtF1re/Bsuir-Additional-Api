@@ -40,11 +40,15 @@ object MysqlConnectionFactory: ConnectionFactory {
                 val con: Connection = getConnection()
 
 
+
                 con.use {
                     val stmt: Statement = it.createStatement()
 
                     stmt.use {
-                        stmt.execute(sql)
+                        sql.split(";").forEach { sqlPart: String ->
+                            if(sqlPart.isNotEmpty())
+                                stmt.execute("$sqlPart;")
+                        }
                     }
                 }
             } catch (e: SQLException) {
