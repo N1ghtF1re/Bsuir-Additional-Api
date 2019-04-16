@@ -45,3 +45,7 @@ class Weeks() {
     }
 }
 
+
+fun Weeks.isSingleDay(): Boolean{
+    return this.weeks.size == 1 && !this.weeks.contains(WeekNumber.WEEK_ANY)
+}

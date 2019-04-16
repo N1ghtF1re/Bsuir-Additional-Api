@@ -8,6 +8,7 @@ import java.sql.*
 
 
 class MysqlLessonRepository: LessonRepository {
+
     private val conFactory: ConnectionFactory = Config.connectionFactory
     private val tableName: String = "lessons"
 
@@ -15,6 +16,7 @@ class MysqlLessonRepository: LessonRepository {
         get() {
             return conFactory.getConnection()
         }
+
 
     override fun add(entity: Lesson): Lesson {
         connection.use {
@@ -46,6 +48,69 @@ class MysqlLessonRepository: LessonRepository {
 
     }
 
+    override fun find(weeks: Weeks?, startTime: Time?, endTime: Time?, aud: Auditorium?, building: Int?, floor: Int?): List<Lesson> {
+        val initQuery = "SELECT l.id, l.auditorium, l.weeks, l.start_time, l.end_time, l.group FROM $tableName as l"
+
+        val condition: String = if(floor == null && building == null)
+            "WHERE"
+        else
+            "INNER JOIN auditoriums as a ON l.auditorium = a.id AND "
+
+        val conditions
+                = mutableListOf<Pair<String, (stmt: PreparedStatement, index: Int) -> Unit>>()
+
+
+        if(weeks != null) conditions.add(
+                (if(weeks.isSingleDay()) "l.weeks & ? != 0" else "l.weeks = ?")
+                        to { stmt, index -> stmt.setInt(index, weeks.value) }
+        )
+
+        if(startTime != null) conditions.add(
+                "l.start_time >= ?" to { stmt, index -> stmt.setTime(index, startTime)}
+        )
+
+        if(endTime != null) conditions.add(
+                "l.end_time <= ?" to {stmt, index -> stmt.setTime(index, endTime)}
+        )
+
+        if(aud != null) conditions.add(
+                "l.auditorium = ?" to {stmt, index -> stmt.setLong(index, aud.id)}
+        )
+
+        if(building != null) conditions.add(
+                "a.building = ?" to {stmt, index -> stmt.setInt(index, building)}
+        )
+
+        if(floor != null) conditions.add(
+                "a.floor = ?" to {stmt, index -> stmt.setInt(index, floor)}
+        )
+
+
+        val finalQuery = "$initQuery $condition ${conditions.map{it.first}.joinToString(separator = " AND ")}"
+
+        connection.use {
+            val statement = it.prepareStatement(finalQuery)
+            statement.use { stmt ->
+                for((index, cond) in conditions.withIndex()) {
+                    cond.second(stmt, index + 1) // Установка параметров запроса
+                }
+
+                return extractLessons(stmt)
+            }
+        }
+    }
+
+    /*
+    override fun findByAud(aud: Auditorium): List<Lesson> {
+        connection.use {
+            val statement = it.prepareStatement("SELECT * FROM $tableName WHERE auditorium = ?")
+            statement.use { stmt ->
+                stmt.setLong(1, aud.id)
+                return extractLessons(stmt)
+            }
+        }
+    }
+
     override fun findBetweenTimes(time1: Time, time2: Time): List<Lesson> {
         connection.use {
             val statement = it.prepareStatement("SELECT * FROM $tableName WHERE start_date >= ? AND and_date <= ?")
@@ -55,7 +120,7 @@ class MysqlLessonRepository: LessonRepository {
                 return extractLessons(stmt)
             }
         }
-    }
+    }*/
 
     override fun delete(entity: Lesson) {
         connection.use {
@@ -105,6 +170,7 @@ class MysqlLessonRepository: LessonRepository {
         return entity
     }
 
+    /*
     override fun  findByWeek(weeks: Weeks): List<Lesson> {
         connection.use {
 
@@ -120,34 +186,35 @@ class MysqlLessonRepository: LessonRepository {
             }
 
         }
-    }
+    }*/
 
-}
+    private fun extractLessons(stmt: PreparedStatement): List<Lesson> {
+        val resultSet: ResultSet = stmt.executeQuery()
 
-fun extractLessons(stmt: PreparedStatement): List<Lesson> {
-    val resultSet: ResultSet = stmt.executeQuery()
-
-    val sequence = generateSequence<Lesson> {
-        val aud = Auditorium( // TODO: FIX IT
-                name = "Test",
-                type = LessonType.LESSON_LAB,
-                floor = 1,
-                building = 2
-        )
+        val sequence = generateSequence<Lesson> {
+            val aud = Auditorium( // TODO: FIX IT
+                    name = "Test",
+                    type = LessonType.LESSON_LAB,
+                    floor = 1,
+                    building = 2
+            )
 
 
-        if(!resultSet.next()) {
-            return@generateSequence(null)
+            if(!resultSet.next()) {
+                return@generateSequence(null)
+            }
+            Lesson(
+                    id = resultSet.getLong("id"),
+                    aud = aud,
+                    weeks = Weeks(resultSet.getInt("weeks")),
+                    startTime = resultSet.getTime("start_time"),
+                    endTime = resultSet.getTime("end_time"),
+                    group = resultSet.getString("group")
+            )
         }
-        Lesson(
-                id = resultSet.getLong("id"),
-                aud = aud,
-                weeks = Weeks(resultSet.getInt("weeks")),
-                startTime = resultSet.getTime("start_time"),
-                endTime = resultSet.getTime("end_time"),
-                group = resultSet.getString("group")
-        )
+
+        return sequence.toList()
     }
 
-    return sequence.toList()
 }
+
