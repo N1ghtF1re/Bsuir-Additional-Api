@@ -7,6 +7,7 @@
 .idea/**/shelf
 .idea/**/dataSources.xml
 .idea/**/dataSources.local.xml
+.idea/**/sqldialects.xml
 
 # Generated files
 .idea/**/contentModel.xml
