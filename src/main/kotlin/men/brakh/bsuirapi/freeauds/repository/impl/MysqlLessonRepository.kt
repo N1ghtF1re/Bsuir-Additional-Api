@@ -105,28 +105,6 @@ class MysqlLessonRepository: LessonRepository {
         }
     }
 
-    /*
-    override fun findByAud(aud: Auditorium): List<Lesson> {
-        connection.use {
-            val statement = it.prepareStatement("SELECT * FROM $tableName WHERE auditorium = ?")
-            statement.use { stmt ->
-                stmt.setLong(1, aud.id)
-                return extractLessons(stmt)
-            }
-        }
-    }
-
-    override fun findBetweenTimes(time1: Time, time2: Time): List<Lesson> {
-        connection.use {
-            val statement = it.prepareStatement("SELECT * FROM $tableName WHERE start_date >= ? AND and_date <= ?")
-            statement.use {stmt ->
-                stmt.setTime(1, time1)
-                stmt.setTime(2, time2)
-                return extractLessons(stmt)
-            }
-        }
-    }*/
-
     override fun delete(entity: Lesson) {
         connection.use {
             val statement = it.prepareStatement("DELETE FROM $tableName WHERE id = ${entity.id}")
@@ -177,23 +155,6 @@ class MysqlLessonRepository: LessonRepository {
 
     }
 
-    /*
-    override fun  findByWeek(weeks: Weeks): List<Lesson> {
-        connection.use {
-
-
-            val statement = if(weeks.weeks.size == 1 && !weeks.weeks.contains(WeekNumber.WEEK_ANY)) {
-                it.prepareStatement("SELECT * FROM `$tableName` WHERE `weeks` & ? != 0")
-            } else {
-                it.prepareStatement("SELECT * FROM `$tableName` WHERE `weeks` = ?")
-            }
-            statement.use {stmt ->
-                stmt.setInt(1, weeks.value)
-                return extractLessons(stmt)
-            }
-
-        }
-    }*/
 
     private fun extractLessons(stmt: PreparedStatement): List<Lesson> {
         val resultSet: ResultSet = stmt.executeQuery()
