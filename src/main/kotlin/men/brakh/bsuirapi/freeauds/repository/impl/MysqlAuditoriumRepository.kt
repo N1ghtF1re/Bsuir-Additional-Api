@@ -8,7 +8,7 @@ import men.brakh.bsuirapi.freeauds.repository.AuditoriumRepository
 import java.sql.*
 
 class MysqlAuditoriumRepository : AuditoriumRepository {
-    private val conFactory: ConnectionFactory = Config.connectionFactory
+    private val conFactory: ConnectionFactory by lazy { Config.connectionFactory }
     private val tableName: String = "auditoriums"
 
     private val connection: Connection
@@ -45,7 +45,11 @@ class MysqlAuditoriumRepository : AuditoriumRepository {
         return entity
     }
 
-    override fun find(building: Int?, floor: Int?, type: LessonType?): List<Auditorium> {
+    override fun add(entities: List<Auditorium>) {
+        entities.forEach{add(it)}
+    }
+
+    override fun find(building: Int?, floor: Int?, name: String?, type: LessonType?): List<Auditorium> {
         val initQuery = "SELECT * FROM $tableName WHERE"
 
         val conditions
@@ -53,6 +57,10 @@ class MysqlAuditoriumRepository : AuditoriumRepository {
 
         if(building != null) conditions.add(
                 "building = ?" to {stmt, index -> stmt.setInt(index, building)}
+        )
+
+        if(name != null) conditions.add(
+                "name = ?" to {stmt, index -> stmt.setString(index, name)}
         )
 
         if(floor != null) conditions.add(

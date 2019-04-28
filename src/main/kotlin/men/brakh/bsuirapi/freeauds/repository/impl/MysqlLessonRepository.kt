@@ -8,14 +8,17 @@ import men.brakh.bsuirapi.freeauds.model.Weeks
 import men.brakh.bsuirapi.freeauds.model.isSingleDay
 import men.brakh.bsuirapi.freeauds.repository.AuditoriumRepository
 import men.brakh.bsuirapi.freeauds.repository.LessonRepository
+import org.slf4j.LoggerFactory
 import java.sql.*
 
 
 class MysqlLessonRepository: LessonRepository {
 
-    private val conFactory: ConnectionFactory = Config.connectionFactory
-    private val audRepo: AuditoriumRepository = Config.auditoriumRepository
+    private val conFactory: ConnectionFactory by lazy { Config.connectionFactory }
+    private val audRepo: AuditoriumRepository by lazy { Config.auditoriumRepository }
     private val tableName: String = "lessons"
+
+    private val logger = LoggerFactory.getLogger(MysqlLessonRepository::class.java)
 
     private val connection: Connection
         get() {
@@ -27,15 +30,25 @@ class MysqlLessonRepository: LessonRepository {
         connection.use {
 
             val statement = it.prepareStatement("INSERT INTO `$tableName` " +
-                    "(`auditorium`, `weeks`, `start_time`, `end_time`, `group`) VALUES(?, ?, ?, ?, ?)",
+                    "(`auditorium`, `weeks`, `day`, `start_time`, `end_time`, `group`) VALUES(?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS)
 
+            val aud = if(entity.aud.id == -1L) {
+                audRepo.find(
+                        building = entity.aud.building,
+                        floor = entity.aud.floor,
+                        name = entity.aud.name
+                ).firstOrNull() ?: {logger.warn("Added new auditorium: ${entity.aud}"); audRepo.add(entity.aud)}()
+            } else {
+                entity.aud
+            }
             statement.use {stmt: PreparedStatement ->
-                stmt.setLong(1, entity.aud.id)
+                stmt.setLong(1, aud.id)
                 stmt.setInt(2, entity.weeks.value)
-                stmt.setTime(3, entity.startTime)
-                stmt.setTime(4, entity.endTime)
-                stmt.setString(5, entity.group)
+                stmt.setInt(3, entity.day)
+                stmt.setTime(4, entity.startTime)
+                stmt.setTime(5, entity.endTime)
+                stmt.setString(6, entity.group)
 
 
                 stmt.executeUpdate()
@@ -53,7 +66,12 @@ class MysqlLessonRepository: LessonRepository {
 
     }
 
-    override fun find(weeks: Weeks?, startTime: Time?, endTime: Time?, aud: Auditorium?, building: Int?, floor: Int?): List<Lesson> {
+    override fun add(entities: List<Lesson>) {
+        entities.forEach{add(it)}
+    }
+
+    override fun find(weeks: Weeks?, startTime: Time?, endTime: Time?, aud: Auditorium?, day: Int?,
+                      building: Int?, floor: Int?): List<Lesson> {
         val initQuery = "SELECT l.id, l.auditorium, l.weeks, l.start_time, l.end_time, l.group FROM $tableName as l"
 
         val condition: String = if(floor == null && building == null)
@@ -68,6 +86,10 @@ class MysqlLessonRepository: LessonRepository {
         if(weeks != null) conditions.add(
                 (if(weeks.isSingleDay()) "l.weeks & ? != 0" else "l.weeks = ?")
                         to { stmt, index -> stmt.setInt(index, weeks.value) }
+        )
+
+        if(day != null) conditions.add(
+                "l.day = ?" to {stmt, index -> stmt.setInt(index, day)}
         )
 
         if(startTime != null) conditions.add(
@@ -170,6 +192,7 @@ class MysqlLessonRepository: LessonRepository {
             Lesson(
                     id = resultSet.getLong("id"),
                     aud = aud,
+                    day = resultSet.getInt("day"),
                     weeks = Weeks(resultSet.getInt("weeks")),
                     startTime = resultSet.getTime("start_time"),
                     endTime = resultSet.getTime("end_time"),

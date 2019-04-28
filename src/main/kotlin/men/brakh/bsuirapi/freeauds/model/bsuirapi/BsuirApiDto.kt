@@ -1,0 +1,109 @@
+package men.brakh.bsuirapi.freeauds.model.bsuirapi
+
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import men.brakh.bsuirapi.freeauds.model.*
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import java.sql.Time
+import java.text.SimpleDateFormat
+
+
+/*  DTO:  */
+
+/**
+ * Внимание. В классах много костылей. Скажем спасибо IISу
+ */
+
+val logger: Logger = LoggerFactory.getLogger("BsuirApiDto")
+
+@Serializable
+data class BuildingDto(val id: Int, val name: String)
+
+@Serializable
+data class AuditoriumTypeDto(val name: String, val abbrev: String)
+
+@Serializable
+data class AuditoriumDto(@SerialName("name") var rowname: String, val auditoryType: AuditoriumTypeDto, val buildingNumber: BuildingDto) {
+    val name: String
+        get() {
+            val withoutEngA = rowname.replace("a", "а") // Замена англ. А на русскую
+            return withoutEngA.substringBeforeLast("-")
+        }
+
+    val type: LessonType
+        get() = when(auditoryType.abbrev) {
+            "лк", "ЛК" -> LessonType.LESSON_LECTURE
+            "лб", "кк", "ЛР" -> LessonType.LESSON_LAB
+            "пз", "ПЗ", "КПР(Р)" -> LessonType.LESSON_PRACTICE
+            else -> throw RuntimeException("Auditorium type ${auditoryType.abbrev} is undefined")
+        }
+
+    /**
+     * Превращение DTO в нормальный объект
+     */
+    fun toAud(): Auditorium? {
+        if(!Auditorium.isCorrectName(name)) return null
+
+        return Auditorium(name = name, type = type, floor = name[0].toString().toInt(), building = buildingNumber.id)
+    }
+}
+
+@Serializable
+data class GroupDto(val id: Int, val name: String, val course: Int?)
+
+@Serializable
+data class ScheduleDto(val weekNumber: List<Int>, val studentGroup: List<String>, val numSubgroup: Int,
+                       val auditory: List<String>, val startLessonTime: String, val endLessonTime: String,
+                       val subject: String, val note: String?, val lessonType: String)
+
+@Serializable
+data class DayScheduleDto(val weekDay: String, val schedule: List<ScheduleDto>) {
+    private val day: Int
+        get() = arrayOf("Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота").indexOf(weekDay)
+
+    fun toLessons(): List<Lesson> {
+        return schedule.flatMap { schedule ->
+            schedule.auditory.mapNotNull SkipLesson@{ audRawName ->
+                val audCols = audRawName.split("-")
+
+                if(audCols.count() != 2) return@SkipLesson null
+
+                val audName = audCols[0]
+                val building = audCols[1].toIntOrNull()
+
+                if(building == null) {
+                    logger.warn("Invalid auditorium $audRawName. Auditorium skipped")
+                    return@SkipLesson null
+                }
+
+                val aud:Auditorium? = AuditoriumDto(
+                        rowname = audName,
+                        auditoryType = AuditoriumTypeDto(name=schedule.lessonType, abbrev = schedule.lessonType),
+                        buildingNumber = BuildingDto(building, building.toString())
+                ).toAud()
+
+                if(aud == null){
+                    logger.warn("Invalid auditorium $audRawName. Auditorium skipped")
+                    return@SkipLesson null
+                }
+
+                val weeks = Weeks(schedule.weekNumber.map { WeekNumber.values()[it] }.toTypedArray())
+
+                val sdf = SimpleDateFormat("HH:mm")
+
+                Lesson(
+                        aud = aud,
+                        weeks = weeks,
+                        day = day,
+                        startTime = Time(sdf.parse(schedule.startLessonTime).time),
+                        endTime = Time(sdf.parse(schedule.endLessonTime).time),
+                        group = schedule.studentGroup.first()
+                )
+            }
+        }
+    }
+}
+
+@Serializable
+data class ScheduleResponseDto(val schedules: List<DayScheduleDto>)

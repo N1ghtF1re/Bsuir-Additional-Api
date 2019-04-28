@@ -7,6 +7,7 @@ interface AuditoriumRepository: Repository<Auditorium> {
     fun find(
             building: Int? = null,
             floor: Int? = null,
+            name: String? = null,
             type: LessonType? = null
     ): List<Auditorium>
 }

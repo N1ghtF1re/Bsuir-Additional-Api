@@ -11,6 +11,7 @@ interface LessonRepository: Repository<Lesson>{
             startTime: Time? = null,
             endTime: Time? = null,
             aud: Auditorium? = null,
+            day: Int? = null,
             building: Int? = null,
             floor: Int? = null
     ): List<Lesson>
