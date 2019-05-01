@@ -5,16 +5,16 @@
          version="3.1">
 
     <display-name>BSUIR Additional API</display-name>
-
     
     <servlet>
-        <servlet-name>testServlet</servlet-name>
+        <servlet-name>freeAudsServlet</servlet-name>
         <servlet-class>men.brakh.bsuirapi.freeauds.controller.AudsServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
+
     <servlet-mapping>
-        <servlet-name>testServlet</servlet-name>
+        <servlet-name>freeAudsServlet</servlet-name>
         <url-pattern>/api/v1/audiences/free</url-pattern>
     </servlet-mapping>
 </web-app>

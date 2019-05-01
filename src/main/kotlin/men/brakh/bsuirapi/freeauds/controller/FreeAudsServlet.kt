@@ -1,12 +1,9 @@
 package men.brakh.bsuirapi.freeauds.controller
 
 import com.google.gson.Gson
-import men.brakh.bsuirapi.freeauds.Config
 import men.brakh.bsuirapi.freeauds.model.Auditorium
 import men.brakh.bsuirapi.freeauds.model.FreeAuds
 import men.brakh.bsuirapi.freeauds.model.LessonType
-import men.brakh.bsuirapi.freeauds.repository.AuditoriumRepository
-import men.brakh.bsuirapi.freeauds.repository.LessonRepository
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -14,9 +11,7 @@ import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class AudsServlet : HttpServlet() {
-    private val lessonRep: LessonRepository = Config.lessonsRepository
-    private val audRep: AuditoriumRepository = Config.auditoriumRepository
+class FreeAudsServlet : HttpServlet() {
 
     /**
      * PARAMS:
@@ -28,10 +23,15 @@ class AudsServlet : HttpServlet() {
     override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {
         resp.setDefaultJsonHeaders()
 
-        val params: Map<String, String> =
-                req.parameterMap.mapValues { (_, value) -> value.first() }
+        val params: Map<String, String> = req.singleParameters
 
-        val building: Int = params["building"]?.toIntOrNull() ?: throw RuntimeException()
+        val building: Int? = params["building"]?.toIntOrNull()
+
+        if(building == null) {
+            resp.writeError("Building parameter is required")
+            return
+        }
+
         val floor: Int? = params["floor"]?.toIntOrNull()
         val dateStr: String = params["date"] ?: SimpleDateFormat("dd.MM.yyyy").format(Date())
         val timeStr: String = params["time"] ?: SimpleDateFormat("HH:mm").format(Date())
@@ -40,6 +40,7 @@ class AudsServlet : HttpServlet() {
                 try {
                     SimpleDateFormat("dd.MM.yyyy HH:mm").parse("$dateStr $timeStr")
                 } catch (e: ParseException) {
+                    resp.writeError("Invalid date/time format")
                     return
                 }
 
