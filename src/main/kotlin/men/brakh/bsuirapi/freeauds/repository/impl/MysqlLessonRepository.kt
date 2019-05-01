@@ -12,11 +12,11 @@ import org.slf4j.LoggerFactory
 import java.sql.*
 
 
-class MysqlLessonRepository: LessonRepository {
+class MysqlLessonRepository(private val tableName: String): LessonRepository {
+    constructor() : this("lessons")
 
     private val conFactory: ConnectionFactory by lazy { Config.connectionFactory }
     private val audRepo: AuditoriumRepository by lazy { Config.auditoriumRepository }
-    private val tableName: String = "lessons"
 
     private val logger = LoggerFactory.getLogger(MysqlLessonRepository::class.java)
 

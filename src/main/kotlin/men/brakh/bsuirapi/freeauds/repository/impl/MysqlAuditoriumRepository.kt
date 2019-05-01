@@ -7,9 +7,10 @@ import men.brakh.bsuirapi.freeauds.model.LessonType
 import men.brakh.bsuirapi.freeauds.repository.AuditoriumRepository
 import java.sql.*
 
-class MysqlAuditoriumRepository : AuditoriumRepository {
+class MysqlAuditoriumRepository(private val tableName: String)  : AuditoriumRepository{
+    constructor() : this("auditoriums")
+
     private val conFactory: ConnectionFactory by lazy { Config.connectionFactory }
-    private val tableName: String = "auditoriums"
 
     private val connection: Connection
         get() {
