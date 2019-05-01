@@ -37,4 +37,6 @@
         <servlet-name>buildingsServlet</servlet-name>
         <url-pattern>/api/v1/buildings</url-pattern>
     </servlet-mapping>
+
+
 </web-app>
