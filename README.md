@@ -1,10 +1,10 @@
 <h1 align="center">Bsuir-Additional-Api</h1>
-<p align="center"><img src="https://i.imgur.com/1kbgY3V.png" height=150></p>
+<p align="center"><img src="https://iti.bsuir.by/files/specialties/BGUIR-logo.jpg" height=150></p>
 
 <p align="center">
 <a href="https://github.com/N1ghtF1re/Bsuir-Additional-Api/stargazers"><img src="https://img.shields.io/github/stars/N1ghtF1re/Bsuir-Additional-Api.svg" alt="Stars"></a>
 <a href="https://github.com/N1ghtF1re/Bsuir-Additional-Api/releases"><img src="https://img.shields.io/badge/downloads-4-brightgreen.svg" alt="Total Downloads"></a>
-<a href="https://github.com/N1ghtF1re/Bsuir-Additional-Api/releases"><img src="https://img.shields.io/github/tag/N1ghtF1re/Digital-Signature.svg" alt="Latest Stable Version"></a>
+<a href="https://github.com/N1ghtF1re/Bsuir-Additional-Api/releases"><img src="https://img.shields.io/github/tag/N1ghtF1re/Bsuir-Additional-Api.svg" alt="Latest Stable Version"></a>
 <a href="https://github.com/N1ghtF1re/Bsuir-Additional-Api/blob/master/LICENSE"><img src="https://img.shields.io/github/license/N1ghtF1re/Bsuir-Additional-Api.svg" alt="License"></a>
 </p>
 </p>
