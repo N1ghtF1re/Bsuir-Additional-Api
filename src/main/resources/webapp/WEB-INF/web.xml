@@ -21,10 +21,10 @@
 
     <servlet-mapping>
         <servlet-name>freeAudsServlet</servlet-name>
-        <url-pattern>/api/v1/audiences/free</url-pattern>
+        <url-pattern>/api/v1/auditoriums/free</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>audsServlet</servlet-name>
-        <url-pattern>/api/v1/audiences</url-pattern>
+        <url-pattern>/api/v1/auditoriums</url-pattern>
     </servlet-mapping>
 </web-app>
