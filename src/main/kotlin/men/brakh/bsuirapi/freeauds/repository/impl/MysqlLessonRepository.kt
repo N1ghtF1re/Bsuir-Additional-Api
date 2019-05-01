@@ -70,8 +70,7 @@ class MysqlLessonRepository: LessonRepository {
         entities.forEach{add(it)}
     }
 
-    override fun find(weeks: Weeks?, startTime: Time?, endTime: Time?, aud: Auditorium?, day: Int?,
-                      building: Int?, floor: Int?): List<Lesson> {
+    override fun find(weeks: Weeks?, time: Time?, aud: Auditorium?, day: Int?, building: Int?, floor: Int?): List<Lesson> {
         val initQuery = "SELECT l.id, l.auditorium, l.weeks, l.start_time, l.end_time, l.group FROM $tableName as l"
 
         val condition: String = if(floor == null && building == null)
@@ -92,13 +91,14 @@ class MysqlLessonRepository: LessonRepository {
                 "l.day = ?" to {stmt, index -> stmt.setInt(index, day)}
         )
 
-        if(startTime != null) conditions.add(
-                "l.start_time >= ?" to { stmt, index -> stmt.setTime(index, startTime)}
-        )
-
-        if(endTime != null) conditions.add(
-                "l.end_time <= ?" to {stmt, index -> stmt.setTime(index, endTime)}
-        )
+        if(time != null) {
+            conditions.add(
+                    "l.start_time >= ?" to { stmt, index -> stmt.setTime(index, time)}
+            )
+            conditions.add(
+                    "l.end_time <= ?" to {stmt, index -> stmt.setTime(index, time)}
+            )
+        }
 
         if(aud != null) conditions.add(
                 "l.auditorium = ?" to {stmt, index -> stmt.setLong(index, aud.id)}

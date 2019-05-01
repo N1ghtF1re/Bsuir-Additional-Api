@@ -6,10 +6,12 @@ import men.brakh.bsuirapi.freeauds.model.Weeks
 import java.sql.Time
 
 interface LessonRepository: Repository<Lesson>{
+    /**
+     * @param time - Время лекции (между началом и концом)
+     */
     fun find(
             weeks: Weeks? = null,
-            startTime: Time? = null,
-            endTime: Time? = null,
+            time: Time? = null,
             aud: Auditorium? = null,
             day: Int? = null,
             building: Int? = null,

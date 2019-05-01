@@ -9,6 +9,11 @@ import men.brakh.bsuirapi.freeauds.model.bsuirapi.ScheduleResponseDto
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.net.URL
+import java.util.*
+
+
+
+
 
 
 /* API Class: */
@@ -48,13 +53,28 @@ object BsuirApi {
             listOf()
         }
     }
-}
+
+    fun getWeekNumber(date: Date): Int {
+        val calCurr = Calendar.getInstance()
+        calCurr.time = date
+        calCurr.set(Calendar.HOUR, 12)
+
+        val currDate = calCurr.time
+
+        val currYear = calCurr.get(Calendar.YEAR)
+        val currMonth = calCurr.get(Calendar.MONTH)
+
+        val firstSeptemberYear = if(currMonth <= 7) currYear - 1 else currYear
+
+        val firstSeptember = Calendar.Builder()
+                .set(Calendar.YEAR, firstSeptemberYear)
+                .set(Calendar.MONTH, Calendar.SEPTEMBER)
+                .set(Calendar.DAY_OF_MONTH, 1)
+                .set(Calendar.HOUR, 12)
+                .build()
+                .time
 
 
-fun main() {
-
-    val groups = BsuirApi.getGroups()
-    val allLessons = groups.flatMap { println("LOADING ${it.name}..."); BsuirApi.getSchedule(it.name) }
-
-    Config.lessonsRepository.add(allLessons)
+        return currDate.weeksBetween(firstSeptember) % 4 + 1
+    }
 }
