@@ -1,7 +1,7 @@
 package men.brakh.bsuirapi.freeauds.controller
 
 import men.brakh.bsuirapi.freeauds.Config
-import men.brakh.bsuirapi.freeauds.model.BuildingInfoDto
+import men.brakh.bsuirapi.freeauds.model.Building
 import men.brakh.bsuirapi.freeauds.repository.AuditoriumRepository
 import men.brakh.extentions.setDefaultJsonHeaders
 import men.brakh.extentions.toJson
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse
 class BuildingsServlet : HttpServlet() {
     private companion object {
         private val audsRepository: AuditoriumRepository = Config.auditoriumRepository
-        val buildings: List<BuildingInfoDto> = audsRepository.findAll()
+        val buildings: List<Building> = audsRepository.findAll()
                 .groupBy { it.building }
                 .map { (buildingNumber, auds) ->
 
@@ -21,7 +21,7 @@ class BuildingsServlet : HttpServlet() {
                             .toList()
                             .sorted()
 
-                    BuildingInfoDto(buildingNumber, floors)
+                    Building(buildingNumber, floors)
                 }.sortedBy { it.name }
     }
 

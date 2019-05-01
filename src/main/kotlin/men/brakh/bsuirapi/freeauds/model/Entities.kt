@@ -15,3 +15,5 @@ data class Auditorium(var id: Long = -1, val name: String, val type: LessonType,
 data class Lesson(var id: Long = -1, val aud: Auditorium, val weeks: Weeks, val day: Int,
                   val startTime: Time, val endTime: Time, val group: String)
 
+
+data class Building(val name: Int, val floors: List<Int>)

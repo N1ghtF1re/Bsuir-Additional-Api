@@ -2,7 +2,6 @@ package men.brakh.bsuirapi.freeauds.controller
 
 import men.brakh.bsuirapi.freeauds.model.Auditorium
 import men.brakh.bsuirapi.freeauds.model.FreeAuds
-import men.brakh.bsuirapi.freeauds.model.LessonType
 import men.brakh.extentions.setDefaultJsonHeaders
 import men.brakh.extentions.singleParameters
 import men.brakh.extentions.toJson
@@ -47,12 +46,11 @@ class FreeAudsServlet : HttpServlet() {
                     return
                 }
 
-        val freeAuds: Map<LessonType, List<Auditorium>> = FreeAuds.search(
+        val freeAuds: List<Auditorium> = FreeAuds.search(
                 dateTime = dateTime,
                 floor = floor,
                 building = building
-        ).groupBy { auditorium -> auditorium.type }
-         .mapValues { (_, value) -> value.sortedBy { auditorium ->  auditorium.name} }
+        ).sortedBy { it.name }
 
         resp.writer.write(freeAuds.toJson())
     }
