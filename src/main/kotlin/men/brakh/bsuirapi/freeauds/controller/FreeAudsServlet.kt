@@ -1,9 +1,12 @@
 package men.brakh.bsuirapi.freeauds.controller
 
-import com.google.gson.Gson
 import men.brakh.bsuirapi.freeauds.model.Auditorium
 import men.brakh.bsuirapi.freeauds.model.FreeAuds
 import men.brakh.bsuirapi.freeauds.model.LessonType
+import men.brakh.extentions.setDefaultJsonHeaders
+import men.brakh.extentions.singleParameters
+import men.brakh.extentions.toJson
+import men.brakh.extentions.writeError
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -51,7 +54,6 @@ class FreeAudsServlet : HttpServlet() {
         ).groupBy { auditorium -> auditorium.type }
          .mapValues { (_, value) -> value.sortedBy { auditorium ->  auditorium.name} }
 
-        val json: String = Gson().toJson(freeAuds)
-        resp.writer.write(json)
+        resp.writer.write(freeAuds.toJson())
     }
 }

@@ -1,6 +1,5 @@
-package men.brakh.bsuirapi.freeauds.controller
+package men.brakh.extentions
 
-import com.google.gson.Gson
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -17,9 +16,7 @@ fun HttpServletResponse.writeError(msg: String, code: Int = HttpServletResponse.
 
     this.status = code
 
-    val json = Gson().toJson(errorMap)
-
-    this.writer.write(json)
+    this.writer.write(errorMap.toJson())
 }
 
 val HttpServletRequest.singleParameters: Map<String, String>

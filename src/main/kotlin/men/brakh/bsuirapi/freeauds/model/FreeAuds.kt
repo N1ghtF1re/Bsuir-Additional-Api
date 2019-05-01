@@ -26,9 +26,6 @@ object FreeAuds {
         calCurr.time = dateTime
         val dayOfWeek = (calCurr.get(Calendar.DAY_OF_WEEK) - 1 + 6) % 7 // Monday - 0 day
 
-
-        println( Weeks(arrayOf(WeekNumber.values()[currWeek])).weeks.forEach { println(it) })
-
         val busyAuds: Set<Auditorium> = lessonsRepo.find(
             day = dayOfWeek,
             time = Time(dateTime.time),

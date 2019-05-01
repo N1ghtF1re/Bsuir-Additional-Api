@@ -8,6 +8,12 @@
     
     <servlet>
         <servlet-name>freeAudsServlet</servlet-name>
+        <servlet-class>men.brakh.bsuirapi.freeauds.controller.FreeAudsServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>audsServlet</servlet-name>
         <servlet-class>men.brakh.bsuirapi.freeauds.controller.AudsServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -16,5 +22,9 @@
     <servlet-mapping>
         <servlet-name>freeAudsServlet</servlet-name>
         <url-pattern>/api/v1/audiences/free</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>audsServlet</servlet-name>
+        <url-pattern>/api/v1/audiences</url-pattern>
     </servlet-mapping>
 </web-app>

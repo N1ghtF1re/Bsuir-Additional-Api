@@ -72,6 +72,8 @@ class MysqlAuditoriumRepository(private val tableName: String)  : AuditoriumRepo
                 "type = ?" to {stmt, index -> stmt.setString(index, type.name)}
         )
 
+        if(conditions.size == 0) return findAll()
+
         val finalQuery = "$initQuery ${conditions.map{it.first}.joinToString(separator = " AND ")}"
 
         connection.use {

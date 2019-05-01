@@ -1,4 +1,4 @@
-package men.brakh.bsuirapi.freeauds.model
+package men.brakh.extentions
 
 import java.util.*
 import java.util.concurrent.TimeUnit
