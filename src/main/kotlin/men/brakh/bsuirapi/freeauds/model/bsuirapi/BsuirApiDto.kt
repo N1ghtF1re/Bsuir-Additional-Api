@@ -1,7 +1,6 @@
 package men.brakh.bsuirapi.freeauds.model.bsuirapi
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
 import men.brakh.bsuirapi.freeauds.model.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -17,14 +16,11 @@ import java.text.SimpleDateFormat
 
 val logger: Logger = LoggerFactory.getLogger("BsuirApiDto")
 
-@Serializable
 data class BuildingDto(val id: Int, val name: String)
 
-@Serializable
 data class AuditoriumTypeDto(val name: String, val abbrev: String)
 
-@Serializable
-data class AuditoriumDto(@SerialName("name") var rowname: String, val auditoryType: AuditoriumTypeDto, val buildingNumber: BuildingDto) {
+data class AuditoriumDto(@SerializedName("name") var rowname: String, val auditoryType: AuditoriumTypeDto, val buildingNumber: BuildingDto) {
     val name: String
         get() {
             val withoutEngA = rowname.replace("a", "а") // Замена англ. А на русскую
@@ -49,15 +45,13 @@ data class AuditoriumDto(@SerialName("name") var rowname: String, val auditoryTy
     }
 }
 
-@Serializable
 data class GroupDto(val id: Int, val name: String, val course: Int?)
 
-@Serializable
+
 data class ScheduleDto(val weekNumber: List<Int>, val studentGroup: List<String>, val numSubgroup: Int,
                        val auditory: List<String>, val startLessonTime: String, val endLessonTime: String,
                        val subject: String, val note: String?, val lessonType: String)
 
-@Serializable
 data class DayScheduleDto(val weekDay: String, val schedule: List<ScheduleDto>) {
     private val day: Int
         get() = arrayOf("Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота").indexOf(weekDay)
@@ -105,5 +99,5 @@ data class DayScheduleDto(val weekDay: String, val schedule: List<ScheduleDto>) 
     }
 }
 
-@Serializable
+
 data class ScheduleResponseDto(val schedules: List<DayScheduleDto>)

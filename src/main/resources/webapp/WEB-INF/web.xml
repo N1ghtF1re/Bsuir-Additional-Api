@@ -15,6 +15,6 @@
 
     <servlet-mapping>
         <servlet-name>testServlet</servlet-name>
-        <url-pattern>/test</url-pattern>
+        <url-pattern>/api/v1/audiences/free</url-pattern>
     </servlet-mapping>
 </web-app>

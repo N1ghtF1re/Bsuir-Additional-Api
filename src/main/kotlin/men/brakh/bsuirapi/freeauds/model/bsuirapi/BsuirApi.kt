@@ -1,7 +1,6 @@
 package men.brakh.bsuirapi.freeauds.model.bsuirapi
 
-import kotlinx.serialization.internal.ArrayListSerializer
-import kotlinx.serialization.json.Json
+import com.google.gson.Gson
 import men.brakh.bsuirapi.freeauds.Config
 import men.brakh.bsuirapi.freeauds.model.Auditorium
 import men.brakh.bsuirapi.freeauds.model.Lesson
@@ -12,10 +11,6 @@ import java.net.URL
 import java.util.*
 
 
-
-
-
-
 /* API Class: */
 object BsuirApi {
     private val logger: Logger = LoggerFactory.getLogger(BsuirApi::class.java)
@@ -23,7 +18,7 @@ object BsuirApi {
 
     fun getAuditoriums(): List<Auditorium> {
         val json: String = URL("$host/auditory").readText()
-        val auds: List<AuditoriumDto> = Json.nonstrict.parse(ArrayListSerializer(AuditoriumDto.serializer()), json)
+        val auds: List<AuditoriumDto> = Gson().fromJson(json, Array<AuditoriumDto>::class.java).toList()
 
         return auds.mapNotNull { audDto -> audDto.toAud() }
     }
@@ -31,7 +26,7 @@ object BsuirApi {
     fun getGroups(): List<GroupDto> {
         val json: String = URL("$host/groups").readText()
 
-        return Json.nonstrict.parse(ArrayListSerializer(GroupDto.serializer()), json)
+        return Gson().fromJson(json, Array<GroupDto>::class.java).toList()
     }
 
     fun getSchedule(name: String): List<Lesson>  {
@@ -40,7 +35,7 @@ object BsuirApi {
         if(json.isEmpty()) return listOf()
 
         return try {
-            Json.nonstrict.parse(ScheduleResponseDto.serializer(), json).schedules.flatMap { it.toLessons() }
+            Gson().fromJson(json, ScheduleResponseDto::class.java).schedules.flatMap { it.toLessons() }
         } catch (e: Exception) {
             logger.error(
                 """
