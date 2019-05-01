@@ -71,7 +71,7 @@ class MysqlLessonRepository: LessonRepository {
     }
 
     override fun find(weeks: Weeks?, time: Time?, aud: Auditorium?, day: Int?, building: Int?, floor: Int?): List<Lesson> {
-        val initQuery = "SELECT l.id, l.auditorium, l.weeks, l.start_time, l.end_time, l.group FROM $tableName as l"
+        val initQuery = "SELECT l.id, l.auditorium, l.weeks, l.day, l.start_time, l.end_time, l.group FROM $tableName as l"
 
         val condition: String = if(floor == null && building == null)
             "WHERE"
@@ -93,10 +93,10 @@ class MysqlLessonRepository: LessonRepository {
 
         if(time != null) {
             conditions.add(
-                    "l.start_time >= ?" to { stmt, index -> stmt.setTime(index, time)}
+                    "l.start_time <= ?" to { stmt, index -> stmt.setTime(index, time)}
             )
             conditions.add(
-                    "l.end_time <= ?" to {stmt, index -> stmt.setTime(index, time)}
+                    "l.end_time >= ?" to {stmt, index -> stmt.setTime(index, time)}
             )
         }
 
