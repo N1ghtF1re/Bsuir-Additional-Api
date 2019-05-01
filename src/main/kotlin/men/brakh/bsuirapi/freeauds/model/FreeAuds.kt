@@ -1,18 +1,17 @@
 package men.brakh.bsuirapi.freeauds.model
 
 import men.brakh.bsuirapi.freeauds.Config
+import men.brakh.bsuirapi.freeauds.model.bsuirapi.BsuirApi
 import men.brakh.bsuirapi.freeauds.repository.AuditoriumRepository
 import men.brakh.bsuirapi.freeauds.repository.LessonRepository
 import java.sql.Time
 import java.util.*
 
 
-
-
 object FreeAuds {
-    val audRepo: AuditoriumRepository by lazy { Config.auditoriumRepository }
-    val lessonsRepo: LessonRepository by lazy { Config.lessonsRepository }
-    val bsuirApi by lazy { BsuirApi }
+    private val audRepo: AuditoriumRepository by lazy { Config.auditoriumRepository }
+    private val lessonsRepo: LessonRepository by lazy { Config.lessonsRepository }
+    private val bsuirApi by lazy { BsuirApi }
 
 
     fun search(dateTime: Date, building: Int, floor: Int? = null): Set<Auditorium> {

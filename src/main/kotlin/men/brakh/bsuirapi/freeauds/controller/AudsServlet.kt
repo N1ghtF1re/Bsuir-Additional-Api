@@ -12,39 +12,10 @@ class AudsServlet : HttpServlet() {
     val audRep: AuditoriumRepository = Config.auditoriumRepository
 
     override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {
+        val params: Map<String, String> =
+                req.parameterMap.mapValues { (_, value) -> value.first() }
 
-        /*val aud = Auditorium(
-                name = "Test",
-                type = LessonType.LESSON_LAB,
-                floor = 1,
-                building = 2
-        )
 
-        audRep.add(aud)*/
-
-        resp.writer.println(audRep.findById(3))
-
-/*
-        val lesson = Lesson(
-                aud = aud,
-                weeks = Weeks(arrayOf(WeekNumber.WEEK_FIRST, WeekNumber.WEEK_SECOND)),
-                startTime = Time(Date().time),
-                endTime = Time(Date().time),
-                group = "751006"
-        )
-*/
-        //lessonRep.add(lesson)
-
-        /*val lessons = lessonRep.find(
-                building = 4
-        )
-
-        resp.writer.println(lessons)*/
-
-        /*resp.writer.println(lessonRep.findByWeek(Weeks(arrayOf(WeekNumber.WEEK_SECOND))))
-        resp.writer.println(lessonRep.findByWeek(Weeks(arrayOf(WeekNumber.WEEK_FIRST))))
-        resp.writer.println(lessonRep.findByWeek(Weeks(arrayOf(WeekNumber.WEEK_FIRST, WeekNumber.WEEK_FOURTH))))
-        resp.writer.println(lessonRep.findByWeek(Weeks(arrayOf(WeekNumber.WEEK_ANY))))*/
 
     }
 }

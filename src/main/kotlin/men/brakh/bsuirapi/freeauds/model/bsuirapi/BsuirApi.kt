@@ -1,11 +1,11 @@
-package men.brakh.bsuirapi.freeauds.model
+package men.brakh.bsuirapi.freeauds.model.bsuirapi
 
 import kotlinx.serialization.internal.ArrayListSerializer
 import kotlinx.serialization.json.Json
 import men.brakh.bsuirapi.freeauds.Config
-import men.brakh.bsuirapi.freeauds.model.bsuirapi.AuditoriumDto
-import men.brakh.bsuirapi.freeauds.model.bsuirapi.GroupDto
-import men.brakh.bsuirapi.freeauds.model.bsuirapi.ScheduleResponseDto
+import men.brakh.bsuirapi.freeauds.model.Auditorium
+import men.brakh.bsuirapi.freeauds.model.Lesson
+import men.brakh.bsuirapi.freeauds.model.weeksBetween
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.net.URL
