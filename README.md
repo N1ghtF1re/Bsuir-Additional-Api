@@ -1,5 +1,5 @@
 <h1 align="center">Bsuir-Additional-Api</h1>
-<p align="center"><img src="https://iti.bsuir.by/files/specialties/BGUIR-logo.jpg" height=150></p>
+<p align="center"><img src="https://pbs.twimg.com/profile_images/521395106/bsuir_logo_400x400.GIF" height=150></p>
 
 <p align="center">
 <a href="https://github.com/N1ghtF1re/Bsuir-Additional-Api/stargazers"><img src="https://img.shields.io/github/stars/N1ghtF1re/Bsuir-Additional-Api.svg" alt="Stars"></a>
