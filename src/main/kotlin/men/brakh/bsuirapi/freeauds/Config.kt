@@ -4,6 +4,7 @@ import men.brakh.bsuirapi.freeauds.dbconnection.ConnectionFactory
 import men.brakh.bsuirapi.freeauds.dbconnection.MysqlConnectionFactory
 import men.brakh.bsuirapi.freeauds.model.Auditorium
 import men.brakh.bsuirapi.freeauds.model.Lesson
+import men.brakh.bsuirapi.freeauds.model.LessonsScheduleUpdater
 import men.brakh.bsuirapi.freeauds.model.bsuirapi.BsuirApi
 import men.brakh.bsuirapi.freeauds.repository.AuditoriumRepository
 import men.brakh.bsuirapi.freeauds.repository.LessonRepository
@@ -47,5 +48,7 @@ object Config {
             lessonsRepository.add(lessons)
             logger.info("Lessons list loaded!")
         }
+
+        LessonsScheduleUpdater.start()
     }
 }
