@@ -2,7 +2,7 @@ package men.brakh.bsuirapi.freeauds.model.data
 
 import java.sql.Time
 
-data class Auditorium(var id: Long = -1, val name: String, val type: LessonType,
+data class Auditorium(@Transient var id: Long = -1, val name: String, val type: LessonType,
                       val floor: Int, val building: Int) {
     companion object {
         fun isCorrectName(name: String): Boolean {
@@ -12,7 +12,7 @@ data class Auditorium(var id: Long = -1, val name: String, val type: LessonType,
     }
 }
 
-data class Lesson(var id: Long = -1, val aud: Auditorium, val weeks: Weeks, val day: Int,
+data class Lesson(@Transient var id: Long = -1, val aud: Auditorium, val weeks: Weeks, val day: Int,
                   val startTime: Time, val endTime: Time, val group: String)
 
 
