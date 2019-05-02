@@ -1,5 +1,6 @@
 package men.brakh.bsuirapi.freeauds.dbconnection
 
+import org.slf4j.LoggerFactory
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.nio.file.Files
@@ -17,6 +18,7 @@ object MysqlConnectionFactory: ConnectionFactory {
     private val password: String
     private val url: String
 
+    private val logger = LoggerFactory.getLogger(this.javaClass)
 
     init {
         // Получаем ресурсы
@@ -52,11 +54,11 @@ object MysqlConnectionFactory: ConnectionFactory {
                     }
                 }
             } catch (e: SQLException) {
-                e.printStackTrace()
+                logger.error("ERROR CONNECTING TO DB", e)
             }
         }
 
-        println("MYSQL INITIALIZED")
+        logger.info("MYSQL CONNECTION INITIALIZED")
     }
 
     override fun getConnection(): Connection {
