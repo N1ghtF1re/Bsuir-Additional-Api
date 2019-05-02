@@ -2,10 +2,10 @@ package men.brakh.bsuirapi.freeauds.controller
 
 import men.brakh.bsuirapi.freeauds.model.Auditorium
 import men.brakh.bsuirapi.freeauds.model.FreeAuds
-import men.brakh.extentions.setDefaultJsonHeaders
-import men.brakh.extentions.singleParameters
-import men.brakh.extentions.toJson
-import men.brakh.extentions.writeError
+import men.brakh.bsuirapi.extentions.setDefaultJsonHeaders
+import men.brakh.bsuirapi.extentions.singleParameters
+import men.brakh.bsuirapi.extentions.toJson
+import men.brakh.bsuirapi.extentions.writeError
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*

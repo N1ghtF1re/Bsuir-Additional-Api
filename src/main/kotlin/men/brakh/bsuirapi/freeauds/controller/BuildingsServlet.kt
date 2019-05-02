@@ -3,8 +3,8 @@ package men.brakh.bsuirapi.freeauds.controller
 import men.brakh.bsuirapi.freeauds.Config
 import men.brakh.bsuirapi.freeauds.model.Building
 import men.brakh.bsuirapi.freeauds.repository.AuditoriumRepository
-import men.brakh.extentions.setDefaultJsonHeaders
-import men.brakh.extentions.toJson
+import men.brakh.bsuirapi.extentions.setDefaultJsonHeaders
+import men.brakh.bsuirapi.extentions.toJson
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse

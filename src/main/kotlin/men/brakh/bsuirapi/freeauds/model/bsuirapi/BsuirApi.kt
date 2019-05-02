@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import men.brakh.bsuirapi.freeauds.Config
 import men.brakh.bsuirapi.freeauds.model.Auditorium
 import men.brakh.bsuirapi.freeauds.model.Lesson
-import men.brakh.extentions.weeksBetween
+import men.brakh.bsuirapi.extentions.weeksBetween
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.net.URL

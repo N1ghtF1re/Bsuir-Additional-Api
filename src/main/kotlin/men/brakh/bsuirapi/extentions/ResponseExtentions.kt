@@ -1,4 +1,4 @@
-package men.brakh.extentions
+package men.brakh.bsuirapi.extentions
 
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse

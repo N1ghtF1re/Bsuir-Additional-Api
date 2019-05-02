@@ -1,4 +1,4 @@
-package men.brakh.extentions
+package men.brakh.bsuirapi.extentions
 
 import java.util.*
 import java.util.concurrent.TimeUnit
