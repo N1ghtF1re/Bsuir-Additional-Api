@@ -2,10 +2,10 @@ package men.brakh.bsuirapi.freeauds.repository.impl
 
 import men.brakh.bsuirapi.freeauds.Config
 import men.brakh.bsuirapi.freeauds.dbconnection.ConnectionFactory
-import men.brakh.bsuirapi.freeauds.model.Auditorium
-import men.brakh.bsuirapi.freeauds.model.Lesson
-import men.brakh.bsuirapi.freeauds.model.Weeks
-import men.brakh.bsuirapi.freeauds.model.isSingleDay
+import men.brakh.bsuirapi.freeauds.model.data.Auditorium
+import men.brakh.bsuirapi.freeauds.model.data.Lesson
+import men.brakh.bsuirapi.freeauds.model.data.Weeks
+import men.brakh.bsuirapi.freeauds.model.data.isSingleDay
 import men.brakh.bsuirapi.freeauds.repository.AuditoriumRepository
 import men.brakh.bsuirapi.freeauds.repository.LessonRepository
 import org.slf4j.LoggerFactory

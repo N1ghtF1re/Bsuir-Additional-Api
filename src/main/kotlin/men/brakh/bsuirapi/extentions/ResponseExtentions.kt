@@ -19,5 +19,8 @@ fun HttpServletResponse.writeError(msg: String, code: Int = HttpServletResponse.
     this.writer.write(errorMap.toJson())
 }
 
+/**
+ * Return parameters map without array in value
+ */
 val HttpServletRequest.singleParameters: Map<String, String>
     get() = this.parameterMap.mapValues { (_, value) -> value.first() }

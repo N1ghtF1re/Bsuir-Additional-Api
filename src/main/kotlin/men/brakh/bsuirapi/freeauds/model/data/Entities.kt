@@ -1,4 +1,4 @@
-package men.brakh.bsuirapi.freeauds.model
+package men.brakh.bsuirapi.freeauds.model.data
 
 import java.sql.Time
 

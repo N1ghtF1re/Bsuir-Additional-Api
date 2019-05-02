@@ -5,7 +5,7 @@ import men.brakh.bsuirapi.extentions.singleParameters
 import men.brakh.bsuirapi.extentions.toJson
 import men.brakh.bsuirapi.extentions.writeError
 import men.brakh.bsuirapi.freeauds.Config
-import men.brakh.bsuirapi.freeauds.model.LessonType
+import men.brakh.bsuirapi.freeauds.model.data.LessonType
 import men.brakh.bsuirapi.freeauds.repository.AuditoriumRepository
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest

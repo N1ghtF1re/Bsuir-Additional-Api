@@ -2,8 +2,8 @@ package men.brakh.bsuirapi.freeauds.repository.impl
 
 import men.brakh.bsuirapi.freeauds.Config
 import men.brakh.bsuirapi.freeauds.dbconnection.ConnectionFactory
-import men.brakh.bsuirapi.freeauds.model.Auditorium
-import men.brakh.bsuirapi.freeauds.model.LessonType
+import men.brakh.bsuirapi.freeauds.model.data.Auditorium
+import men.brakh.bsuirapi.freeauds.model.data.LessonType
 import men.brakh.bsuirapi.freeauds.repository.AuditoriumRepository
 import java.sql.*
 

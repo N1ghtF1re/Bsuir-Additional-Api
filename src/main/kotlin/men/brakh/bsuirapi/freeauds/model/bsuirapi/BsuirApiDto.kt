@@ -1,7 +1,7 @@
 package men.brakh.bsuirapi.freeauds.model.bsuirapi
 
 import com.google.gson.annotations.SerializedName
-import men.brakh.bsuirapi.freeauds.model.*
+import men.brakh.bsuirapi.freeauds.model.data.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.sql.Time
@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat
 /*  DTO:  */
 
 /**
- * Внимание. В классах много костылей. Скажем спасибо IISу
+ * WARNING. There are many crutches in the classes. Thanks to IIS
  */
 
 val logger: Logger = LoggerFactory.getLogger("BsuirApiDto")
@@ -23,7 +23,7 @@ data class AuditoriumTypeDto(val name: String, val abbrev: String)
 data class AuditoriumDto(@SerializedName("name") var rowname: String, val auditoryType: AuditoriumTypeDto, val buildingNumber: BuildingDto) {
     val name: String
         get() {
-            val withoutEngA = rowname.replace("a", "а") // Замена англ. А на русскую
+            val withoutEngA = rowname.replace("a", "а") // Replacing eng a to russian а
             return withoutEngA.substringBeforeLast("-")
         }
 
@@ -36,7 +36,7 @@ data class AuditoriumDto(@SerializedName("name") var rowname: String, val audito
         }
 
     /**
-     * Превращение DTO в нормальный объект
+     * Transforming DTO to usual object
      */
     fun toAud(): Auditorium? {
         if(!Auditorium.isCorrectName(name)) return null
@@ -71,7 +71,7 @@ data class DayScheduleDto(val weekDay: String, val schedule: List<ScheduleDto>) 
                     return@SkipLesson null
                 }
 
-                val aud:Auditorium? = AuditoriumDto(
+                val aud: Auditorium? = AuditoriumDto(
                         rowname = audName,
                         auditoryType = AuditoriumTypeDto(name=schedule.lessonType, abbrev = schedule.lessonType),
                         buildingNumber = BuildingDto(building, building.toString())

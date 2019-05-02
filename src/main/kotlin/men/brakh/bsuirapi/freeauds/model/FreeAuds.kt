@@ -2,6 +2,9 @@ package men.brakh.bsuirapi.freeauds.model
 
 import men.brakh.bsuirapi.freeauds.Config
 import men.brakh.bsuirapi.freeauds.model.bsuirapi.BsuirApi
+import men.brakh.bsuirapi.freeauds.model.data.Auditorium
+import men.brakh.bsuirapi.freeauds.model.data.WeekNumber
+import men.brakh.bsuirapi.freeauds.model.data.Weeks
 import men.brakh.bsuirapi.freeauds.repository.AuditoriumRepository
 import men.brakh.bsuirapi.freeauds.repository.LessonRepository
 import java.sql.Time
@@ -13,7 +16,12 @@ object FreeAuds {
     private val lessonsRepo: LessonRepository by lazy { Config.lessonsRepository }
     private val bsuirApi by lazy { BsuirApi }
 
-
+    /**
+     * SEARCHING FREE AUDITORIUM
+     * @param dateTime: Date - Date which contains Lesson DATE and TIME
+     * @param building: Int - Building number
+     * @param floor: Int - Floor number
+     */
     fun search(dateTime: Date, building: Int, floor: Int? = null): Set<Auditorium> {
         val allAuds: Set<Auditorium> = audRepo.find(
                 building = building,

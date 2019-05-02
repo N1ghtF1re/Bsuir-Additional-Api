@@ -1,6 +1,6 @@
 package men.brakh.bsuirapi.freeauds.controller
 
-import men.brakh.bsuirapi.freeauds.model.Auditorium
+import men.brakh.bsuirapi.freeauds.model.data.Auditorium
 import men.brakh.bsuirapi.freeauds.model.FreeAuds
 import men.brakh.bsuirapi.extentions.setDefaultJsonHeaders
 import men.brakh.bsuirapi.extentions.singleParameters

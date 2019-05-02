@@ -1,7 +1,7 @@
-package men.brakh.bsuirapi.freeauds.model
+package men.brakh.bsuirapi.freeauds.model.data
 
 /**
- * Значение - битовая маска
+ * Value - bit mask
  */
 enum class WeekNumber(val weekMask: Int) {
     WEEK_ANY(0b1111),

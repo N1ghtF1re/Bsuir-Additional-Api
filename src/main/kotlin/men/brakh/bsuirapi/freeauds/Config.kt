@@ -2,10 +2,10 @@ package men.brakh.bsuirapi.freeauds
 
 import men.brakh.bsuirapi.freeauds.dbconnection.ConnectionFactory
 import men.brakh.bsuirapi.freeauds.dbconnection.MysqlConnectionFactory
-import men.brakh.bsuirapi.freeauds.model.Auditorium
-import men.brakh.bsuirapi.freeauds.model.Lesson
 import men.brakh.bsuirapi.freeauds.model.LessonsScheduleUpdater
 import men.brakh.bsuirapi.freeauds.model.bsuirapi.BsuirApi
+import men.brakh.bsuirapi.freeauds.model.data.Auditorium
+import men.brakh.bsuirapi.freeauds.model.data.Lesson
 import men.brakh.bsuirapi.freeauds.repository.AuditoriumRepository
 import men.brakh.bsuirapi.freeauds.repository.LessonRepository
 import men.brakh.bsuirapi.freeauds.repository.impl.MysqlAuditoriumRepository
@@ -28,7 +28,8 @@ object Config {
     val bsuirApiHost: String
 
     init {
-        val propsPath: String = this.javaClass.classLoader.getResource("config.properties")?.path ?: throw FileNotFoundException("Config not found")
+        val propsPath: String = this.javaClass.classLoader.getResource("config.properties")?.path
+                ?: throw FileNotFoundException("Config not found")
 
         val configProps = Properties()
         configProps.load(FileInputStream(propsPath))
