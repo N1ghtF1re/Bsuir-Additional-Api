@@ -1,4 +1,4 @@
-package men.brakh.bsuirapi.freeauds.dbconnection
+package men.brakh.bsuirapi.dbconnection
 
 import java.sql.Connection
 

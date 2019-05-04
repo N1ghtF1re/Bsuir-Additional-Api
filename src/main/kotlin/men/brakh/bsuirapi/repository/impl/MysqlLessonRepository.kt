@@ -1,13 +1,13 @@
-package men.brakh.bsuirapi.freeauds.repository.impl
+package men.brakh.bsuirapi.repository.impl
 
-import men.brakh.bsuirapi.freeauds.Config
-import men.brakh.bsuirapi.freeauds.dbconnection.ConnectionFactory
-import men.brakh.bsuirapi.freeauds.model.data.Auditorium
-import men.brakh.bsuirapi.freeauds.model.data.Lesson
-import men.brakh.bsuirapi.freeauds.model.data.Weeks
-import men.brakh.bsuirapi.freeauds.model.data.isSingleDay
-import men.brakh.bsuirapi.freeauds.repository.AuditoriumRepository
-import men.brakh.bsuirapi.freeauds.repository.LessonRepository
+import men.brakh.bsuirapi.Config
+import men.brakh.bsuirapi.dbconnection.ConnectionFactory
+import men.brakh.bsuirapi.model.data.Auditorium
+import men.brakh.bsuirapi.model.data.Lesson
+import men.brakh.bsuirapi.model.data.Weeks
+import men.brakh.bsuirapi.model.data.isSingleDay
+import men.brakh.bsuirapi.repository.AuditoriumRepository
+import men.brakh.bsuirapi.repository.LessonRepository
 import org.slf4j.LoggerFactory
 import java.sql.*
 

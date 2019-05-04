@@ -1,4 +1,4 @@
-package men.brakh.bsuirapi.freeauds.model.data
+package men.brakh.bsuirapi.model.data
 
 enum class LessonType {
     LESSON_LECTURE,

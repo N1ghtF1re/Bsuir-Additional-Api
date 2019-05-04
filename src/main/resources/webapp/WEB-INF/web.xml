@@ -8,19 +8,19 @@
     
     <servlet>
         <servlet-name>freeAudsServlet</servlet-name>
-        <servlet-class>men.brakh.bsuirapi.freeauds.controller.FreeAudsServlet</servlet-class>
+        <servlet-class>men.brakh.bsuirapi.controller.FreeAudsServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet>
         <servlet-name>audsServlet</servlet-name>
-        <servlet-class>men.brakh.bsuirapi.freeauds.controller.AudsServlet</servlet-class>
+        <servlet-class>men.brakh.bsuirapi.controller.AudsServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet>
         <servlet-name>buildingsServlet</servlet-name>
-        <servlet-class>men.brakh.bsuirapi.freeauds.controller.BuildingsServlet</servlet-class>
+        <servlet-class>men.brakh.bsuirapi.controller.BuildingsServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 

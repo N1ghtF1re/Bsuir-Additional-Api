@@ -1,8 +1,8 @@
-package men.brakh.bsuirapi.freeauds.controller
+package men.brakh.bsuirapi.controller
 
-import men.brakh.bsuirapi.freeauds.Config
-import men.brakh.bsuirapi.freeauds.model.data.Building
-import men.brakh.bsuirapi.freeauds.repository.AuditoriumRepository
+import men.brakh.bsuirapi.Config
+import men.brakh.bsuirapi.model.data.Building
+import men.brakh.bsuirapi.repository.AuditoriumRepository
 import men.brakh.bsuirapi.extentions.setDefaultJsonHeaders
 import men.brakh.bsuirapi.extentions.toJson
 import javax.servlet.http.HttpServlet

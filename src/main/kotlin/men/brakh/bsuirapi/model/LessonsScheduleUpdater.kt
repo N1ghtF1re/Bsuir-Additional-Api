@@ -1,9 +1,9 @@
-package men.brakh.bsuirapi.freeauds.model
+package men.brakh.bsuirapi.model
 
-import men.brakh.bsuirapi.freeauds.Config
-import men.brakh.bsuirapi.freeauds.dbconnection.ConnectionFactory
-import men.brakh.bsuirapi.freeauds.model.bsuirapi.BsuirApi
-import men.brakh.bsuirapi.freeauds.repository.impl.MysqlLessonRepository
+import men.brakh.bsuirapi.Config
+import men.brakh.bsuirapi.dbconnection.ConnectionFactory
+import men.brakh.bsuirapi.model.bsuirapi.BsuirApi
+import men.brakh.bsuirapi.repository.impl.MysqlLessonRepository
 import org.slf4j.LoggerFactory
 import java.sql.Connection
 import java.time.Duration

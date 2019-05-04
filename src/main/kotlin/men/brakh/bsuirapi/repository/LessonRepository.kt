@@ -1,11 +1,11 @@
-package men.brakh.bsuirapi.freeauds.repository
+package men.brakh.bsuirapi.repository
 
-import men.brakh.bsuirapi.freeauds.model.data.Auditorium
-import men.brakh.bsuirapi.freeauds.model.data.Lesson
-import men.brakh.bsuirapi.freeauds.model.data.Weeks
+import men.brakh.bsuirapi.model.data.Auditorium
+import men.brakh.bsuirapi.model.data.Lesson
+import men.brakh.bsuirapi.model.data.Weeks
 import java.sql.Time
 
-interface LessonRepository: Repository<Lesson>{
+interface LessonRepository: Repository<Lesson> {
     /**
      * @param time - Время лекции (между началом и концом)
      */

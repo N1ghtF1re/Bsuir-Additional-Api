@@ -1,12 +1,12 @@
-package men.brakh.bsuirapi.freeauds.model
+package men.brakh.bsuirapi.model
 
-import men.brakh.bsuirapi.freeauds.Config
-import men.brakh.bsuirapi.freeauds.model.bsuirapi.BsuirApi
-import men.brakh.bsuirapi.freeauds.model.data.Auditorium
-import men.brakh.bsuirapi.freeauds.model.data.WeekNumber
-import men.brakh.bsuirapi.freeauds.model.data.Weeks
-import men.brakh.bsuirapi.freeauds.repository.AuditoriumRepository
-import men.brakh.bsuirapi.freeauds.repository.LessonRepository
+import men.brakh.bsuirapi.Config
+import men.brakh.bsuirapi.model.bsuirapi.BsuirApi
+import men.brakh.bsuirapi.model.data.Auditorium
+import men.brakh.bsuirapi.model.data.WeekNumber
+import men.brakh.bsuirapi.model.data.Weeks
+import men.brakh.bsuirapi.repository.AuditoriumRepository
+import men.brakh.bsuirapi.repository.LessonRepository
 import java.sql.Time
 import java.util.*
 

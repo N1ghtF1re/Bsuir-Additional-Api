@@ -1,4 +1,4 @@
-package men.brakh.bsuirapi.freeauds.repository
+package men.brakh.bsuirapi.repository
 
 interface Repository<T> {
     fun add(entity: T): T

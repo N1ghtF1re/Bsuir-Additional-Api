@@ -1,15 +1,15 @@
-package men.brakh.bsuirapi.freeauds
+package men.brakh.bsuirapi
 
-import men.brakh.bsuirapi.freeauds.dbconnection.ConnectionFactory
-import men.brakh.bsuirapi.freeauds.dbconnection.MysqlConnectionFactory
-import men.brakh.bsuirapi.freeauds.model.LessonsScheduleUpdater
-import men.brakh.bsuirapi.freeauds.model.bsuirapi.BsuirApi
-import men.brakh.bsuirapi.freeauds.model.data.Auditorium
-import men.brakh.bsuirapi.freeauds.model.data.Lesson
-import men.brakh.bsuirapi.freeauds.repository.AuditoriumRepository
-import men.brakh.bsuirapi.freeauds.repository.LessonRepository
-import men.brakh.bsuirapi.freeauds.repository.impl.MysqlAuditoriumRepository
-import men.brakh.bsuirapi.freeauds.repository.impl.MysqlLessonRepository
+import men.brakh.bsuirapi.dbconnection.ConnectionFactory
+import men.brakh.bsuirapi.dbconnection.MysqlConnectionFactory
+import men.brakh.bsuirapi.model.LessonsScheduleUpdater
+import men.brakh.bsuirapi.model.bsuirapi.BsuirApi
+import men.brakh.bsuirapi.model.data.Auditorium
+import men.brakh.bsuirapi.model.data.Lesson
+import men.brakh.bsuirapi.repository.AuditoriumRepository
+import men.brakh.bsuirapi.repository.LessonRepository
+import men.brakh.bsuirapi.repository.impl.MysqlAuditoriumRepository
+import men.brakh.bsuirapi.repository.impl.MysqlLessonRepository
 import org.slf4j.LoggerFactory
 import java.io.FileInputStream
 import java.io.FileNotFoundException

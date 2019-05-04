@@ -1,7 +1,7 @@
-package men.brakh.bsuirapi.freeauds.model.bsuirapi
+package men.brakh.bsuirapi.model.bsuirapi
 
 import com.google.gson.annotations.SerializedName
-import men.brakh.bsuirapi.freeauds.model.data.*
+import men.brakh.bsuirapi.model.data.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.sql.Time
@@ -73,7 +73,7 @@ data class DayScheduleDto(val weekDay: String, val schedule: List<ScheduleDto>) 
 
                 val aud: Auditorium? = AuditoriumDto(
                         rowname = audName,
-                        auditoryType = AuditoriumTypeDto(name=schedule.lessonType, abbrev = schedule.lessonType),
+                        auditoryType = AuditoriumTypeDto(name = schedule.lessonType, abbrev = schedule.lessonType),
                         buildingNumber = BuildingDto(building, building.toString())
                 ).toAud()
 

@@ -1,10 +1,10 @@
-package men.brakh.bsuirapi.freeauds.model.bsuirapi
+package men.brakh.bsuirapi.model.bsuirapi
 
 import com.google.gson.Gson
 import men.brakh.bsuirapi.extentions.weeksBetween
-import men.brakh.bsuirapi.freeauds.Config
-import men.brakh.bsuirapi.freeauds.model.data.Auditorium
-import men.brakh.bsuirapi.freeauds.model.data.Lesson
+import men.brakh.bsuirapi.Config
+import men.brakh.bsuirapi.model.data.Auditorium
+import men.brakh.bsuirapi.model.data.Lesson
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.net.URL

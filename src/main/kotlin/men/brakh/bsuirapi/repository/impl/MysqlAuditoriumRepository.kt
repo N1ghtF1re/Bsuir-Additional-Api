@@ -1,13 +1,13 @@
-package men.brakh.bsuirapi.freeauds.repository.impl
+package men.brakh.bsuirapi.repository.impl
 
-import men.brakh.bsuirapi.freeauds.Config
-import men.brakh.bsuirapi.freeauds.dbconnection.ConnectionFactory
-import men.brakh.bsuirapi.freeauds.model.data.Auditorium
-import men.brakh.bsuirapi.freeauds.model.data.LessonType
-import men.brakh.bsuirapi.freeauds.repository.AuditoriumRepository
+import men.brakh.bsuirapi.Config
+import men.brakh.bsuirapi.dbconnection.ConnectionFactory
+import men.brakh.bsuirapi.model.data.Auditorium
+import men.brakh.bsuirapi.model.data.LessonType
+import men.brakh.bsuirapi.repository.AuditoriumRepository
 import java.sql.*
 
-class MysqlAuditoriumRepository(private val tableName: String)  : AuditoriumRepository{
+class MysqlAuditoriumRepository(private val tableName: String)  : AuditoriumRepository {
     constructor() : this("auditoriums")
 
     private val conFactory: ConnectionFactory by lazy { Config.connectionFactory }

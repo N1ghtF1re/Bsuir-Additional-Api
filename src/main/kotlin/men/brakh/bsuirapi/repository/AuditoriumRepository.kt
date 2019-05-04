@@ -1,7 +1,7 @@
-package men.brakh.bsuirapi.freeauds.repository
+package men.brakh.bsuirapi.repository
 
-import men.brakh.bsuirapi.freeauds.model.data.Auditorium
-import men.brakh.bsuirapi.freeauds.model.data.LessonType
+import men.brakh.bsuirapi.model.data.Auditorium
+import men.brakh.bsuirapi.model.data.LessonType
 
 interface AuditoriumRepository: Repository<Auditorium> {
     fun find(
