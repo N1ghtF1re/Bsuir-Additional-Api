@@ -11,41 +11,17 @@ enum class WeekNumber(val weekMask: Int) {
     WEEK_FOURTH(0b1000)
 }
 
-class Weeks() {
-    var weeks: Array<WeekNumber> = arrayOf()
+data class Weeks(val mask: Int) {
+    val weeks: List<WeekNumber>
+        get() = WeekNumber.values().drop(1).filter { mask and it.weekMask != 0 }
 
-    val value: Int
-        get() {
-            var result = 0
-            weeks.forEach {
-                result = result or it.weekMask
-            }
-            return result
-        }
+    constructor(weeks: List<WeekNumber>) : this(
+            weeks.map { it.weekMask }.fold(0) { result, element -> result or element }
+    )
 
-    fun isContains(num: WeekNumber): Boolean = value and num.weekMask == 1
-
-
-    constructor(weeks: Array<WeekNumber>) : this() {
-        this.weeks = weeks
+    fun isSingleDay(): Boolean{
+        return this.weeks.size == 1 && !this.weeks.contains(WeekNumber.WEEK_ANY)
     }
 
-    constructor(value: Int) : this() {
-        if(value == WeekNumber.WEEK_ANY.weekMask) {
-            this.weeks = arrayOf(WeekNumber.WEEK_ANY)
-        } else {
-            val weeks = mutableListOf<WeekNumber>()
-
-            WeekNumber.values().forEach {
-                if(isContains(it)) {
-                    weeks.add(it)
-                }
-            }
-        }
-    }
 }
 
-
-fun Weeks.isSingleDay(): Boolean{
-    return this.weeks.size == 1 && !this.weeks.contains(WeekNumber.WEEK_ANY)
-}

@@ -82,7 +82,7 @@ data class DayScheduleDto(val weekDay: String, val schedule: List<ScheduleDto>) 
                     return@SkipLesson null
                 }
 
-                val weeks = Weeks(schedule.weekNumber.map { WeekNumber.values()[it] }.toTypedArray())
+                val weeks = Weeks(schedule.weekNumber.map { WeekNumber.values()[it] })
 
                 val sdf = SimpleDateFormat("HH:mm")
 

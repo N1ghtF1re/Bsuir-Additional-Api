@@ -39,7 +39,7 @@ object FreeAuds {
             time = Time(dateTime.time),
             building = building,
             floor = floor,
-            weeks = Weeks(arrayOf(WeekNumber.values()[currWeek]))
+            weeks = Weeks(listOf(WeekNumber.values()[currWeek]))
         ).map { it.aud }.toSet()
 
 

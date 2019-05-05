@@ -5,7 +5,6 @@ import men.brakh.bsuirapi.dbconnection.ConnectionFactory
 import men.brakh.bsuirapi.model.data.Auditorium
 import men.brakh.bsuirapi.model.data.Lesson
 import men.brakh.bsuirapi.model.data.Weeks
-import men.brakh.bsuirapi.model.data.isSingleDay
 import men.brakh.bsuirapi.repository.AuditoriumRepository
 import men.brakh.bsuirapi.repository.LessonRepository
 import org.slf4j.LoggerFactory
@@ -44,7 +43,7 @@ class MysqlLessonRepository(private val tableName: String): LessonRepository {
             }
             statement.use {stmt: PreparedStatement ->
                 stmt.setLong(1, aud.id)
-                stmt.setInt(2, entity.weeks.value)
+                stmt.setInt(2, entity.weeks.mask)
                 stmt.setInt(3, entity.day)
                 stmt.setTime(4, entity.startTime)
                 stmt.setTime(5, entity.endTime)
@@ -84,7 +83,7 @@ class MysqlLessonRepository(private val tableName: String): LessonRepository {
 
         if(weeks != null) conditions.add(
                 (if(weeks.isSingleDay()) "l.weeks & ? != 0" else "l.weeks = ?")
-                        to { stmt, index -> stmt.setInt(index, weeks.value) }
+                        to { stmt, index -> stmt.setInt(index, weeks.mask) }
         )
 
         if(day != null) conditions.add(
@@ -161,7 +160,7 @@ class MysqlLessonRepository(private val tableName: String): LessonRepository {
                     "`weeks` = ?, `start_time` = ?, `end_time` = ?, `group` = ? WHERE `id` = ?")
             statement.use {stmt ->
                 stmt.setLong(1, entity.aud.id)
-                stmt.setInt(2, entity.weeks.value)
+                stmt.setInt(2, entity.weeks.mask)
                 stmt.setTime(3, entity.startTime)
                 stmt.setTime(4, entity.endTime)
                 stmt.setString(5, entity.group)
