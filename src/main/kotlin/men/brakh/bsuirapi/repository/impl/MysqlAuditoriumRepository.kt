@@ -1,22 +1,27 @@
 package men.brakh.bsuirapi.repository.impl
 
-import men.brakh.bsuirapi.Config
-import men.brakh.bsuirapi.dbconnection.ConnectionFactory
 import men.brakh.bsuirapi.model.data.Auditorium
 import men.brakh.bsuirapi.model.data.LessonType
 import men.brakh.bsuirapi.repository.AuditoriumRepository
-import java.sql.*
+import java.sql.PreparedStatement
+import java.sql.ResultSet
+import java.sql.Statement
 
-class MysqlAuditoriumRepository(private val tableName: String)  : AuditoriumRepository {
+class MysqlAuditoriumRepository(tableName: String) :
+        MysqlRepository<Auditorium>(tableName), AuditoriumRepository {
+
     constructor() : this("auditoriums")
 
-    private val conFactory: ConnectionFactory by lazy { Config.connectionFactory }
 
-    private val connection: Connection
-        get() {
-            return conFactory.getConnection()
-        }
-
+    override fun extractor(resultSet: ResultSet): Auditorium? {
+        return Auditorium(
+                id = resultSet.getLong("id"),
+                name = resultSet.getString("name"),
+                floor = resultSet.getInt("floor"),
+                building = resultSet.getInt("building"),
+                type = LessonType.valueOf(resultSet.getString("type"))
+        )
+    }
 
     override fun add(entity: Auditorium): Auditorium {
         connection.use {
@@ -33,22 +38,11 @@ class MysqlAuditoriumRepository(private val tableName: String)  : AuditoriumRepo
 
                 stmt.executeUpdate()
 
-                stmt.generatedKeys.use { generatedKeys ->
-                    if (generatedKeys.next()) {
-                        entity.id = generatedKeys.getLong(1)
-                    } else {
-                        throw SQLException("Creating user failed, no ID obtained.")
-                    }
-                }
+                return entity.copy(id = stmt.generatedId)
             }
         }
-
-        return entity
     }
 
-    override fun add(entities: List<Auditorium>) {
-        entities.forEach{add(it)}
-    }
 
     override fun find(building: Int?, floor: Int?, name: String?, type: LessonType?): List<Auditorium> {
         val initQuery = "SELECT * FROM $tableName WHERE"
@@ -83,38 +77,11 @@ class MysqlAuditoriumRepository(private val tableName: String)  : AuditoriumRepo
                     cond.second(stmt, index + 1) // Установка параметров запроса
                 }
 
-                return extractAuditorium(stmt)
+                return extract(stmt)
             }
         }
     }
 
-    override fun delete(entity: Auditorium) {
-        connection.use {
-            val statement = it.prepareStatement("DELETE FROM $tableName WHERE id = ?")
-            statement.use { stmt ->
-                stmt.setLong(1, entity.id)
-            }
-        }
-    }
-
-    override fun findAll(): List<Auditorium> {
-        connection.use {
-            val statement = it.prepareStatement("SELECT * FROM $tableName")
-            statement.use {stmt ->
-                return extractAuditorium(stmt)
-            }
-        }
-    }
-
-    override fun findById(id: Long): Auditorium? {
-        connection.use {
-            val statement = it.prepareStatement("SELECT * FROM $tableName WHERE id = ?")
-            statement.use {stmt ->
-                stmt.setLong(1, id)
-                return extractAuditorium(stmt).getOrNull(0)
-            }
-        }
-    }
 
     override fun update(entity: Auditorium): Auditorium {
         connection.use {
@@ -131,25 +98,6 @@ class MysqlAuditoriumRepository(private val tableName: String)  : AuditoriumRepo
                 return entity
             }
         }
-    }
-
-    private fun extractAuditorium(stmt: PreparedStatement): List<Auditorium> {
-        val resultSet: ResultSet = stmt.executeQuery()
-
-        val sequence = generateSequence<Auditorium> {
-            if(!resultSet.next()) {
-                return@generateSequence(null)
-            }
-            Auditorium(
-                    id = resultSet.getLong("id"),
-                    name = resultSet.getString("name"),
-                    floor = resultSet.getInt("floor"),
-                    building = resultSet.getInt("building"),
-                    type = LessonType.valueOf(resultSet.getString("type"))
-            )
-        }
-
-        return sequence.toList()
     }
 
 }

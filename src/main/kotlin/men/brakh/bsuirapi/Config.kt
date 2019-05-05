@@ -36,19 +36,21 @@ object Config {
 
         bsuirApiHost = configProps.getProperty("bsuir.api.host")
 
-        if(auditoriumRepository.findAll().count() == 0) {
+        println("KEK")
+        if(auditoriumRepository.count() == 0) {
             logger.info("Loading the auditoriums list ... It takes a few minutes...")
             val auds: List<Auditorium> = BsuirApi.getAuditoriums()
             auditoriumRepository.add(auds)
             logger.info("Auditoriums list loaded!")
         }
 
-        if(lessonsRepository.findAll().count() == 0) {
+        if(lessonsRepository.count() == 0) {
             logger.info("Loading the lessons list ... It takes a tens of minutes...")
             val lessons: List<Lesson> = BsuirApi.getGroups().flatMap { BsuirApi.getSchedule(it.name) }
             lessonsRepository.add(lessons)
             logger.info("Lessons list loaded!")
         }
+        println("LOL")
 
         LessonsScheduleUpdater.start()
     }

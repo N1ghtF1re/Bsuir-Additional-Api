@@ -43,8 +43,8 @@ data class Weeks(val mask: Int) {
  * ENTITIES:
  */
 
-data class Auditorium(@Transient var id: Long = -1, val name: String, val type: LessonType,
-                      val floor: Int, val building: Int) {
+data class Auditorium(@Transient override val id: Long = -1, val name: String, val type: LessonType,
+                      val floor: Int, val building: Int) : Identifiable {
     companion object {
         fun isCorrectName(name: String): Boolean {
             val regex = Regex(pattern = "\\d{2,3}([а-г]|-\\d)?$")
@@ -53,8 +53,8 @@ data class Auditorium(@Transient var id: Long = -1, val name: String, val type: 
     }
 }
 
-data class Lesson(@Transient var id: Long = -1, val aud: Auditorium, val weeks: Weeks, val day: Int,
-                  val startTime: Time, val endTime: Time, val group: String)
+data class Lesson(@Transient override val id: Long = -1, val aud: Auditorium, val weeks: Weeks, val day: Int,
+                  val startTime: Time, val endTime: Time, val group: String) : Identifiable
 
 
 data class Building(val name: Int, val floors: List<Int>)

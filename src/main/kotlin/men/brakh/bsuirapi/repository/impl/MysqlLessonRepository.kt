@@ -1,29 +1,39 @@
 package men.brakh.bsuirapi.repository.impl
 
 import men.brakh.bsuirapi.Config
-import men.brakh.bsuirapi.dbconnection.ConnectionFactory
 import men.brakh.bsuirapi.model.data.Auditorium
 import men.brakh.bsuirapi.model.data.Lesson
 import men.brakh.bsuirapi.model.data.Weeks
 import men.brakh.bsuirapi.repository.AuditoriumRepository
 import men.brakh.bsuirapi.repository.LessonRepository
 import org.slf4j.LoggerFactory
-import java.sql.*
+import java.sql.PreparedStatement
+import java.sql.ResultSet
+import java.sql.Statement
+import java.sql.Time
 
 
-class MysqlLessonRepository(private val tableName: String): LessonRepository {
+class MysqlLessonRepository(tableName: String): MysqlRepository<Lesson>(tableName), LessonRepository {
+
     constructor() : this("lessons")
-
-    private val conFactory: ConnectionFactory by lazy { Config.connectionFactory }
     private val audRepo: AuditoriumRepository by lazy { Config.auditoriumRepository }
 
     private val logger = LoggerFactory.getLogger(MysqlLessonRepository::class.java)
 
-    private val connection: Connection
-        get() {
-            return conFactory.getConnection()
-        }
 
+
+    override fun extractor(resultSet: ResultSet): Lesson? {
+        val aud: Auditorium = audRepo.findById(resultSet.getLong("auditorium")) ?: return null
+        return Lesson(
+                id = resultSet.getLong("id"),
+                aud = aud,
+                day = resultSet.getInt("day"),
+                weeks = Weeks(resultSet.getInt("weeks")),
+                startTime = resultSet.getTime("start_time"),
+                endTime = resultSet.getTime("end_time"),
+                group = resultSet.getString("group")
+        )
+    }
 
     override fun add(entity: Lesson): Lesson {
         connection.use {
@@ -52,21 +62,9 @@ class MysqlLessonRepository(private val tableName: String): LessonRepository {
 
                 stmt.executeUpdate()
 
-                stmt.generatedKeys.use { generatedKeys ->
-                    if (generatedKeys.next()) {
-                        entity.id = generatedKeys.getLong(1)
-                    } else {
-                        throw SQLException("Creating user failed, no ID obtained.")
-                    }
-                }
+                return entity.copy(id = stmt.generatedId)
             }
         }
-        return entity
-
-    }
-
-    override fun add(entities: List<Lesson>) {
-        entities.forEach{add(it)}
     }
 
     override fun find(weeks: Weeks?, time: Time?, aud: Auditorium?, day: Int?, building: Int?, floor: Int?): List<Lesson> {
@@ -121,38 +119,11 @@ class MysqlLessonRepository(private val tableName: String): LessonRepository {
                     cond.second(stmt, index + 1) // Установка параметров запроса
                 }
 
-                return extractLessons(stmt)
+                return extract(stmt)
             }
         }
     }
 
-    override fun delete(entity: Lesson) {
-        connection.use {
-            val statement = it.prepareStatement("DELETE FROM $tableName WHERE id = ${entity.id}")
-            statement.use {
-                stmt -> stmt.execute()
-            }
-        }
-    }
-
-    override fun findAll(): List<Lesson> {
-        connection.use {
-            val statement = it.prepareStatement("SELECT * FROM $tableName")
-            statement.use {stmt ->
-                return extractLessons(stmt)
-            }
-        }
-    }
-
-    override fun findById(id: Long): Lesson? {
-        connection.use {
-            val statement = it.prepareStatement("SELECT * FROM `$tableName` WHERE `id` = ?")
-            statement.use {stmt ->
-                stmt.setLong(1, id)
-                return extractLessons(stmt).getOrNull(0)
-            }
-        }
-    }
 
     override fun update(entity: Lesson): Lesson {
         connection.use {
@@ -200,6 +171,18 @@ class MysqlLessonRepository(private val tableName: String): LessonRepository {
         }
 
         return sequence.toList()
+    }
+
+    override fun count(): Int {
+        connection.use {
+            val statement = connection.createStatement()
+            statement.use { stmt ->
+                val resultSet: ResultSet = stmt.executeQuery("SELECT COUNT(*) FROM $tableName")
+                resultSet.next()
+                return resultSet.getInt(1)
+            }
+
+        }
     }
 
 }
