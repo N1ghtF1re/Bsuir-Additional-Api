@@ -50,6 +50,7 @@ class MysqlAuditoriumRepository(tableName: String) :
         val conditions
                 = mutableListOf<Pair<String, (stmt: PreparedStatement, index: Int) -> Unit>>()
 
+
         if(building != null) conditions.add(
                 "building = ?" to {stmt, index -> stmt.setInt(index, building)}
         )

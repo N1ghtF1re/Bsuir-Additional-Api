@@ -25,5 +25,6 @@ CREATE TABLE IF NOT EXISTS `news_source` (
   `type` VARCHAR(255) NOT NULL,
   `name` VARCHAR(255) NOT NULL,
 
-  PRIMARY KEY  (`id`)
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY (name, type)
 ) DEFAULT CHARSET=utf8;

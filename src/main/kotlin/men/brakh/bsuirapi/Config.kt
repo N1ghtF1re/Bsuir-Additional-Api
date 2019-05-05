@@ -8,8 +8,10 @@ import men.brakh.bsuirapi.model.data.Auditorium
 import men.brakh.bsuirapi.model.data.Lesson
 import men.brakh.bsuirapi.repository.AuditoriumRepository
 import men.brakh.bsuirapi.repository.LessonRepository
+import men.brakh.bsuirapi.repository.NewsSourceRepository
 import men.brakh.bsuirapi.repository.impl.MysqlAuditoriumRepository
 import men.brakh.bsuirapi.repository.impl.MysqlLessonRepository
+import men.brakh.bsuirapi.repository.impl.MysqlNewsSourceRepository
 import org.slf4j.LoggerFactory
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -20,6 +22,7 @@ object Config {
 
     val lessonsRepository: LessonRepository = MysqlLessonRepository()
     val auditoriumRepository: AuditoriumRepository = MysqlAuditoriumRepository()
+    val newsSourceRepository: NewsSourceRepository = MysqlNewsSourceRepository()
     val connectionFactory: ConnectionFactory
         get() {
             return MysqlConnectionFactory
