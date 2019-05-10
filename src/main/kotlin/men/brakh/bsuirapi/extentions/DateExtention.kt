@@ -14,3 +14,7 @@ fun Date.weeksBetween(date: Date): Int {
 
     return daysBetween / 7 + if (daysBetween % 7 == 0) 0 else 1
 }
+
+fun Date.toSqlDate(): java.sql.Date {
+    return java.sql.Date(this.time)
+}

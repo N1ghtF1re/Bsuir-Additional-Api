@@ -58,7 +58,7 @@ object LessonsScheduleUpdater {
 
     fun start() {
         val now = ZonedDateTime.now(ZoneId.systemDefault())
-        var nextRun = now.withHour(22).withMinute(45).withSecond(0)
+        var nextRun = now.withHour(5).withMinute(0).withSecond(0)
         if (now.compareTo(nextRun) > 0)
             nextRun = nextRun.plusDays(1)
 

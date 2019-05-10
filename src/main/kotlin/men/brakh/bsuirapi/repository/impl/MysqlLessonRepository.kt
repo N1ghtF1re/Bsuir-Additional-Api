@@ -147,32 +147,6 @@ class MysqlLessonRepository(tableName: String): MysqlRepository<Lesson>(tableNam
 
     }
 
-
-    private fun extractLessons(stmt: PreparedStatement): List<Lesson> {
-        val resultSet: ResultSet = stmt.executeQuery()
-
-        val sequence = generateSequence<Lesson> {
-
-
-            if(!resultSet.next()) {
-                return@generateSequence(null)
-            }
-
-            val aud: Auditorium = audRepo.findById(resultSet.getLong("auditorium")) ?: return@generateSequence(null)
-            Lesson(
-                    id = resultSet.getLong("id"),
-                    aud = aud,
-                    day = resultSet.getInt("day"),
-                    weeks = Weeks(resultSet.getInt("weeks")),
-                    startTime = resultSet.getTime("start_time"),
-                    endTime = resultSet.getTime("end_time"),
-                    group = resultSet.getString("group")
-            )
-        }
-
-        return sequence.toList()
-    }
-
     override fun count(): Int {
         connection.use {
             val statement = connection.createStatement()

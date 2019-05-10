@@ -28,3 +28,16 @@ CREATE TABLE IF NOT EXISTS `news_source` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY (name, type)
 ) DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `news` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(255) NOT NULL,
+  `source_id` INT NOT NULL,
+  `content` MEDIUMTEXT NOT NULL,
+  `publication_date` DATETIME NOT NULL,
+  `loading_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `url` VARCHAR(255) NOT NULL,
+  `image_url` VARCHAR(255) DEFAULT NULL,
+
+  PRIMARY KEY  (`id`)
+) DEFAULT CHARSET=utf8;
