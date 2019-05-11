@@ -15,6 +15,8 @@ interface NewsRepository : Repository<News> {
             loadedAfter: Date? = null,
             loadedBefore: Date? = null,
             url: String? = null,
-            urlToImage: String? = null
+            urlToImage: String? = null,
+            page: Int?,
+            newsAtPage: Int?
     ) : List<News>
 }

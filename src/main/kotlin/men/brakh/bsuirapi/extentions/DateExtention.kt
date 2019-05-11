@@ -1,5 +1,6 @@
 package men.brakh.bsuirapi.extentions
 
+import java.sql.Timestamp
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -15,6 +16,10 @@ fun Date.weeksBetween(date: Date): Int {
     return daysBetween / 7 + if (daysBetween % 7 == 0) 0 else 1
 }
 
-fun Date.toSqlDate(): java.sql.Date {
-    return java.sql.Date(this.time)
+fun Date.toTimestamp(): Timestamp {
+    return Timestamp(this.time)
+}
+
+fun Timestamp.toDate(): Date {
+    return Date(this.time)
 }

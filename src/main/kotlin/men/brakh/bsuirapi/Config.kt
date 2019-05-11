@@ -31,6 +31,8 @@ object Config {
             return MysqlConnectionFactory
         }
 
+    val newsAtPage: Int
+
     val bsuirApiHost: String
 
     init {
@@ -41,8 +43,9 @@ object Config {
         configProps.load(FileInputStream(propsPath))
 
         bsuirApiHost = configProps.getProperty("bsuir.api.host")
+        newsAtPage = configProps.getProperty("default.news.at.page").toInt()
 
-        println("KEK")
+
         if(auditoriumRepository.count() == 0) {
             logger.info("Loading the auditoriums list ... It takes a few minutes...")
             val auds: List<Auditorium> = BsuirApi.getAuditoriums()

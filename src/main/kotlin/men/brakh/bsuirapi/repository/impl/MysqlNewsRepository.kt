@@ -1,7 +1,8 @@
 package men.brakh.bsuirapi.repository.impl
 
 import men.brakh.bsuirapi.Config
-import men.brakh.bsuirapi.extentions.toSqlDate
+import men.brakh.bsuirapi.extentions.toDate
+import men.brakh.bsuirapi.extentions.toTimestamp
 import men.brakh.bsuirapi.model.data.News
 import men.brakh.bsuirapi.model.data.NewsSource
 import men.brakh.bsuirapi.repository.NewsRepository
@@ -23,8 +24,8 @@ class MysqlNewsRepository(tableName: String) : MysqlRepository<News>(tableName),
                 title = resultSet.getString("title"),
                 source = src,
                 content = resultSet.getString("content"),
-                publishedAt = resultSet.getDate("publication_date"),
-                loadedAt = resultSet.getDate("loading_date"),
+                publishedAt = resultSet.getTimestamp("publication_date").toDate(),
+                loadedAt = resultSet.getTimestamp("loading_date").toDate(),
                 url = resultSet.getString("url"),
                 urlToImage = resultSet.getString("image_url")
         )
@@ -40,8 +41,8 @@ class MysqlNewsRepository(tableName: String) : MysqlRepository<News>(tableName),
                 stmt.setString(1, entity.title)
                 stmt.setLong(2, entity.source.id)
                 stmt.setString(3, entity.content)
-                stmt.setDate(4, java.sql.Date(entity.publishedAt.time))
-                stmt.setDate(5, java.sql.Date(entity.loadedAt.time))
+                stmt.setTimestamp(4, entity.publishedAt.toTimestamp())
+                stmt.setTimestamp(5, entity.loadedAt.toTimestamp())
                 stmt.setString(6, entity.url)
                 stmt.setString(7, entity.urlToImage)
 
@@ -62,8 +63,8 @@ class MysqlNewsRepository(tableName: String) : MysqlRepository<News>(tableName),
                 stmt.setString(1, entity.title)
                 stmt.setLong(2, entity.source.id)
                 stmt.setString(3, entity.content)
-                stmt.setDate(4, java.sql.Date(entity.publishedAt.time))
-                stmt.setDate(5, java.sql.Date(entity.loadedAt.time))
+                stmt.setTimestamp(4, entity.publishedAt.toTimestamp())
+                stmt.setTimestamp(5, entity.loadedAt.toTimestamp())
                 stmt.setString(6, entity.url)
                 stmt.setString(7, entity.urlToImage)
                 stmt.setLong(8, entity.id)
@@ -77,8 +78,8 @@ class MysqlNewsRepository(tableName: String) : MysqlRepository<News>(tableName),
 
     override fun find(title: String?, source: NewsSource?, sources: List<NewsSource>?, content: String?,
                       publishedAfter: Date?, publishedBefore: Date?, loadedAfter: Date?, loadedBefore: Date?,
-                      url: String?, urlToImage: String?): List<News> {
-        val initQuery = "SELECT * FROM $tableName WHERE"
+                      url: String?, urlToImage: String?, page: Int?, newsAtPage: Int?): List<News> {
+        val initQuery = "SELECT * FROM $tableName "
 
         val conditions=
                 mutableListOf<Pair<String, (stmt: PreparedStatement, index: Int) -> Unit>>()
@@ -104,42 +105,58 @@ class MysqlNewsRepository(tableName: String) : MysqlRepository<News>(tableName),
         )
 
         if(publishedAfter != null) conditions.add(
-                "publication_date > ?"
-                        to {stmt, index -> stmt.setDate(index, publishedAfter.toSqlDate())}
+                "publication_date >= ?"
+                        to {stmt, index -> stmt.setTimestamp(index, publishedAfter.toTimestamp())}
         )
 
         if(publishedBefore != null) conditions.add(
-                "publication_date < ?"
-                        to {stmt, index -> stmt.setDate(index, publishedBefore.toSqlDate())}
+                "publication_date <= ?"
+                        to {stmt, index -> stmt.setTimestamp(index, publishedBefore.toTimestamp())}
         )
 
         if(loadedAfter != null) conditions.add(
-                "loading_date > ?"
-                        to {stmt, index -> stmt.setDate(index, loadedAfter.toSqlDate())}
+                "loading_date >= ?"
+                        to {stmt, index -> stmt.setTimestamp(index, loadedAfter.toTimestamp())}
         )
 
         if(loadedBefore != null) conditions.add(
-                "loading_date < ?"
-                        to {stmt, index -> stmt.setDate(index, loadedBefore.toSqlDate())}
+                "loading_date <= ?"
+                        to {stmt, index -> stmt.setTimestamp(index, loadedBefore.toTimestamp())}
         )
 
         if(url != null) conditions.add(
-                "url" to {stmt, index -> stmt.setString(index, url)}
+                "url = ?" to {stmt, index -> stmt.setString(index, url)}
         )
 
         if(urlToImage != null) conditions.add(
-                "image_url" to {stmt, index -> stmt.setString(index, urlToImage)}
+                "image_url = ?" to {stmt, index -> stmt.setString(index, urlToImage)}
         )
 
-        if(conditions.size == 0) return findAll()
+        val limit = if(page != null && newsAtPage != null) {
+            "ORDER BY publication_date DESC LIMIT ?, ?"
+        } else {
+            ""
+        }
 
-        val finalQuery = "$initQuery ${conditions.map{it.first}.joinToString(separator = " AND ")}"
+        val where = if(conditions.count() > 0) {
+            "WHERE"
+        } else {
+            ""
+        }
+        val finalQuery = "$initQuery $where ${conditions.map{it.first}.joinToString(separator = " AND ")} $limit"
 
         connection.use {
             val statement = it.prepareStatement(finalQuery)
             statement.use { stmt ->
                 for((index, cond) in conditions.withIndex()) {
                     cond.second(stmt, index + 1) // Установка параметров запроса
+                }
+
+                if(limit != "") {
+                    val startIndex = (page!! - 1) * newsAtPage!!
+                    val lastIndex = conditions.count()
+                    stmt.setInt(lastIndex + 1, startIndex)
+                    stmt.setInt(lastIndex + 2, newsAtPage)
                 }
 
                 return extract(stmt)
