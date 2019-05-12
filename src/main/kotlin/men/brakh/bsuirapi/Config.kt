@@ -6,14 +6,8 @@ import men.brakh.bsuirapi.model.LessonsScheduleUpdater
 import men.brakh.bsuirapi.model.bsuirapi.BsuirApi
 import men.brakh.bsuirapi.model.data.Auditorium
 import men.brakh.bsuirapi.model.data.Lesson
-import men.brakh.bsuirapi.repository.AuditoriumRepository
-import men.brakh.bsuirapi.repository.LessonRepository
-import men.brakh.bsuirapi.repository.NewsRepository
-import men.brakh.bsuirapi.repository.NewsSourceRepository
-import men.brakh.bsuirapi.repository.impl.MysqlAuditoriumRepository
-import men.brakh.bsuirapi.repository.impl.MysqlLessonRepository
-import men.brakh.bsuirapi.repository.impl.MysqlNewsRepository
-import men.brakh.bsuirapi.repository.impl.MysqlNewsSourceRepository
+import men.brakh.bsuirapi.repository.*
+import men.brakh.bsuirapi.repository.impl.*
 import org.slf4j.LoggerFactory
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -26,6 +20,7 @@ object Config {
     val auditoriumRepository: AuditoriumRepository = MysqlAuditoriumRepository()
     val newsSourceRepository: NewsSourceRepository = MysqlNewsSourceRepository()
     val newsRepository: NewsRepository = MysqlNewsRepository()
+    val tokenRepository: TokenRepository = MysqlTokenRepository()
     val connectionFactory: ConnectionFactory
         get() {
             return MysqlConnectionFactory
@@ -34,6 +29,8 @@ object Config {
     val newsAtPage: Int
 
     val bsuirApiHost: String
+
+    val dateFormat: String
 
     init {
         val propsPath: String = this.javaClass.classLoader.getResource("config.properties")?.path
@@ -44,6 +41,7 @@ object Config {
 
         bsuirApiHost = configProps.getProperty("bsuir.api.host")
         newsAtPage = configProps.getProperty("default.news.at.page").toInt()
+        dateFormat = configProps.getProperty("date.format")
 
 
         if(auditoriumRepository.count() == 0) {
@@ -59,7 +57,6 @@ object Config {
             lessonsRepository.add(lessons)
             logger.info("Lessons list loaded!")
         }
-        println("LOL")
 
         LessonsScheduleUpdater.start()
     }

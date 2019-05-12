@@ -1,10 +1,9 @@
 package men.brakh.bsuirapi.controller
 
+import com.google.gson.JsonParseException
 import men.brakh.bsuirapi.Config
-import men.brakh.bsuirapi.extentions.setDefaultJsonHeaders
-import men.brakh.bsuirapi.extentions.singleParameters
-import men.brakh.bsuirapi.extentions.toJson
-import men.brakh.bsuirapi.extentions.writeError
+import men.brakh.bsuirapi.extentions.*
+import men.brakh.bsuirapi.model.data.News
 import men.brakh.bsuirapi.model.dto.NewsListDto
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -15,9 +14,27 @@ import javax.servlet.http.HttpServletResponse
 class NewsServlet : HttpServlet() {
     private val newsRepo = Config.newsRepository
     private val srcRepo = Config.newsSourceRepository
+    private val tokenRepo = Config.tokenRepository
 
     override fun doPost(req: HttpServletRequest, resp: HttpServletResponse) {
-        TODO()
+        resp.setDefaultJsonHeaders()
+        val token = req.extractToken(tokenRepo)
+        if(token == null) {
+            resp.writeError("Authorization token is required", 403)
+            return
+        }
+
+        val body: News =  try {
+            req.extractBody(News::class.java)
+        } catch (e: JsonParseException) {
+            resp.writeError("Invalid json")
+            return
+        }
+
+        val src =
+                srcRepo.find(type = body.source.type, name = body.source.name).firstOrNull() ?: srcRepo.add(body.source)
+
+        newsRepo.add(body.copy(source = src))
     }
 
     override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {
@@ -31,7 +48,7 @@ class NewsServlet : HttpServlet() {
             return
         }
 
-        val format = SimpleDateFormat("dd.MM.yyyy HH:mm")
+        val format: SimpleDateFormat = SimpleDateFormat(Config.dateFormat)
 
         val page = params["page"]?.toIntOrNull() ?: 1
         val newsAtPage = params["newsAtPage"]?.toIntOrNull() ?: Config.newsAtPage
