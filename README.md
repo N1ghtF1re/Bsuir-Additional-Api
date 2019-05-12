@@ -18,4 +18,4 @@ This project expands of the standard API for BSUIR IIS. Includes, for example, a
 - View all buildings with available floors
 
 ## Documentation
-Detailed documentation on api methods located [here](https://github.com/N1ghtF1re/Bsuir-Additional-Api/tree/master/api-docs)
+Detailed documentation on api methods located [here](https://app.swaggerhub.com/apis-docs/N1ghtF1re/BsuirAdditionalApi/1.0.0)
