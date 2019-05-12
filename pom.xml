@@ -6,7 +6,7 @@
 
     <groupId>men.brakh</groupId>
     <artifactId>bsuir-additional-api</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
     <packaging>war</packaging>
 
     <properties>
