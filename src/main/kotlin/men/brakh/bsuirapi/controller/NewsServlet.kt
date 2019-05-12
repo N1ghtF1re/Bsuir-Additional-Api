@@ -60,7 +60,8 @@ class NewsServlet : HttpServlet() {
         val multiParams: Map<String, Array<String>> = req.parameterMap
 
         if("id" in params) {
-            resp.writer.write(newsRepo.findById(params["id"]!!.toLong())?.toJson())
+            val news = newsRepo.findById(params["id"]!!.toLong())
+            news?.let { resp.writeJson(it) } ?: resp.writeError("News not found", 404)
             return
         }
 
