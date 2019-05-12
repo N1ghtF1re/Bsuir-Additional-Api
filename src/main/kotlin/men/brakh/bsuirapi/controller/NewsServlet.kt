@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
+
 class NewsServlet : HttpServlet() {
     private val newsRepo = Config.newsRepository
     private val srcRepo = Config.newsSourceRepository
@@ -37,6 +38,21 @@ class NewsServlet : HttpServlet() {
         newsRepo.add(body.copy(source = src))
     }
 
+    /**
+     * PARAMS:
+     * @param id - news id
+     * @param page - page number
+     * @param newsAtPage - news count at one page
+     * @param title - news title
+     * @param content - news content
+     * @param url - news url
+     * @param source - id of news source (@see SourcesServlet)
+     * @param loadedAfter - minimum loading date
+     * @param loadingBefore - maximum loading data
+     * @param publishedAfter - minimum publication date
+     * @param publishedBefore - maximum publication date
+     * @param sources - list of sources id. Example: sources=1,2,3
+     */
     override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {
         resp.setDefaultJsonHeaders()
 
