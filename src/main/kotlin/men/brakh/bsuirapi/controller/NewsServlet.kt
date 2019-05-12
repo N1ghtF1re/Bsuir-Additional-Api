@@ -35,7 +35,24 @@ class NewsServlet : HttpServlet() {
         val src =
                 srcRepo.find(type = body.source.type, name = body.source.name).firstOrNull() ?: srcRepo.add(body.source)
 
+        val news =
+            newsRepo.find(
+                    title = body.title,
+                    source = body.source,
+                    url = body.url,
+                    content = body.content,
+                    urlToImage = body.urlToImage,
+                    page = 1,
+                    newsAtPage = 1
+            )
+        if(news.count() != 0) {
+            resp.writeError("This news already exist", HttpServletResponse.SC_CONFLICT)
+            return
+        }
+
+
         newsRepo.add(body.copy(source = src))
+        resp.status = HttpServletResponse.SC_CREATED
     }
 
     /**
