@@ -1,11 +1,11 @@
 package men.brakh.bsuirapi.controller
 
-import men.brakh.bsuirapi.model.data.Auditorium
-import men.brakh.bsuirapi.model.FreeAuds
 import men.brakh.bsuirapi.extentions.setDefaultJsonHeaders
 import men.brakh.bsuirapi.extentions.singleParameters
-import men.brakh.bsuirapi.extentions.toJson
 import men.brakh.bsuirapi.extentions.writeError
+import men.brakh.bsuirapi.extentions.writeJson
+import men.brakh.bsuirapi.model.FreeAuds
+import men.brakh.bsuirapi.model.data.Auditorium
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -52,6 +52,6 @@ class FreeAudsServlet : HttpServlet() {
                 building = building
         ).sortedBy { it.name }
 
-        resp.writer.write(freeAuds.toJson())
+        resp.writeJson(freeAuds)
     }
 }

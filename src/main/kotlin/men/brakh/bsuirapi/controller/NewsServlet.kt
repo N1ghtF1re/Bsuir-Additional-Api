@@ -93,6 +93,6 @@ class NewsServlet : HttpServlet() {
                 news = news
         )
 
-        resp.writer.write(newsListDto.toJson())
+        resp.writeJson(newsListDto)
     }
 }

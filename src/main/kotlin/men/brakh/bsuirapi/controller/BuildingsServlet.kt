@@ -1,10 +1,10 @@
 package men.brakh.bsuirapi.controller
 
 import men.brakh.bsuirapi.Config
+import men.brakh.bsuirapi.extentions.setDefaultJsonHeaders
+import men.brakh.bsuirapi.extentions.writeJson
 import men.brakh.bsuirapi.model.data.Building
 import men.brakh.bsuirapi.repository.AuditoriumRepository
-import men.brakh.bsuirapi.extentions.setDefaultJsonHeaders
-import men.brakh.bsuirapi.extentions.toJson
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -28,6 +28,6 @@ class BuildingsServlet : HttpServlet() {
     override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {
         resp.setDefaultJsonHeaders()
 
-        resp.writer.write(buildings.toJson())
+        resp.writeJson(buildings)
     }
 }

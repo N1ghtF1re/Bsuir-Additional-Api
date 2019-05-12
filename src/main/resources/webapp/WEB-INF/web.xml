@@ -30,6 +30,12 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
+    <servlet>
+        <servlet-name>srcServlet</servlet-name>
+        <servlet-class>men.brakh.bsuirapi.controller.SourcesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
 
     <servlet-mapping>
         <servlet-name>freeAudsServlet</servlet-name>
@@ -46,6 +52,10 @@
     <servlet-mapping>
         <servlet-name>newsServlet</servlet-name>
         <url-pattern>/api/v1/news</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>srcServlet</servlet-name>
+        <url-pattern>/api/v1/sources</url-pattern>
     </servlet-mapping>
 
 

@@ -1,10 +1,10 @@
 package men.brakh.bsuirapi.controller
 
+import men.brakh.bsuirapi.Config
 import men.brakh.bsuirapi.extentions.setDefaultJsonHeaders
 import men.brakh.bsuirapi.extentions.singleParameters
-import men.brakh.bsuirapi.extentions.toJson
 import men.brakh.bsuirapi.extentions.writeError
-import men.brakh.bsuirapi.Config
+import men.brakh.bsuirapi.extentions.writeJson
 import men.brakh.bsuirapi.model.data.LessonType
 import men.brakh.bsuirapi.repository.AuditoriumRepository
 import javax.servlet.http.HttpServlet
@@ -45,6 +45,6 @@ class AudsServlet : HttpServlet() {
                 type = type
         ).sortedWith(compareBy({ it.building }, { it.name }))
 
-        resp.writer.write(auds.toJson())
+        resp.writeJson(auds)
     }
 }

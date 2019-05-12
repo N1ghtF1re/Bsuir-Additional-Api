@@ -35,3 +35,7 @@ fun HttpServletRequest.extractToken(tokenRepo: TokenRepository) : Token?{
 fun <T : Any> HttpServletRequest.extractBody(classz: Class<T>): T {
     return gson.fromJson(this.reader, classz)
 }
+
+fun HttpServletResponse.writeJson(obj: Any) {
+    return gson.toJson(obj, this.writer)
+}
