@@ -49,4 +49,5 @@ CREATE TABLE IF NOT EXISTS `tokens` (
 
   PRIMARY KEY  (`id`),
   UNIQUE (`token`)
+
 ) DEFAULT CHARSET=utf8;
