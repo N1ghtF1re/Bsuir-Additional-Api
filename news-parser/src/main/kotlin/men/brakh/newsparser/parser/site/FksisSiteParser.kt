@@ -1,8 +1,7 @@
-package men.brakh.newsparser.parser.impl
+package men.brakh.newsparser.parser.site
 
 import men.brakh.newsparser.model.News
 import men.brakh.newsparser.model.NewsSource
-import men.brakh.newsparser.parser.SiteParser
 import org.jsoup.select.Elements
 import java.text.SimpleDateFormat
 import java.util.*
@@ -15,14 +14,14 @@ class FksisSiteParser() : SiteParser() {
     private val announcesUrl = "$host/p/allanns"
 
 
-    fun parseAnnounces(): Elements {
+    private fun parseAnnounces(): Elements {
         val page = getDom(announcesUrl)
 
         return page.getElementsByClass("b-text-news-list")
 
     }
 
-    fun parseNews(): Elements {
+    private fun parseNews(): Elements {
         val page = getDom(newsUrl)
 
         return page.getElementsByClass("b-text-news-list")

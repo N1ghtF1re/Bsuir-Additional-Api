@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="news-parser" />
+        <module name="bsuir-news-parser" />
       </profile>
     </annotationProcessing>
   </component>
