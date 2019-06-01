@@ -45,8 +45,8 @@ abstract class VKParser : Parser {
                     News(
                             title = title,
                             content = wallPost.text.toMd(),
-                            loadedAt = Date(),
-                            publishedAt = wallPost.publicationDate,
+                            loadedAt = Date().time / 1000,
+                            publishedAt = wallPost.date.toLong(),
                             source = source,
                             url = "https://vk.com/wall${wallPost.ownerId}_${wallPost.id}",
                             urlToImage = photo

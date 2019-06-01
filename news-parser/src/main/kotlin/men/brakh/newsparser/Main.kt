@@ -6,10 +6,14 @@ import men.brakh.newsparser.model.News
 import men.brakh.newsparser.parser.Parser
 import men.brakh.newsparser.parser.site.FksisSiteParser
 import men.brakh.newsparser.parser.vk.*
+import org.apache.http.client.entity.EntityBuilder
 import org.apache.http.client.methods.HttpPost
+import org.apache.http.entity.ContentType
 import org.apache.http.entity.StringEntity
 import org.apache.http.impl.client.HttpClientBuilder
+import org.apache.http.util.EntityUtils
 import java.io.FileOutputStream
+import java.io.InputStreamReader
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -53,10 +57,17 @@ fun sendRequest(news: News) {
     client.use { httpClient ->
         val post = HttpPost("${Config.apiHost}/news")
         post.addHeader("Authorization", Config.apiToken)
-        val entity = StringEntity(Gson().toJson(news))
-        post.entity = entity
+        post.setHeader("Accept", "application/json")
+        post.setHeader("Content-type", "application/json; charset=UTF-8")
+
+        post.entity = EntityBuilder.create()
+                .setContentType(ContentType.APPLICATION_JSON)
+                .setContentEncoding("UTF-8")
+                .setText(Gson().toJson(news))
+                .build()
 
         httpClient.execute(post)
+
     }
 
 

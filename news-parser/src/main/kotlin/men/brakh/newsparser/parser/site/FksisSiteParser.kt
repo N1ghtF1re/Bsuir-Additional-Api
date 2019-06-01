@@ -70,8 +70,8 @@ class FksisSiteParser() : SiteParser() {
                                 .replace( "href=\"/", "href=\"$host/")
                                 .toMd()
 
-                        News(title = title,  urlToImage = img, content = content, url = fullLink, publishedAt = date,
-                                loadedAt = Date(), source = source)
+                        News(title = title,  urlToImage = img, content = content, url = fullLink, publishedAt = date.time / 1000,
+                                loadedAt = Date().time/1000, source = source)
                     }
                     news
                 }.sortedBy { it.publishedAt }
