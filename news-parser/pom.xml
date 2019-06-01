@@ -7,6 +7,7 @@
     <groupId>men.brakh</groupId>
     <artifactId>bsuir-news-parser</artifactId>
     <version>1.0</version>
+    <packaging>jar</packaging>
 
     <properties>
         <kotlin.version>1.3.30</kotlin.version>
@@ -14,14 +15,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.3</version>
-                <configuration>
-                    <warSourceDirectory>src/main/resources/webapp</warSourceDirectory>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
