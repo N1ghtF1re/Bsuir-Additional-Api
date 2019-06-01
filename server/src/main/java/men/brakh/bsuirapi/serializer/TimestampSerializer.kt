@@ -2,7 +2,6 @@ package men.brakh.bsuirapi.serializer
 
 import java.io.IOException
 import com.google.gson.stream.JsonReader
-import jdk.nashorn.internal.objects.NativeDate.getTime
 import com.google.gson.stream.JsonWriter
 import com.google.gson.TypeAdapter
 import java.util.*
