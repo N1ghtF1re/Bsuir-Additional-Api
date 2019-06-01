@@ -25,9 +25,12 @@ class NewsServlet : HttpServlet() {
             return
         }
 
+
+
         val body: News =  try {
             req.extractBody(News::class.java)
         } catch (e: JsonParseException) {
+            e.printStackTrace()
             resp.writeError("Invalid json")
             return
         }
@@ -38,9 +41,8 @@ class NewsServlet : HttpServlet() {
         val news =
             newsRepo.find(
                     title = body.title,
-                    source = body.source,
+                    source = srcRepo.find(name = body.source.name, type = body.source.type).firstOrNull() ?: body.source,
                     url = body.url,
-                    content = body.content,
                     urlToImage = body.urlToImage,
                     page = 1,
                     newsAtPage = 1
@@ -82,7 +84,7 @@ class NewsServlet : HttpServlet() {
             return
         }
 
-        val format: SimpleDateFormat = SimpleDateFormat(Config.dateFormat)
+        val format = SimpleDateFormat(Config.dateFormat)
 
         val page = params["page"]?.toIntOrNull() ?: 1
         val newsAtPage = params["newsAtPage"]?.toIntOrNull() ?: Config.newsAtPage
