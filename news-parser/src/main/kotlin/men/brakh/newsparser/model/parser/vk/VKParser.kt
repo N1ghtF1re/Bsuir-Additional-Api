@@ -39,7 +39,7 @@ abstract class VKParser : Parser {
                 .filter { wallPostFull -> wallPostFull.publicationDate > lastUpdate  }
                 .map { wallPost: WallPostFull ->
                     val photo: String? = wallPost.attachments?.firstOrNull{ it.photo != null }?.photo?.photo1280
-                    val title: String = wallPost.text.split("\n").first().split(".").first()
+                    val title: String = wallPost.text.split("\n").first().split("\\.|!|\\?".toRegex()).first()
 
 
                     News(
