@@ -3,17 +3,13 @@ package men.brakh.newsparser
 import com.google.gson.Gson
 import men.brakh.newsparser.config.Config
 import men.brakh.newsparser.model.News
-import men.brakh.newsparser.parser.Parser
-import men.brakh.newsparser.parser.site.FksisSiteParser
-import men.brakh.newsparser.parser.vk.*
+import men.brakh.newsparser.model.ParsersLoader
+import men.brakh.newsparser.model.parser.Parser
 import org.apache.http.client.entity.EntityBuilder
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.entity.ContentType
-import org.apache.http.entity.StringEntity
 import org.apache.http.impl.client.HttpClientBuilder
-import org.apache.http.util.EntityUtils
 import java.io.FileOutputStream
-import java.io.InputStreamReader
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -21,14 +17,7 @@ import java.util.*
 import kotlin.concurrent.timerTask
 
 
-val parsers:List<Parser> = listOf(
-        FksisSiteParser(),
-        FicVKParser(),
-        FituVKParser(),
-        FksisVKParser(),
-        FreVKParser(),
-        IefVKParser()
-)
+val parsers:List<Parser> = ParsersLoader.load().map { clazz -> clazz.newInstance() }
 
 val updatesFilePath = "lastUpdate.data".toPath()
 

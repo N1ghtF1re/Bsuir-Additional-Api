@@ -1,9 +1,9 @@
-package men.brakh.newsparser.parser.site
+package men.brakh.newsparser.model.parser.site
 
 
 import com.overzealous.remark.Options
 import com.overzealous.remark.Remark
-import men.brakh.newsparser.parser.Parser
+import men.brakh.newsparser.model.parser.Parser
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 

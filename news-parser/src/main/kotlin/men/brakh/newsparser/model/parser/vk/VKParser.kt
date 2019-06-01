@@ -1,4 +1,4 @@
-package men.brakh.newsparser.parser.vk
+package men.brakh.newsparser.model.parser.vk
 
 import com.google.gson.Gson
 import com.vk.api.sdk.client.VkApiClient
@@ -7,7 +7,7 @@ import com.vk.api.sdk.httpclient.HttpTransportClient
 import com.vk.api.sdk.objects.wall.WallPostFull
 import men.brakh.newsparser.config.Config
 import men.brakh.newsparser.model.News
-import men.brakh.newsparser.parser.Parser
+import men.brakh.newsparser.model.parser.Parser
 import java.util.*
 import kotlin.math.absoluteValue
 

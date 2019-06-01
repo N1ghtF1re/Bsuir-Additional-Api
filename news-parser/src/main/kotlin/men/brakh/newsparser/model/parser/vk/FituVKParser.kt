@@ -1,4 +1,4 @@
-package men.brakh.newsparser.parser.vk
+package men.brakh.newsparser.model.parser.vk
 
 import men.brakh.newsparser.model.NewsSource
 
