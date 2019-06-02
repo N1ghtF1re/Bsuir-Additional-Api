@@ -7,6 +7,7 @@ import men.brakh.bsuirapi.model.data.News
 import men.brakh.bsuirapi.model.dto.NewsListDto
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.util.*
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -66,10 +67,10 @@ class NewsServlet : HttpServlet() {
      * @param content - news content
      * @param url - news url
      * @param source - id of news source (@see SourcesServlet)
-     * @param loadedAfter - minimum loading date
-     * @param loadingBefore - maximum loading data
-     * @param publishedAfter - minimum publication date
-     * @param publishedBefore - maximum publication date
+     * @param loadedAfter - minimum loading date (unix timestamp)
+     * @param loadingBefore - maximum loading data (unix timestamp)
+     * @param publishedAfter - minimum publication date (unix timestamp)
+     * @param publishedBefore - maximum publication date (unix timestamp)
      * @param sources - list of sources id. Example: sources=1,2,3
      */
     override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {
@@ -84,43 +85,36 @@ class NewsServlet : HttpServlet() {
             return
         }
 
-        val format = SimpleDateFormat(Config.dateFormat)
-
         val page = params["page"]?.toIntOrNull() ?: 1
         val newsAtPage = params["newsAtPage"]?.toIntOrNull() ?: Config.newsAtPage
 
-        val news = try {
-            newsRepo.find(
-                    title = params["title"],
-                    content = params["content"],
-                    urlToImage = params["urlToImage"],
-                    url = params["url"],
-                    source = params["source"]
-                            ?.toLongOrNull()
-                            ?.let {
-                                val src = srcRepo.findById(it)
-                                if (src == null) {
-                                    resp.writeError("News source not found")
-                                    return
-                                }
-                                src
-                            },
-                    loadedAfter = params["loadedAfter"]?.let { format.parse(it) },
-                    loadedBefore = params["loadedBefore"]?.let { format.parse(it) },
-                    publishedAfter = params["publishedAfter"]?.let { format.parse(it) },
-                    publishedBefore = params["publishedBefore"]?.let { format.parse(it) },
-                    sources = multiParams["sources"]
-                            ?.asSequence()
-                            ?.mapNotNull { s: String -> s.toLongOrNull() }
-                            ?.mapNotNull { id: Long -> srcRepo.findById(id) }
-                            ?.toList(),
-                    page = page,
-                    newsAtPage = newsAtPage
-            )
-        } catch (e: ParseException) {
-            resp.writeError("Invalid date format")
-            return
-        }
+        val news = newsRepo.find(
+                title = params["title"],
+                content = params["content"],
+                urlToImage = params["urlToImage"],
+                url = params["url"],
+                source = params["source"]
+                        ?.toLongOrNull()
+                        ?.let {
+                            val src = srcRepo.findById(it)
+                            if (src == null) {
+                                resp.writeError("News source not found")
+                                return
+                            }
+                            src
+                        },
+                loadedAfter = params["loadedAfter"]?.toIntOrNull()?.let { Date(it * 1000L) },
+                loadedBefore = params["loadedBefore"]?.toIntOrNull()?.let { Date(it * 1000L) },
+                publishedAfter = params["publishedAfter"]?.toIntOrNull()?.let { Date(it * 1000L) },
+                publishedBefore = params["publishedBefore"]?.toIntOrNull()?.let { Date(it * 1000L) },
+                sources = multiParams["sources"]
+                        ?.asSequence()
+                        ?.mapNotNull { s: String -> s.toLongOrNull() }
+                        ?.mapNotNull { id: Long -> srcRepo.findById(id) }
+                        ?.toList(),
+                page = page,
+                newsAtPage = newsAtPage
+        )
 
         val newsListDto = NewsListDto(
                 newsAtPage = newsAtPage,

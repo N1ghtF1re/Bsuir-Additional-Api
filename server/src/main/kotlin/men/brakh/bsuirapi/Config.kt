@@ -30,7 +30,6 @@ object Config {
 
     val bsuirApiHost: String
 
-    val dateFormat: String
 
     init {
         val propsPath: String = this.javaClass.classLoader.getResource("config.properties")?.path
@@ -41,7 +40,6 @@ object Config {
 
         bsuirApiHost = configProps.getProperty("bsuir.api.host")
         newsAtPage = configProps.getProperty("default.news.at.page").toInt()
-        dateFormat = configProps.getProperty("date.format")
 
 
         if(auditoriumRepository.count() == 0) {
