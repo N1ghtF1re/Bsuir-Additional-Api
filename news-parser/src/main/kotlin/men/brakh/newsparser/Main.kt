@@ -11,6 +11,7 @@ import org.apache.http.entity.ContentType
 import org.apache.http.impl.client.HttpClientBuilder
 import org.slf4j.LoggerFactory
 import java.io.FileOutputStream
+import java.io.InputStreamReader
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -56,7 +57,11 @@ fun sendRequest(news: News) {
                 .setText( gson.toJson(news) )
                 .build()
 
-        httpClient.execute(post)
+        httpClient.execute(post).use { resp ->
+            if(resp.statusLine.statusCode !in 200..201) {
+                logger.error("ERROR. Can't send response to add: ${InputStreamReader(resp.entity.content).readText()}")
+            }
+        }
 
     }
 
