@@ -7,11 +7,11 @@
     <parent>
         <artifactId>bsuir-additional-api</artifactId>
         <groupId>men.brakh.bsuirapi</groupId>
-        <version>1.0</version>
+        <version>1.3</version>
     </parent>
 
     <artifactId>news-parser</artifactId>
-    <version>1.0</version>
+    <version>1.3</version>
     <packaging>jar</packaging>
 
     <properties>
