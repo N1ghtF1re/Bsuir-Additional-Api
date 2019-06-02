@@ -4,7 +4,9 @@ import com.google.gson.Gson
 import com.vk.api.sdk.client.VkApiClient
 import com.vk.api.sdk.client.actors.ServiceActor
 import com.vk.api.sdk.httpclient.HttpTransportClient
+import com.vk.api.sdk.objects.wall.WallPost
 import com.vk.api.sdk.objects.wall.WallPostFull
+import com.vk.api.sdk.objects.wall.WallpostAttachmentType.*
 import men.brakh.bsuirapicore.model.data.News
 import men.brakh.newsparser.config.Config
 import men.brakh.newsparser.model.parser.Parser
@@ -24,6 +26,27 @@ abstract class VKParser : Parser {
         }
     }
 
+    private fun parsePost(post: WallPost): String {
+        val attachments =  post.attachments?.joinToString { attachement ->
+            val replacement = when(attachement.type) {
+                PHOTO -> "![Photo ${attachement.photo.id}](${attachement.photo.photo1280})"
+                POSTED_PHOTO -> "![Photo ${attachement.postedPhoto.id}](${attachement.postedPhoto.photo604})"
+                AUDIO -> ""
+                VIDEO -> "[${attachement.video.title}](${attachement.video.player})"
+                DOC -> "[${attachement.doc.title}](${attachement.doc.url})"
+                LINK -> "[${attachement.link.title}](${attachement.link.url})"
+                GRAFFITI -> "![Graffiti ${attachement.graffiti.id}](${attachement.graffiti.photo586})"
+                POLL -> "[Голосование доступно в источнике]"
+                PAGE -> "[${attachement.page.title}](${attachement.page.viewUrl})"
+                else -> ""
+            }
+            "\n$replacement\n"
+        } ?: ""
+
+        val content = post.text + attachments
+        return content.toMd()
+    }
+
     override fun parse(lastUpdate: Date): List<News> {
         val transportClient = HttpTransportClient.getInstance()
 
@@ -41,10 +64,12 @@ abstract class VKParser : Parser {
                     val photo: String? = wallPost.attachments?.firstOrNull{ it.photo != null }?.photo?.photo1280
                     val title: String = wallPost.text.split("\n").first().split("\\.|!|\\?".toRegex()).first()
 
+                    val content = parsePost(wallPost) + (wallPost.copyHistory?.joinToString { parsePost(it) + "\n\n\n" } ?: "")
+
 
                     News(
                             title = title,
-                            content = wallPost.text.toMd(),
+                            content = content,
                             loadedAt = Date(),
                             publishedAt = wallPost.publicationDate,
                             source = source,
