@@ -77,52 +77,13 @@ class NewsServlet : HttpServlet() {
         resp.setDefaultJsonHeaders()
 
         val params: Map<String, String> = req.singleParameters
-        val multiParams: Map<String, Array<String>> = req.parameterMap
 
-        if("id" in params) {
-            val news = newsRepo.findById(params["id"]!!.toLong())
-            news?.let { resp.writeJson(it) } ?: resp.writeError("News not found", 404)
-            return
+        if("id" !in params) {
+            resp.writeError("id parameter is required")
         }
 
-        val page = params["page"]?.toIntOrNull() ?: 1
-        val newsAtPage = params["newsAtPage"]?.toIntOrNull() ?: Config.newsAtPage
-
-        val news = newsRepo.find(
-                title = params["title"],
-                content = params["content"],
-                urlToImage = params["urlToImage"],
-                url = params["url"],
-                source = params["source"]
-                        ?.toLongOrNull()
-                        ?.let {
-                            val src = srcRepo.findById(it)
-                            if (src == null) {
-                                resp.writeError("News source not found")
-                                return
-                            }
-                            src
-                        },
-                loadedAfter = params["loadedAfter"]?.toIntOrNull()?.let { Date(it * 1000L) },
-                loadedBefore = params["loadedBefore"]?.toIntOrNull()?.let { Date(it * 1000L) },
-                publishedAfter = params["publishedAfter"]?.toIntOrNull()?.let { Date(it * 1000L) },
-                publishedBefore = params["publishedBefore"]?.toIntOrNull()?.let { Date(it * 1000L) },
-                sources = multiParams["sources"]
-                        ?.asSequence()
-                        ?.mapNotNull { s: String -> s.toLongOrNull() }
-                        ?.mapNotNull { id: Long -> srcRepo.findById(id) }
-                        ?.toList(),
-                page = page,
-                newsAtPage = newsAtPage
-        )
-
-        val newsListDto = NewsListDto(
-                newsAtPage = newsAtPage,
-                page = page,
-                count = news.count(),
-                news = news
-        )
-
-        resp.writeJson(newsListDto)
+        val news = newsRepo.findById(params["id"]!!.toLong())
+        news?.let { resp.writeJson(it) } ?: resp.writeError("News not found", 404)
+        return
     }
 }

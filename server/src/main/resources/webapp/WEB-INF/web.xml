@@ -31,6 +31,12 @@
     </servlet>
 
     <servlet>
+        <servlet-name>newsListServlet</servlet-name>
+        <servlet-class>men.brakh.bsuirapi.controller.NewsListServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet>
         <servlet-name>srcServlet</servlet-name>
         <servlet-class>men.brakh.bsuirapi.controller.SourcesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
@@ -52,6 +58,10 @@
     <servlet-mapping>
         <servlet-name>newsServlet</servlet-name>
         <url-pattern>/api/v1/news</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>newsListServlet</servlet-name>
+        <url-pattern>/api/v1/newsList</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>srcServlet</servlet-name>
