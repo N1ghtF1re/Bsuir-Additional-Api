@@ -10,13 +10,18 @@
 </p>
 
 ## About the project
-This project expands of the standard API for BSUIR IIS. Includes, for example, a search for free audiences.
+This project expands of the standard API for BSUIR IIS. Includes, for example, a search for free audiences, news api.
 
-## Implemented functionality
+## Functionality
 - Search for free auditoriums
 - View all audiences, including filters
 - View all buildings with available floors
-- View bsuir news (now just api methods)
+- View bsuir news
+- View bsuir news sources
+- Parse bsuir news from given sources 
+
+## Technologies 
+Project created using Kotlin, Servlet API, Gson Library, VK SDK and JSoup. 
 
 ## Documentation
 Detailed documentation on api methods located [here](https://app.swaggerhub.com/apis-docs/N1ghtF1re/BsuirAdditionalApi/1.0.0)
