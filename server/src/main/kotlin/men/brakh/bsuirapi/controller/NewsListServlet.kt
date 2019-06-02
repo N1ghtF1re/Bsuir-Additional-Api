@@ -44,13 +44,19 @@ class NewsListServlet : HttpServlet() {
         val page = params["page"]?.toIntOrNull() ?: 1
         val newsAtPage = params["newsAtPage"]?.toIntOrNull() ?: Config.newsAtPage
 
-        val sources = multiParams["sources"]
+        val sourcesIds = if("sources" in params && "," in params["sources"]!!) {
+            params["sources"]!!.split(",")
+        } else {
+            multiParams["sources"]?.toList()
+        }
+
+        val sources = sourcesIds
                 ?.asSequence()
                 ?.mapNotNull { s: String -> s.toLongOrNull() }
                 ?.mapNotNull { id: Long -> srcRepo.findById(id) }
                 ?.toList()
 
-        val news = if(sources?.count() == 0) {
+        val news = if(sources?.count() != 0) {
             newsRepo.find(
                     title = params["title"],
                     content = params["content"],
