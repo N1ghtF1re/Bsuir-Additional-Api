@@ -12,7 +12,7 @@
 ## About the project
 This project expands of the standard API for BSUIR IIS. Includes, for example, a search for free audiences.
 
-## Implemented functionality
+## Functionality
 - Search for free auditoriums
 - View all audiences, including filters
 - View all buildings with available floors
