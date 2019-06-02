@@ -76,7 +76,7 @@ class MysqlNewsRepository(tableName: String) : MysqlRepository<News>(tableName),
         }
     }
 
-    override fun find(title: String?, source: NewsSource?, sources: List<NewsSource>?, content: String?,
+    override fun find(title: String?, source: NewsSource?, sources: List<NewsSource>?, contentLike: String?,
                       publishedAfter: Date?, publishedBefore: Date?, loadedAfter: Date?, loadedBefore: Date?,
                       url: String?, urlToImage: String?, page: Int?, newsAtPage: Int?): List<News> {
         val initQuery = "SELECT * FROM $tableName "
@@ -100,8 +100,8 @@ class MysqlNewsRepository(tableName: String) : MysqlRepository<News>(tableName),
             )
         }
 
-        if(content != null) conditions.add(
-                "content = ?" to {stmt, index -> stmt.setString(index, content)}
+        if(contentLike != null) conditions.add(
+                "content LIKE ?" to {stmt, index -> stmt.setString(index, "%$contentLike%")}
         )
 
         if(publishedAfter != null) conditions.add(

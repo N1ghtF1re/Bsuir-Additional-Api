@@ -59,7 +59,7 @@ class NewsListServlet : HttpServlet() {
         val news = if(sources?.count() != 0) {
             newsRepo.find(
                     title = params["title"],
-                    content = params["content"],
+                    contentLike = params["q"],
                     urlToImage = params["urlToImage"],
                     url = params["url"],
                     loadedAfter = params["loadedAfter"]?.toIntOrNull()?.toDate(),

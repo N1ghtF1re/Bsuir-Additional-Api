@@ -9,7 +9,7 @@ interface NewsRepository : Repository<News> {
             title: String? = null,
             source: NewsSource? = null,
             sources: List<NewsSource>? = null,
-            content: String? = null,
+            contentLike: String? = null,
             publishedAfter: Date? = null,
             publishedBefore: Date? = null,
             loadedAfter: Date? = null,
