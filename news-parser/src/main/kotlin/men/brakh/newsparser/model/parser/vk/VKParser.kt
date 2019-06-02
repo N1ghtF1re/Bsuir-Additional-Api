@@ -29,7 +29,7 @@ abstract class VKParser : Parser {
     private fun parsePost(post: WallPost): String {
         val attachments =  post.attachments?.joinToString { attachement ->
             val replacement = when(attachement.type) {
-                PHOTO -> "![Photo ${attachement.photo.id}](${attachement.photo.photo1280})"
+                PHOTO -> "![Photo ${attachement.photo.id}](${attachement.photo.photo604})"
                 POSTED_PHOTO -> "![Photo ${attachement.postedPhoto.id}](${attachement.postedPhoto.photo604})"
                 AUDIO -> ""
                 VIDEO -> "[${attachement.video.title}](${attachement.video.player})"
@@ -61,7 +61,7 @@ abstract class VKParser : Parser {
         return getResponse.items
                 .filter { wallPostFull -> wallPostFull.publicationDate > lastUpdate  }
                 .map { wallPost: WallPostFull ->
-                    val photo: String? = wallPost.attachments?.firstOrNull{ it.photo != null }?.photo?.photo1280
+                    val photo: String? = wallPost.attachments?.firstOrNull{ it.photo != null }?.photo?.photo604
                     val title: String = wallPost.text.split("\n").first().split("\\.|!|\\?".toRegex()).first()
 
                     val content = parsePost(wallPost) + (wallPost.copyHistory?.joinToString { parsePost(it) + "\n\n\n" } ?: "")
