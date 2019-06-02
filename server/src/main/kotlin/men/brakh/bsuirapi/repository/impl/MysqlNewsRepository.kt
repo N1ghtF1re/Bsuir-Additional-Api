@@ -1,10 +1,10 @@
 package men.brakh.bsuirapi.repository.impl
 
 import men.brakh.bsuirapi.Config
-import men.brakh.bsuirapi.extentions.toDate
-import men.brakh.bsuirapi.extentions.toTimestamp
-import men.brakh.bsuirapi.model.data.News
-import men.brakh.bsuirapi.model.data.NewsSource
+import men.brakh.bsuirapicore.extentions.toDate
+import men.brakh.bsuirapicore.extentions.toTimestamp
+import men.brakh.bsuirapicore.model.data.News
+import men.brakh.bsuirapicore.model.data.NewsSource
 import men.brakh.bsuirapi.repository.NewsRepository
 import java.sql.PreparedStatement
 import java.sql.ResultSet

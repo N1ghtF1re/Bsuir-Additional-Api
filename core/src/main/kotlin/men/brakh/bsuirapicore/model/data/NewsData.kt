@@ -1,4 +1,4 @@
-package men.brakh.bsuirapi.model.data
+package men.brakh.bsuirapicore.model.data
 
 import java.util.*
 

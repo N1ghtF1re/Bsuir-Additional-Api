@@ -3,7 +3,7 @@ package men.brakh.bsuirapi.controller
 import com.google.gson.JsonParseException
 import men.brakh.bsuirapi.Config
 import men.brakh.bsuirapi.extentions.*
-import men.brakh.bsuirapi.model.data.News
+import men.brakh.bsuirapicore.model.data.News
 import men.brakh.bsuirapi.model.dto.NewsListDto
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -11,6 +11,7 @@ import java.util.*
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
+import men.brakh.bsuirapi.extentions.*
 
 
 class NewsServlet : HttpServlet() {

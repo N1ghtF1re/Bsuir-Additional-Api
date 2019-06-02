@@ -5,8 +5,8 @@ import com.vk.api.sdk.client.VkApiClient
 import com.vk.api.sdk.client.actors.ServiceActor
 import com.vk.api.sdk.httpclient.HttpTransportClient
 import com.vk.api.sdk.objects.wall.WallPostFull
+import men.brakh.bsuirapicore.model.data.News
 import men.brakh.newsparser.config.Config
-import men.brakh.newsparser.model.News
 import men.brakh.newsparser.model.parser.Parser
 import java.util.*
 import kotlin.math.absoluteValue
@@ -45,8 +45,8 @@ abstract class VKParser : Parser {
                     News(
                             title = title,
                             content = wallPost.text.toMd(),
-                            loadedAt = Date().time / 1000,
-                            publishedAt = wallPost.date.toLong(),
+                            loadedAt = Date(),
+                            publishedAt = wallPost.publicationDate,
                             source = source,
                             url = "https://vk.com/wall${wallPost.ownerId}_${wallPost.id}",
                             urlToImage = photo

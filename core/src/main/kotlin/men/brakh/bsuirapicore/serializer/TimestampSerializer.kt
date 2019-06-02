@@ -1,4 +1,4 @@
-package men.brakh.bsuirapi.serializer
+package men.brakh.bsuirapicore.serializer
 
 import java.io.IOException
 import com.google.gson.stream.JsonReader

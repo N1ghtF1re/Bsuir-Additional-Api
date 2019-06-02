@@ -1,4 +1,4 @@
-package men.brakh.bsuirapi.extentions
+package men.brakh.bsuirapicore.extentions
 
 import java.sql.Timestamp
 import java.util.*

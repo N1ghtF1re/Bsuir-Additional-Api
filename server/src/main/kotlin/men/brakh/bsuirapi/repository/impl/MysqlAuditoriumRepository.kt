@@ -1,7 +1,7 @@
 package men.brakh.bsuirapi.repository.impl
 
-import men.brakh.bsuirapi.model.data.Auditorium
-import men.brakh.bsuirapi.model.data.LessonType
+import men.brakh.bsuirapicore.model.data.Auditorium
+import men.brakh.bsuirapicore.model.data.LessonType
 import men.brakh.bsuirapi.repository.AuditoriumRepository
 import java.sql.PreparedStatement
 import java.sql.ResultSet

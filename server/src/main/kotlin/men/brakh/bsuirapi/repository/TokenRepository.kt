@@ -1,6 +1,6 @@
 package men.brakh.bsuirapi.repository
 
-import men.brakh.bsuirapi.model.data.Token
+import men.brakh.bsuirapicore.model.data.Token
 
 
 interface TokenRepository {

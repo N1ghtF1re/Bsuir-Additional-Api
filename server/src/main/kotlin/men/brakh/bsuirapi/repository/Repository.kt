@@ -1,6 +1,6 @@
 package men.brakh.bsuirapi.repository
 
-import men.brakh.bsuirapi.model.data.Identifiable
+import men.brakh.bsuirapicore.model.data.Identifiable
 
 interface Repository<T : Identifiable> {
     fun add(entity: T): T

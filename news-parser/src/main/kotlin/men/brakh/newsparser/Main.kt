@@ -1,14 +1,15 @@
 package men.brakh.newsparser
 
-import com.google.gson.Gson
+import men.brakh.bsuirapicore.extentions.gson
+import men.brakh.bsuirapicore.model.data.News
 import men.brakh.newsparser.config.Config
-import men.brakh.newsparser.model.News
 import men.brakh.newsparser.model.ParsersLoader
 import men.brakh.newsparser.model.parser.Parser
 import org.apache.http.client.entity.EntityBuilder
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.entity.ContentType
 import org.apache.http.impl.client.HttpClientBuilder
+import org.slf4j.LoggerFactory
 import java.io.FileOutputStream
 import java.nio.file.Files
 import java.nio.file.Path
@@ -52,7 +53,7 @@ fun sendRequest(news: News) {
         post.entity = EntityBuilder.create()
                 .setContentType(ContentType.APPLICATION_JSON)
                 .setContentEncoding("UTF-8")
-                .setText(Gson().toJson(news))
+                .setText( gson.toJson(news) )
                 .build()
 
         httpClient.execute(post)
@@ -61,6 +62,8 @@ fun sendRequest(news: News) {
 
 
 }
+
+private val logger = LoggerFactory.getLogger("Main")
 
 fun main() {
     init()
@@ -72,7 +75,7 @@ fun main() {
                 val newsList = parsers.flatMap { parser ->
                     parser.parse(lastUpdate)
                 }
-                println(newsList)
+                logger.info("Updated news list. Added ${newsList.count()} news")
                 updateDate()
 
                 newsList.forEach(::sendRequest)

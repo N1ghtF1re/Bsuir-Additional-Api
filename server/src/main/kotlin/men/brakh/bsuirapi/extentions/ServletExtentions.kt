@@ -1,7 +1,9 @@
 package men.brakh.bsuirapi.extentions
 
-import men.brakh.bsuirapi.model.data.Token
 import men.brakh.bsuirapi.repository.TokenRepository
+import men.brakh.bsuirapicore.extentions.gson
+import men.brakh.bsuirapicore.extentions.toJson
+import men.brakh.bsuirapicore.model.data.Token
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 

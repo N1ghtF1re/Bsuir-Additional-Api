@@ -1,8 +1,7 @@
-package men.brakh.bsuirapi.extentions
+package men.brakh.bsuirapicore.extentions
 
 import com.google.gson.GsonBuilder
-import men.brakh.bsuirapi.Config
-import men.brakh.bsuirapi.serializer.TimestampSerializer
+import men.brakh.bsuirapicore.serializer.TimestampSerializer
 import java.util.*
 
 val gson = GsonBuilder().registerTypeAdapter(Date::class.java, TimestampSerializer()).create()

@@ -1,7 +1,7 @@
 package men.brakh.newsparser.model.parser.site
 
-import men.brakh.newsparser.model.News
-import men.brakh.newsparser.model.NewsSource
+import men.brakh.bsuirapicore.model.data.News
+import men.brakh.bsuirapicore.model.data.NewsSource
 import org.jsoup.select.Elements
 import java.text.SimpleDateFormat
 import java.util.*
@@ -70,8 +70,8 @@ class FksisSiteParser() : SiteParser() {
                                 .replace( "href=\"/", "href=\"$host/")
                                 .toMd()
 
-                        News(title = title,  urlToImage = img, content = content, url = fullLink, publishedAt = date.time / 1000,
-                                loadedAt = Date().time/1000, source = source)
+                        News(title = title,  urlToImage = img, content = content, url = fullLink, publishedAt = date,
+                                loadedAt = Date(), source = source)
                     }
                     news
                 }.sortedBy { it.publishedAt }

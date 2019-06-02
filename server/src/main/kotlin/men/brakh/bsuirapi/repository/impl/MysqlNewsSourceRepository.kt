@@ -1,6 +1,6 @@
 package men.brakh.bsuirapi.repository.impl
 
-import men.brakh.bsuirapi.model.data.NewsSource
+import men.brakh.bsuirapicore.model.data.NewsSource
 import men.brakh.bsuirapi.repository.NewsSourceRepository
 import java.sql.PreparedStatement
 import java.sql.ResultSet

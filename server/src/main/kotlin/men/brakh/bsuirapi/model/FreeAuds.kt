@@ -2,9 +2,9 @@ package men.brakh.bsuirapi.model
 
 import men.brakh.bsuirapi.Config
 import men.brakh.bsuirapi.model.bsuirapi.BsuirApi
-import men.brakh.bsuirapi.model.data.Auditorium
-import men.brakh.bsuirapi.model.data.WeekNumber
-import men.brakh.bsuirapi.model.data.Weeks
+import men.brakh.bsuirapicore.model.data.Auditorium
+import men.brakh.bsuirapicore.model.data.WeekNumber
+import men.brakh.bsuirapicore.model.data.Weeks
 import men.brakh.bsuirapi.repository.AuditoriumRepository
 import men.brakh.bsuirapi.repository.LessonRepository
 import java.sql.Time

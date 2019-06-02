@@ -1,7 +1,7 @@
 package men.brakh.bsuirapi.repository
 
-import men.brakh.bsuirapi.model.data.News
-import men.brakh.bsuirapi.model.data.NewsSource
+import men.brakh.bsuirapicore.model.data.News
+import men.brakh.bsuirapicore.model.data.NewsSource
 import java.util.*
 
 interface NewsRepository : Repository<News> {

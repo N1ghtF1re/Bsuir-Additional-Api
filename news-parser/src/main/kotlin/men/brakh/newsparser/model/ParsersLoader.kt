@@ -1,6 +1,7 @@
 package men.brakh.newsparser.model
 
 import men.brakh.newsparser.model.parser.Parser
+import org.slf4j.LoggerFactory
 import java.io.File
 import java.lang.reflect.Modifier
 import java.util.jar.JarFile
@@ -9,6 +10,8 @@ import java.util.jar.JarFile
 
 
 object ParsersLoader {
+    private val logger = LoggerFactory.getLogger(ParsersLoader::class.java)
+
     private val <T> Class<T>.isAbstact: Boolean
         get() =  Modifier.isAbstract( this.modifiers )
 
@@ -18,10 +21,9 @@ object ParsersLoader {
             try {
                  Class.forName(classPath)
                 .takeIf { clazz -> !clazz.isInterface && !clazz.isAbstact && Parser::class.java.isAssignableFrom(clazz) }
-                        ?.let { clazz -> println("$clazz loaded"); clazz as Class<Parser> }
+                        ?.let { clazz -> logger.info("$clazz loaded"); clazz as Class<Parser> }
             } catch (e: ClassNotFoundException) {
-                println("Loading class $classPath error")
-                e.printStackTrace()
+                logger.error("Loading class $classPath error", e)
                 null
             }
         }

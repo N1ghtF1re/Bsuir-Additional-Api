@@ -1,6 +1,7 @@
 package men.brakh.newsparser.model.parser.vk
 
-import men.brakh.newsparser.model.NewsSource
+import men.brakh.bsuirapicore.model.data.NewsSource
+
 
 class FituVKParser : VKParser() {
     override val groupId: Int = 30014419

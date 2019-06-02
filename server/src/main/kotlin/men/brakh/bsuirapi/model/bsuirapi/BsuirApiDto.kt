@@ -1,7 +1,7 @@
 package men.brakh.bsuirapi.model.bsuirapi
 
 import com.google.gson.annotations.SerializedName
-import men.brakh.bsuirapi.model.data.*
+import men.brakh.bsuirapicore.model.data.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.sql.Time

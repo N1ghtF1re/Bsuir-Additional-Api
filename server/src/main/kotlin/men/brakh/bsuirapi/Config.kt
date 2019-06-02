@@ -4,10 +4,10 @@ import men.brakh.bsuirapi.dbconnection.ConnectionFactory
 import men.brakh.bsuirapi.dbconnection.MysqlConnectionFactory
 import men.brakh.bsuirapi.model.LessonsScheduleUpdater
 import men.brakh.bsuirapi.model.bsuirapi.BsuirApi
-import men.brakh.bsuirapi.model.data.Auditorium
-import men.brakh.bsuirapi.model.data.Lesson
+import men.brakh.bsuirapicore.model.data.Auditorium
 import men.brakh.bsuirapi.repository.*
 import men.brakh.bsuirapi.repository.impl.*
+import men.brakh.bsuirapicore.model.data.Lesson
 import org.slf4j.LoggerFactory
 import java.io.FileInputStream
 import java.io.FileNotFoundException

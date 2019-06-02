@@ -1,9 +1,9 @@
 package men.brakh.bsuirapi.repository.impl
 
 import men.brakh.bsuirapi.Config
-import men.brakh.bsuirapi.model.data.Auditorium
-import men.brakh.bsuirapi.model.data.Lesson
-import men.brakh.bsuirapi.model.data.Weeks
+import men.brakh.bsuirapicore.model.data.Auditorium
+import men.brakh.bsuirapicore.model.data.Lesson
+import men.brakh.bsuirapicore.model.data.Weeks
 import men.brakh.bsuirapi.repository.AuditoriumRepository
 import men.brakh.bsuirapi.repository.LessonRepository
 import org.slf4j.LoggerFactory

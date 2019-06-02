@@ -2,7 +2,7 @@ package men.brakh.bsuirapi.repository.impl
 
 import men.brakh.bsuirapi.Config
 import men.brakh.bsuirapi.dbconnection.ConnectionFactory
-import men.brakh.bsuirapi.model.data.Identifiable
+import men.brakh.bsuirapicore.model.data.Identifiable
 import men.brakh.bsuirapi.repository.Repository
 import java.sql.Connection
 import java.sql.PreparedStatement

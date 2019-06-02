@@ -1,12 +1,10 @@
 package men.brakh.bsuirapi.controller
 
 import men.brakh.bsuirapi.Config
-import men.brakh.bsuirapi.extentions.setDefaultJsonHeaders
-import men.brakh.bsuirapi.extentions.singleParameters
-import men.brakh.bsuirapi.extentions.writeJson
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
+import men.brakh.bsuirapi.extentions.*
 
 class SourcesServlet : HttpServlet() {
     private val srcRepo = Config.newsSourceRepository

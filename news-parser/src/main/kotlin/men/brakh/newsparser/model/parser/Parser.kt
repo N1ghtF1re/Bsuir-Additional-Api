@@ -1,7 +1,7 @@
 package men.brakh.newsparser.model.parser
 
-import men.brakh.newsparser.model.News
-import men.brakh.newsparser.model.NewsSource
+import men.brakh.bsuirapicore.model.data.News
+import men.brakh.bsuirapicore.model.data.NewsSource
 import java.util.*
 
 interface Parser {

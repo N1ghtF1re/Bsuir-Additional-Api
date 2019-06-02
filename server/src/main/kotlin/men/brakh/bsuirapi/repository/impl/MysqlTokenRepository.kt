@@ -1,6 +1,6 @@
 package men.brakh.bsuirapi.repository.impl
 
-import men.brakh.bsuirapi.model.data.Token
+import men.brakh.bsuirapicore.model.data.Token
 import men.brakh.bsuirapi.repository.TokenRepository
 import java.sql.PreparedStatement
 import java.sql.ResultSet

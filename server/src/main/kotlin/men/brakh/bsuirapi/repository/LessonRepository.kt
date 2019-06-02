@@ -1,8 +1,8 @@
 package men.brakh.bsuirapi.repository
 
-import men.brakh.bsuirapi.model.data.Auditorium
-import men.brakh.bsuirapi.model.data.Lesson
-import men.brakh.bsuirapi.model.data.Weeks
+import men.brakh.bsuirapicore.model.data.Auditorium
+import men.brakh.bsuirapicore.model.data.Lesson
+import men.brakh.bsuirapicore.model.data.Weeks
 import java.sql.Time
 
 interface LessonRepository: Repository<Lesson> {

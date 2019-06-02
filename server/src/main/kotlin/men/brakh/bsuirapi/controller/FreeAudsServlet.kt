@@ -1,17 +1,16 @@
 package men.brakh.bsuirapi.controller
 
-import men.brakh.bsuirapi.extentions.setDefaultJsonHeaders
-import men.brakh.bsuirapi.extentions.singleParameters
-import men.brakh.bsuirapi.extentions.writeError
-import men.brakh.bsuirapi.extentions.writeJson
 import men.brakh.bsuirapi.model.FreeAuds
-import men.brakh.bsuirapi.model.data.Auditorium
+import men.brakh.bsuirapicore.model.data.Auditorium
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
+import men.brakh.bsuirapi.extentions.*
+
+
 
 class FreeAudsServlet : HttpServlet() {
 

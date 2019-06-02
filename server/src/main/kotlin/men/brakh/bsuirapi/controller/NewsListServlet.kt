@@ -1,15 +1,12 @@
 package men.brakh.bsuirapi.controller
 
 import men.brakh.bsuirapi.Config
-import men.brakh.bsuirapi.extentions.setDefaultJsonHeaders
-import men.brakh.bsuirapi.extentions.singleParameters
-import men.brakh.bsuirapi.extentions.writeError
-import men.brakh.bsuirapi.extentions.writeJson
 import men.brakh.bsuirapi.model.dto.NewsListDto
 import java.util.*
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
+import men.brakh.bsuirapi.extentions.*
 
 class NewsListServlet : HttpServlet() {
     private val newsRepo = Config.newsRepository
