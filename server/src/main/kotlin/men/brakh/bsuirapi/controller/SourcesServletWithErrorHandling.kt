@@ -1,12 +1,14 @@
 package men.brakh.bsuirapi.controller
 
 import men.brakh.bsuirapi.Config
-import javax.servlet.http.HttpServlet
+import men.brakh.bsuirapi.controller.basic.HttpServletWithErrorHandling
+import men.brakh.bsuirapi.extentions.setDefaultJsonHeaders
+import men.brakh.bsuirapi.extentions.singleParameters
+import men.brakh.bsuirapi.extentions.writeJson
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import men.brakh.bsuirapi.extentions.*
 
-class SourcesServlet : HttpServlet() {
+class SourcesServletWithErrorHandling : HttpServletWithErrorHandling() {
     private val srcRepo = Config.newsSourceRepository
 
     override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {

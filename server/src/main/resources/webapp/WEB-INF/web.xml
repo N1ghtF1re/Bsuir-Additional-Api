@@ -8,41 +8,51 @@
     
     <servlet>
         <servlet-name>freeAudsServlet</servlet-name>
-        <servlet-class>men.brakh.bsuirapi.controller.FreeAudsServlet</servlet-class>
+        <servlet-class>men.brakh.bsuirapi.controller.FreeAudsServletWithErrorHandling</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet>
         <servlet-name>audsServlet</servlet-name>
-        <servlet-class>men.brakh.bsuirapi.controller.AudsServlet</servlet-class>
+        <servlet-class>men.brakh.bsuirapi.controller.AudsServletWithErrorHandling</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet>
         <servlet-name>buildingsServlet</servlet-name>
-        <servlet-class>men.brakh.bsuirapi.controller.BuildingsServlet</servlet-class>
+        <servlet-class>men.brakh.bsuirapi.controller.BuildingsServletWithErrorHandling</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet>
         <servlet-name>newsServlet</servlet-name>
-        <servlet-class>men.brakh.bsuirapi.controller.NewsServlet</servlet-class>
+        <servlet-class>men.brakh.bsuirapi.controller.NewsServletWithErrorHandling</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet>
         <servlet-name>newsListServlet</servlet-name>
-        <servlet-class>men.brakh.bsuirapi.controller.NewsListServlet</servlet-class>
+        <servlet-class>men.brakh.bsuirapi.controller.NewsListServletWithErrorHandling</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet>
         <servlet-name>srcServlet</servlet-name>
-        <servlet-class>men.brakh.bsuirapi.controller.SourcesServlet</servlet-class>
+        <servlet-class>men.brakh.bsuirapi.controller.SourcesServletWithErrorHandling</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>authServlet</servlet-name>
+        <servlet-class>men.brakh.bsuirapi.controller.AuthServletWithErrorHandling</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
 
+    <servlet-mapping>
+        <servlet-name>authServlet</servlet-name>
+        <url-pattern>/api/v1/auth</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>freeAudsServlet</servlet-name>
         <url-pattern>/api/v1/auditoriums/free</url-pattern>

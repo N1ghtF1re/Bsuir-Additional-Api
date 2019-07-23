@@ -1,15 +1,16 @@
 package men.brakh.bsuirapi.controller
 
 import men.brakh.bsuirapi.Config
-import men.brakh.bsuirapicore.model.data.Building
+import men.brakh.bsuirapi.controller.basic.HttpServletWithErrorHandling
+import men.brakh.bsuirapi.extentions.setDefaultJsonHeaders
+import men.brakh.bsuirapi.extentions.writeJson
 import men.brakh.bsuirapi.repository.AuditoriumRepository
-import javax.servlet.http.HttpServlet
+import men.brakh.bsuirapicore.model.data.Building
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import men.brakh.bsuirapi.extentions.*
 
 
-class BuildingsServlet : HttpServlet() {
+class BuildingsServletWithErrorHandling : HttpServletWithErrorHandling() {
     private companion object {
         private val audsRepository: AuditoriumRepository = Config.auditoriumRepository
         val buildings: List<Building> = audsRepository.findAll()

@@ -16,6 +16,8 @@ import java.text.SimpleDateFormat
 
 val logger: Logger = LoggerFactory.getLogger("BsuirApiDto")
 
+data class AuthorizationDto(val loggedIn: Boolean, val username: String, val fio: String, val message: String)
+
 data class BuildingDto(val id: Int, val name: String)
 
 data class AuditoriumTypeDto(val name: String, val abbrev: String)

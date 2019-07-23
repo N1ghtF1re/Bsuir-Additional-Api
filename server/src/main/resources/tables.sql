@@ -51,3 +51,12 @@ CREATE TABLE IF NOT EXISTS `tokens` (
   UNIQUE (`token`)
 
 ) DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `users` (
+   `id` INT NOT NULL AUTO_INCREMENT,
+   `login` VARCHAR(255) NOT NULL,
+   `password` VARCHAR(512) NOT NULL,
+
+   PRIMARY KEY (`id`),
+   UNIQUE (`login`)
+) DEFAULT CHARSET=utf8;
