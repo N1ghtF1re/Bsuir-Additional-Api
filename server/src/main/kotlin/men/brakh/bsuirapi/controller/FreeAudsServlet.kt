@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse
 
 
 
-class FreeAudsServletWithErrorHandling : HttpServletWithErrorHandling() {
+class FreeAudsServlet : HttpServletWithErrorHandling() {
 
     /**
      * PARAMS:

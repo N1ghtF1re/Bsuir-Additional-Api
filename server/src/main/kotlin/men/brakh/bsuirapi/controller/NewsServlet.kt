@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 
-class NewsServletWithErrorHandling : HttpServletWithErrorHandling() {
+class NewsServlet : HttpServletWithErrorHandling() {
     companion object {
         private val newsRepo = Config.newsRepository
         private val srcRepo = Config.newsSourceRepository
@@ -51,7 +51,7 @@ class NewsServletWithErrorHandling : HttpServletWithErrorHandling() {
      * @param title - news title
      * @param content - news content
      * @param url - news url
-     * @param source - id of news source (@see SourcesServletWithErrorHandling)
+     * @param source - id of news source (@see SourcesServlet)
      * @param loadedAfter - minimum loading date (unix timestamp)
      * @param loadingBefore - maximum loading data (unix timestamp)
      * @param publishedAfter - minimum publication date (unix timestamp)

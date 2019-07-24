@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 
-class BuildingsServletWithErrorHandling : HttpServletWithErrorHandling() {
+class BuildingsServlet : HttpServletWithErrorHandling() {
     private companion object {
         private val audsRepository: AuditoriumRepository = Config.auditoriumRepository
         val buildings: List<Building> = audsRepository.findAll()

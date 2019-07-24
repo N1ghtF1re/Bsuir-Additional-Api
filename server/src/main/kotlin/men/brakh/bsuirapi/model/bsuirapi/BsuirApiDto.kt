@@ -18,6 +18,61 @@ val logger: Logger = LoggerFactory.getLogger("BsuirApiDto")
 
 data class AuthorizationDto(val loggedIn: Boolean, val username: String, val fio: String, val message: String)
 
+data class PersonalInformationDto(val name: String, val group: String, val studentRecordBookNumber: String, val photoUrl: String)
+
+data class SkillDto(val id: Int, val name: String)
+
+data class ReferenceDto(val id: Int, val name: String, val reference: String)
+
+data class PersonalCVDto(val id: Int,
+                         val firstName: String,
+                         val lastName: String,
+                         val middleName: String,
+                         val birthDate: String,
+                         val photoUrl: String?,
+                         val summary: String?,
+                         val ratting: Int,
+                         val faculty: String,
+                         val cource: Int,
+                         val speciality: String,
+                         val studentGroup: String,
+
+                         val showRating: Boolean,
+                         val published: Boolean,
+                         val searchJob: Boolean,
+
+                         val skills: List<SkillDto>,
+                         val references: List<ReferenceDto>
+) {
+    private fun String.toDate() = SimpleDateFormat("dd.MM.yyyy").parse(this)
+    fun toUserInfoObject() = UserInfo(
+            id = id,
+            firstName = firstName,
+            lastName = lastName,
+            middleName = middleName,
+            birthDay = birthDate.toDate(),
+            summary = summary,
+            education = StudyInfo(
+                    faculty = faculty,
+                    course = cource,
+                    speciality = speciality,
+                    studentGroup = studentGroup
+            ),
+            photo = photoUrl,
+            rating = ratting,
+            references = references.map { Reference(name = it.name, reference = it.reference) },
+            skills = skills.map { it.name },
+            settings = toUserSettings()
+    )
+
+
+    fun toUserSettings() = UserSettings(
+            isPublicProfile = published,
+            isSearchJob = searchJob,
+            isShowRating = showRating
+    )
+}
+
 data class BuildingDto(val id: Int, val name: String)
 
 data class AuditoriumTypeDto(val name: String, val abbrev: String)

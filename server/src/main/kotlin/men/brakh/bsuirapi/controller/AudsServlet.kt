@@ -11,7 +11,7 @@ import men.brakh.bsuirapicore.model.data.LessonType
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class AudsServletWithErrorHandling : HttpServletWithErrorHandling() {
+class AudsServlet : HttpServletWithErrorHandling() {
     private val audsRepository: AuditoriumRepository = Config.auditoriumRepository
 
     /**

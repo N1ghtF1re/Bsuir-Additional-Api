@@ -8,7 +8,7 @@ import men.brakh.bsuirapi.extentions.writeJson
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class SourcesServletWithErrorHandling : HttpServletWithErrorHandling() {
+class SourcesServlet : HttpServletWithErrorHandling() {
     private val srcRepo = Config.newsSourceRepository
 
     override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {

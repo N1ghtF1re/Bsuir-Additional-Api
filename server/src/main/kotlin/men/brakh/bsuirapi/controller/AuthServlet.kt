@@ -11,7 +11,7 @@ import men.brakh.bsuirapicore.model.data.User
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class AuthServletWithErrorHandling: HttpServletWithErrorHandling() {
+class AuthServlet: HttpServletWithErrorHandling() {
     private val userRepo = Config.userRepository
     private val bsuirApi = BsuirApi
     private val passwordEncrypter = Config.passwordEncrypter
@@ -23,7 +23,7 @@ class AuthServletWithErrorHandling: HttpServletWithErrorHandling() {
         val params: Map<String, String> = req.singleParameters
         
         require("login" in params && "password" in params) {
-            return resp.writeError("login and password is required", 401)
+            return resp.writeError("login and password is required", 400)
         }
         
         
@@ -36,7 +36,12 @@ class AuthServletWithErrorHandling: HttpServletWithErrorHandling() {
 
         val user = User(login = login, password = encryptedPassword)
 
-        userRepo.add(user)
+        val dbUser = userRepo.find(login=login)
+        if(dbUser == null) {
+            userRepo.add(user)
+        } else {
+            userRepo.update(dbUser.copy(password = user.password))
+        }
 
         val jwtToken = accessJwtTokensFactory.createToken(user, 1)
 

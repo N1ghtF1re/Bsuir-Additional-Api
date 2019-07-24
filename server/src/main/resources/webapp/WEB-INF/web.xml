@@ -8,46 +8,57 @@
     
     <servlet>
         <servlet-name>freeAudsServlet</servlet-name>
-        <servlet-class>men.brakh.bsuirapi.controller.FreeAudsServletWithErrorHandling</servlet-class>
+        <servlet-class>men.brakh.bsuirapi.controller.FreeAudsServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet>
         <servlet-name>audsServlet</servlet-name>
-        <servlet-class>men.brakh.bsuirapi.controller.AudsServletWithErrorHandling</servlet-class>
+        <servlet-class>men.brakh.bsuirapi.controller.AudsServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet>
         <servlet-name>buildingsServlet</servlet-name>
-        <servlet-class>men.brakh.bsuirapi.controller.BuildingsServletWithErrorHandling</servlet-class>
+        <servlet-class>men.brakh.bsuirapi.controller.BuildingsServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet>
         <servlet-name>newsServlet</servlet-name>
-        <servlet-class>men.brakh.bsuirapi.controller.NewsServletWithErrorHandling</servlet-class>
+        <servlet-class>men.brakh.bsuirapi.controller.NewsServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet>
         <servlet-name>newsListServlet</servlet-name>
-        <servlet-class>men.brakh.bsuirapi.controller.NewsListServletWithErrorHandling</servlet-class>
+        <servlet-class>men.brakh.bsuirapi.controller.NewsListServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet>
         <servlet-name>srcServlet</servlet-name>
-        <servlet-class>men.brakh.bsuirapi.controller.SourcesServletWithErrorHandling</servlet-class>
+        <servlet-class>men.brakh.bsuirapi.controller.SourcesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet>
         <servlet-name>authServlet</servlet-name>
-        <servlet-class>men.brakh.bsuirapi.controller.AuthServletWithErrorHandling</servlet-class>
+        <servlet-class>men.brakh.bsuirapi.controller.AuthServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
+    <servlet>
+        <servlet-name>userInfoServlet</servlet-name>
+        <servlet-class>men.brakh.bsuirapi.controller.UserInfoServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+
+    <servlet-mapping>
+        <servlet-name>userInfoServlet</servlet-name>
+        <url-pattern>/api/v1/user</url-pattern>
+    </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>authServlet</servlet-name>

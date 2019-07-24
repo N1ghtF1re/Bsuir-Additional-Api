@@ -2,13 +2,18 @@ package men.brakh.bsuirapi.model.bsuirapi
 
 import com.google.gson.Gson
 import men.brakh.bsuirapi.Config
+import men.brakh.bsuirapi.UnauthorizedException
 import men.brakh.bsuirapicore.extentions.weeksBetween
 import men.brakh.bsuirapicore.model.data.Auditorium
 import men.brakh.bsuirapicore.model.data.Lesson
+import men.brakh.bsuirapicore.model.data.User
+import men.brakh.bsuirapicore.model.data.UserInfo
 import org.apache.http.HttpMessage
 import org.apache.http.client.entity.EntityBuilder
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase
+import org.apache.http.client.methods.HttpGet
 import org.apache.http.client.methods.HttpPost
+import org.apache.http.client.utils.URIBuilder
 import org.apache.http.entity.ContentType
 import org.apache.http.impl.client.HttpClientBuilder
 import org.slf4j.Logger
@@ -17,10 +22,16 @@ import java.net.URL
 import java.util.*
 
 
+
+
+
+
 /* API Class: */
 object BsuirApi {
     private val logger: Logger = LoggerFactory.getLogger(BsuirApi::class.java)
     private val host = Config.bsuirApiHost
+    private val passwordEncrypter = Config.passwordEncrypter
+
 
     // EXTENSION:
     private fun <T : HttpMessage> T.jsonRequest(): T {
@@ -37,15 +48,55 @@ object BsuirApi {
                 .build()
     }
 
+    private fun <T : HttpMessage> T.authorize(authorizedUser: User): T{
+        val password = passwordEncrypter.decrypt(authorizedUser.password)
+        val token = tryAuth(authorizedUser.login, password) ?: throw UnauthorizedException()
+
+        this.setHeader("Cookie", "JSESSIONID=$token")
+        return this
+    }
+
+    private fun httpClient() = HttpClientBuilder
+                .create()
+                .build()
+
+    fun getUserInfo(id: Int): UserInfo {
+        httpClient().use { client ->
+            val builder = URIBuilder("$host/profiles")
+            builder.setParameter("id", id.toString())
+
+            val get = HttpGet(builder.build())
+                    .jsonRequest()
+
+            client.execute(get).use { resp ->
+                return Gson()
+                        .fromJson(resp.entity.content.reader(), PersonalCVDto::class.java)
+                        .toUserInfoObject()
+            }
+
+        }
+    }
+
+    fun getUserInfo(authorizedUser: User): UserInfo {
+        httpClient().use { client ->
+            val get = HttpGet("$host/portal/personalCV")
+                    .jsonRequest()
+                    .authorize(authorizedUser)
+
+            client.execute(get).use { resp ->
+                return Gson()
+                        .fromJson(resp.entity.content.reader(), PersonalCVDto::class.java)
+                        .toUserInfoObject()
+            }
+        }
+    }
 
     fun tryAuth(login: String, password: String): String? {
         fun getToken(cookie: String): String {
             return cookie.split(";").first().substring("JSESSIONID=".length)
         }
 
-        val client = HttpClientBuilder
-                .create()
-                .build()
+        val client = httpClient()
 
         val userData = mapOf(
                 "password" to password,
@@ -129,4 +180,9 @@ object BsuirApi {
 
         return currDate.weeksBetween(firstSeptember) % 4 + 1
     }
+}
+
+fun main() {
+    val user = Config.userRepository.findById(1)!!
+    println(BsuirApi.getUserInfo(user))
 }
