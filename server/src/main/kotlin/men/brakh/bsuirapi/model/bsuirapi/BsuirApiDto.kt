@@ -19,12 +19,25 @@ import kotlin.math.roundToInt
 
 val logger: Logger = LoggerFactory.getLogger("BsuirApiDto")
 
+private fun String.toDate(): Date? {
+    return try {
+        val date = SimpleDateFormat("dd.MM.yyyy").parse(this)
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        calendar.set(Calendar.HOUR_OF_DAY, 12)
+        calendar.time
+    } catch (e: ParseException) {
+        null
+    }
+}
+
+
 data class AuthorizationDto(val loggedIn: Boolean, val username: String, val fio: String, val message: String)
 
 data class PersonalInformationDto(val name: String, val group: String, val studentRecordBookNumber: String, val photoUrl: String)
 
 data class DiplomaDto(val name: String?, val theme: String?) {
-    fun toDiplomaInfoObject() = DiplomaInfo(topic = theme, head = name)
+    fun toDiplomaInfoObject() = DiplomaInfo(topic = theme, teacher = name)
 }
 
 data class SkillDto(val id: Int, val name: String)
@@ -38,7 +51,7 @@ data class MarkDto(val subject: String,
                    val date: String,
                    val teacher: String?,
                    val commonMark: Double?,
-                   val commonRetakes: Int?,
+                   val commonRetakes: Double?,
                    val retakesCount: Int,
                    val idSubject: Int,
                    val idFormOfControl: Int
@@ -52,13 +65,6 @@ data class MarkPageDto(val averageMark: Double, val marks: List<MarkDto>) {
 data class MarkBookDto(val number: String,
                        val averageMark: Double,
                        val markPages: Map<String, MarkPageDto>) {
-    private fun String.toDate(): Date? {
-        return try {
-            SimpleDateFormat("dd.MM.yyyy").parse(this)
-        } catch (e: ParseException) {
-            null
-        }
-    }
 
     fun toRecordBookObject() = RecordBook(
                 number = number,
@@ -66,7 +72,7 @@ data class MarkBookDto(val number: String,
                 semesters = markPages.mapNotNull { (semester, marksPage) ->
                     val marks = marksPage.marks.mapNotNull {
                         if(it.formOfControl != null) {
-                            val subjectStatistic = SubjectStatistic(averageMark = it.commonMark, averageRetakes = it.commonRetakes)
+                            val subjectStatistic = SubjectStatistic(averageMark = it.commonMark, retakeProbability = it.commonRetakes)
 
                             Mark(subject = it.subject,
                                     date = it.date.toDate(),
@@ -75,7 +81,7 @@ data class MarkBookDto(val number: String,
                                     mark = if (it.mark == "") null else it.mark,
                                     retakesCount = it.retakesCount,
                                     teacher = it.teacher,
-                                    statistic = if(subjectStatistic.averageMark == null && subjectStatistic.averageRetakes == null)
+                                    statistic = if(subjectStatistic.averageMark == null && subjectStatistic.retakeProbability == null)
                                         null
                                     else
                                         subjectStatistic
@@ -113,13 +119,12 @@ data class PersonalCVDto(val id: Int,
                          val skills: List<SkillDto>,
                          val references: List<ReferenceDto>
 ) {
-    private fun String.toDate() = SimpleDateFormat("dd.MM.yyyy").parse(this)
     fun toUserInfoObject() = UserInfo(
             id = id,
             firstName = firstName,
             lastName = lastName,
             middleName = middleName,
-            birthDay = birthDate.toDate(),
+            birthDay = birthDate.toDate()!!,
             summary = summary,
             education = StudyInfo(
                     faculty = faculty,

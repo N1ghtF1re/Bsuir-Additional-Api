@@ -2,7 +2,7 @@ package men.brakh.bsuirapicore.model.data
 
 import java.util.*
 
-data class SubjectStatistic(val averageMark: Double?, val averageRetakes: Int?)
+data class SubjectStatistic(val averageMark: Double?, val retakeProbability: Double?)
 
 data class Mark(val subject: String,
                 val formOfControl: String,

@@ -8,6 +8,7 @@ import men.brakh.bsuirapi.extentions.writeError
 import men.brakh.bsuirapi.extentions.writeJson
 import men.brakh.bsuirapi.model.bsuirapi.BsuirApi
 import men.brakh.bsuirapicore.model.data.User
+import java.util.*
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -17,6 +18,17 @@ class AuthServlet: HttpServletWithErrorHandling(), JsonServlet {
     private val passwordEncrypter = Config.passwordEncrypter
     private val accessJwtTokensFactory = Config.accessJwtTokenFactory
 
+
+    private fun nexAugust(): Date {
+        val calendar = Calendar.getInstance()
+        calendar.time = Date()
+        calendar.set(Calendar.HOUR_OF_DAY, 12)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.DAY_OF_MONTH, 31)
+        calendar.set(Calendar.MONTH, 7)
+        calendar.add(Calendar.YEAR, 1)
+        return calendar.time
+    }
     /**
      * params:
      * @param login - IIS login
@@ -46,7 +58,15 @@ class AuthServlet: HttpServletWithErrorHandling(), JsonServlet {
             userRepo.update(dbUser.copy(password = user.password))
         }
 
-        val jwtToken = accessJwtTokensFactory.createToken(user, 99999)
+        val calendar = Calendar.getInstance()
+        calendar.time = Date()
+        calendar.set(Calendar.HOUR, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.DAY_OF_MONTH, 0)
+        calendar.set(Calendar.MONTH, 9)
+        calendar.add(Calendar.YEAR, 1)
+
+        val jwtToken = accessJwtTokensFactory.createToken(user, nexAugust())
 
         resp.writeJson(mapOf("token" to jwtToken))
     }

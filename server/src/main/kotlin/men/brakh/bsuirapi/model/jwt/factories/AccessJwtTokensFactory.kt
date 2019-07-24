@@ -11,20 +11,23 @@ import java.util.*
 
 
 class AccessJwtTokensFactory(key: String, userRepository: UserRepository) : JwtTokensAbstractFactory(key, userRepository) {
-    override fun createToken(user: User, minutesToExpires: Int): String{
+    override fun createToken(user: User, expirationDate: Date): String{
         val secretKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(key))
-
-        val calendar = Calendar.getInstance()
-        calendar.time = Date()
-        calendar.add(Calendar.MINUTE, minutesToExpires)
 
         return Jwts
                 .builder()
                 .setSubject(user.login)
                 .signWith(secretKey)
-                .setExpiration(calendar.time)
+                .setExpiration(expirationDate)
                 .compact()
+    }
 
+    override fun createToken(user: User, minutesToExpires: Int): String{
+        val calendar = Calendar.getInstance()
+        calendar.time = Date()
+        calendar.add(Calendar.MINUTE, minutesToExpires)
+
+        return createToken(user, calendar.time)
     }
 
     override fun fromRaw(rawJwtToken: RawJwtToken): JwtToken
