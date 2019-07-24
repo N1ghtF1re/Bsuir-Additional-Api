@@ -15,7 +15,6 @@ fun HttpServletResponse.setDefaultJsonHeaders() {
 
 fun HttpServletResponse.writeError(msg: String, code: Int = HttpServletResponse.SC_BAD_REQUEST) {
     val errorMap = mapOf(
-            "ok" to false,
             "msg" to msg
     )
 

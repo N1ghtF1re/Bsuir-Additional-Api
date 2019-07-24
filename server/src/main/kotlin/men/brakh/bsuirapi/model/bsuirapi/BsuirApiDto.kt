@@ -56,7 +56,7 @@ data class PersonalCVDto(val id: Int,
                     faculty = faculty,
                     course = cource,
                     speciality = speciality,
-                    studentGroup = studentGroup
+                    group = studentGroup
             ),
             photo = photoUrl,
             rating = ratting,

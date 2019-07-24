@@ -8,7 +8,7 @@ data class StudyInfo(
         val faculty: String,
         val course: Int,
         val speciality: String,
-        val studentGroup: String
+        val group: String
 )
 
 data class Reference(val name: String, val reference: String)

@@ -3,6 +3,7 @@ package men.brakh.bsuirapi.model.bsuirapi
 import com.google.gson.Gson
 import men.brakh.bsuirapi.Config
 import men.brakh.bsuirapi.UnauthorizedException
+import men.brakh.bsuirapi.UserNotFoundException
 import men.brakh.bsuirapicore.extentions.weeksBetween
 import men.brakh.bsuirapicore.model.data.Auditorium
 import men.brakh.bsuirapicore.model.data.Lesson
@@ -69,9 +70,13 @@ object BsuirApi {
                     .jsonRequest()
 
             client.execute(get).use { resp ->
-                return Gson()
-                        .fromJson(resp.entity.content.reader(), PersonalCVDto::class.java)
-                        .toUserInfoObject()
+                if(resp.statusLine.statusCode == 200) {
+                    return Gson()
+                            .fromJson(resp.entity.content.reader(), PersonalCVDto::class.java)
+                            .toUserInfoObject()
+                } else {
+                    throw UserNotFoundException()
+                }
             }
 
         }

@@ -49,6 +49,12 @@
     </servlet>
 
     <servlet>
+        <servlet-name>currentUserInfoServlet</servlet-name>
+        <servlet-class>men.brakh.bsuirapi.controller.CurrentUserInfoServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet>
         <servlet-name>userInfoServlet</servlet-name>
         <servlet-class>men.brakh.bsuirapi.controller.UserInfoServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
@@ -57,6 +63,11 @@
 
     <servlet-mapping>
         <servlet-name>userInfoServlet</servlet-name>
+        <url-pattern>/api/v1/users/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>currentUserInfoServlet</servlet-name>
         <url-pattern>/api/v1/user</url-pattern>
     </servlet-mapping>
 
