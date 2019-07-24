@@ -11,7 +11,8 @@ data class StudyInfo(
         val group: String
 )
 
-data class Reference(val name: String, val reference: String)
+data class Reference(val id: Int, val name: String, val reference: String)
+data class Skill(val id: Int, val name: String)
 
 data class UserInfo(val id: Int,
                     val firstName: String,
@@ -24,7 +25,7 @@ data class UserInfo(val id: Int,
 
                     val education: StudyInfo,
 
-                    val skills: List<String>,
+                    val skills: List<Skill>,
                     val references: List<Reference>,
 
                     val settings: UserSettings

@@ -7,12 +7,6 @@ import men.brakh.bsuirapicore.model.data.Token
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-fun HttpServletResponse.setDefaultJsonHeaders() {
-    this.contentType = "application/json"
-    this.characterEncoding = "UTF-8"
-    this.setHeader("Access-Control-Allow-Origin", "*")
-}
-
 fun HttpServletResponse.writeError(msg: String, code: Int = HttpServletResponse.SC_BAD_REQUEST) {
     val errorMap = mapOf(
             "msg" to msg

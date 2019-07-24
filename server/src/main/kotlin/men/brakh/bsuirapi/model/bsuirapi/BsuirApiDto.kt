@@ -60,8 +60,8 @@ data class PersonalCVDto(val id: Int,
             ),
             photo = photoUrl,
             rating = ratting,
-            references = references.map { Reference(name = it.name, reference = it.reference) },
-            skills = skills.map { it.name },
+            references = references.map { Reference(id = it.id, name = it.name, reference = it.reference) },
+            skills = skills.map { Skill(id = it.id, name = it.name)},
             settings = toUserSettings()
     )
 

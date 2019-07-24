@@ -8,12 +8,12 @@ import men.brakh.bsuirapicore.extentions.weeksBetween
 import men.brakh.bsuirapicore.model.data.Auditorium
 import men.brakh.bsuirapicore.model.data.Lesson
 import men.brakh.bsuirapicore.model.data.User
-import men.brakh.bsuirapicore.model.data.UserInfo
 import org.apache.http.HttpMessage
 import org.apache.http.client.entity.EntityBuilder
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.client.methods.HttpPost
+import org.apache.http.client.methods.HttpPut
 import org.apache.http.client.utils.URIBuilder
 import org.apache.http.entity.ContentType
 import org.apache.http.impl.client.HttpClientBuilder
@@ -61,7 +61,43 @@ object BsuirApi {
                 .create()
                 .build()
 
-    fun getUserInfo(id: Int): UserInfo {
+    fun saveShowRating(user: User, isShow: Boolean) {
+        httpClient().use { client ->
+            val put = HttpPut("$host/portal/saveShowRating")
+                    .jsonRequest()
+                    .authorize(user)
+
+            put.setJsonEntity(mapOf("showRating" to isShow))
+
+            client.execute(put)
+        }
+    }
+
+    fun savePublished(user: User, isPub: Boolean) {
+        httpClient().use { client ->
+            val put = HttpPut("$host/portal/savePublished")
+                    .jsonRequest()
+                    .authorize(user)
+
+            put.setJsonEntity(mapOf("published" to isPub))
+
+            client.execute(put)
+        }
+    }
+
+    fun saveSearchJob(user: User, isSearchJob: Boolean) {
+        httpClient().use { client ->
+            val put = HttpPut("$host/portal/saveSearchJob")
+                    .jsonRequest()
+                    .authorize(user)
+
+            put.setJsonEntity(mapOf("searchJob" to isSearchJob))
+
+            client.execute(put)
+        }
+    }
+
+    fun getUserCV(id: Int): PersonalCVDto {
         httpClient().use { client ->
             val builder = URIBuilder("$host/profiles")
             builder.setParameter("id", id.toString())
@@ -73,7 +109,6 @@ object BsuirApi {
                 if(resp.statusLine.statusCode == 200) {
                     return Gson()
                             .fromJson(resp.entity.content.reader(), PersonalCVDto::class.java)
-                            .toUserInfoObject()
                 } else {
                     throw UserNotFoundException()
                 }
@@ -82,7 +117,7 @@ object BsuirApi {
         }
     }
 
-    fun getUserInfo(authorizedUser: User): UserInfo {
+    fun getPersonalCV(authorizedUser: User): PersonalCVDto {
         httpClient().use { client ->
             val get = HttpGet("$host/portal/personalCV")
                     .jsonRequest()
@@ -91,10 +126,12 @@ object BsuirApi {
             client.execute(get).use { resp ->
                 return Gson()
                         .fromJson(resp.entity.content.reader(), PersonalCVDto::class.java)
-                        .toUserInfoObject()
             }
         }
     }
+
+
+
 
     fun tryAuth(login: String, password: String): String? {
         fun getToken(cookie: String): String {
@@ -185,9 +222,4 @@ object BsuirApi {
 
         return currDate.weeksBetween(firstSeptember) % 4 + 1
     }
-}
-
-fun main() {
-    val user = Config.userRepository.findById(1)!!
-    println(BsuirApi.getUserInfo(user))
 }

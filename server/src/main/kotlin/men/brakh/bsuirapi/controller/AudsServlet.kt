@@ -2,7 +2,7 @@ package men.brakh.bsuirapi.controller
 
 import men.brakh.bsuirapi.Config
 import men.brakh.bsuirapi.controller.basic.HttpServletWithErrorHandling
-import men.brakh.bsuirapi.extentions.setDefaultJsonHeaders
+import men.brakh.bsuirapi.controller.basic.JsonServlet
 import men.brakh.bsuirapi.extentions.singleParameters
 import men.brakh.bsuirapi.extentions.writeError
 import men.brakh.bsuirapi.extentions.writeJson
@@ -11,7 +11,7 @@ import men.brakh.bsuirapicore.model.data.LessonType
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class AudsServlet : HttpServletWithErrorHandling() {
+class AudsServlet : HttpServletWithErrorHandling(), JsonServlet {
     private val audsRepository: AuditoriumRepository = Config.auditoriumRepository
 
     /**
@@ -22,8 +22,6 @@ class AudsServlet : HttpServletWithErrorHandling() {
      * @type - Auditorium type
      */
     override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {
-        resp.setDefaultJsonHeaders()
-
         val params: Map<String, String> = req.singleParameters
 
         val floor: Int? = params["floor"]?.toIntOrNull()

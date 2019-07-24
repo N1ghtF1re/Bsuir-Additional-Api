@@ -2,7 +2,7 @@ package men.brakh.bsuirapi.controller
 
 import men.brakh.bsuirapi.Config
 import men.brakh.bsuirapi.controller.basic.HttpServletWithErrorHandling
-import men.brakh.bsuirapi.extentions.setDefaultJsonHeaders
+import men.brakh.bsuirapi.controller.basic.JsonServlet
 import men.brakh.bsuirapi.extentions.writeJson
 import men.brakh.bsuirapi.repository.AuditoriumRepository
 import men.brakh.bsuirapicore.model.data.Building
@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 
-class BuildingsServlet : HttpServletWithErrorHandling() {
+class BuildingsServlet : HttpServletWithErrorHandling(), JsonServlet {
     private companion object {
         private val audsRepository: AuditoriumRepository = Config.auditoriumRepository
         val buildings: List<Building> = audsRepository.findAll()
@@ -27,7 +27,6 @@ class BuildingsServlet : HttpServletWithErrorHandling() {
     }
 
     override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {
-        resp.setDefaultJsonHeaders()
 
         resp.writeJson(buildings)
     }

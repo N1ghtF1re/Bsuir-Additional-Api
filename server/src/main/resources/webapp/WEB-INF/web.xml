@@ -60,10 +60,21 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
+    <servlet>
+        <servlet-name>currentUserSettingsServlet</servlet-name>
+        <servlet-class>men.brakh.bsuirapi.controller.CurrentUserSettingsServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
 
     <servlet-mapping>
         <servlet-name>userInfoServlet</servlet-name>
         <url-pattern>/api/v1/users/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>currentUserSettingsServlet</servlet-name>
+        <url-pattern>/api/v1/user/settings</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>

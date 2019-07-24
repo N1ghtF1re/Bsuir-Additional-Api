@@ -2,13 +2,14 @@ package men.brakh.bsuirapi.controller
 
 import men.brakh.bsuirapi.Config
 import men.brakh.bsuirapi.controller.basic.HttpServletWithErrorHandling
+import men.brakh.bsuirapi.controller.basic.JsonServlet
 import men.brakh.bsuirapi.extentions.*
 import men.brakh.bsuirapicore.model.data.News
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 
-class NewsServlet : HttpServletWithErrorHandling() {
+class NewsServlet : HttpServletWithErrorHandling(), JsonServlet {
     companion object {
         private val newsRepo = Config.newsRepository
         private val srcRepo = Config.newsSourceRepository
@@ -16,7 +17,6 @@ class NewsServlet : HttpServletWithErrorHandling() {
     }
 
     override fun doPost(req: HttpServletRequest, resp: HttpServletResponse) {
-        resp.setDefaultJsonHeaders()
 
         val token = req.extractToken(tokenRepo) ?: return resp.writeError("Authorization token is required", 403)
 
@@ -59,8 +59,6 @@ class NewsServlet : HttpServletWithErrorHandling() {
      * @param sources - list of sources id. Example: sources=1,2,3
      */
     override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {
-        resp.setDefaultJsonHeaders()
-
         val params: Map<String, String> = req.singleParameters
 
         if("id" !in params) {

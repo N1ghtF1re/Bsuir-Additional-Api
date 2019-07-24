@@ -2,7 +2,7 @@ package men.brakh.bsuirapi.controller
 
 import men.brakh.bsuirapi.Config
 import men.brakh.bsuirapi.controller.basic.HttpServletWithErrorHandling
-import men.brakh.bsuirapi.extentions.setDefaultJsonHeaders
+import men.brakh.bsuirapi.controller.basic.JsonServlet
 import men.brakh.bsuirapi.extentions.singleParameters
 import men.brakh.bsuirapi.extentions.writeJson
 import men.brakh.bsuirapi.model.dto.NewsListDto
@@ -10,7 +10,7 @@ import java.util.*
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class NewsListServlet : HttpServletWithErrorHandling() {
+class NewsListServlet : HttpServletWithErrorHandling(), JsonServlet {
     private val newsRepo = Config.newsRepository
     private val srcRepo = Config.newsSourceRepository
 
@@ -34,8 +34,6 @@ class NewsListServlet : HttpServletWithErrorHandling() {
      * @param sources - list of sources id. Example: sources=1,2,3
      */
     override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {
-        resp.setDefaultJsonHeaders()
-
         val params: Map<String, String> = req.singleParameters
         val multiParams: Map<String, Array<String>> = req.parameterMap
 

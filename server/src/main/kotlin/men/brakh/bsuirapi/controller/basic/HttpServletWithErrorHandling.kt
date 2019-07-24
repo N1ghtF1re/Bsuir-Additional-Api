@@ -14,13 +14,20 @@ import javax.servlet.http.HttpServletResponse
 open class HttpServletWithErrorHandling: HttpServlet() {
     private val logger = LoggerFactory.getLogger("Exception Handling")
     override fun service(req: HttpServletRequest, resp: HttpServletResponse) {
+
+        resp.characterEncoding = "UTF-8"
+        resp.setHeader("Access-Control-Allow-Origin", "*")
+
+        if(this is JsonServlet) {
+            resp.contentType = "application/json"
+        }
+
         try {
             super.service(req, resp)
         } catch (e: Exception) {
             handleError(e, resp)
         }
     }
-
 
     private fun handleError(e: Exception, resp: HttpServletResponse) {
         when(e) {

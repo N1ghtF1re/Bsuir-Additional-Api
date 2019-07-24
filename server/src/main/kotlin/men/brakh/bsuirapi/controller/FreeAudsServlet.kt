@@ -1,7 +1,7 @@
 package men.brakh.bsuirapi.controller
 
 import men.brakh.bsuirapi.controller.basic.HttpServletWithErrorHandling
-import men.brakh.bsuirapi.extentions.setDefaultJsonHeaders
+import men.brakh.bsuirapi.controller.basic.JsonServlet
 import men.brakh.bsuirapi.extentions.singleParameters
 import men.brakh.bsuirapi.extentions.writeError
 import men.brakh.bsuirapi.extentions.writeJson
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse
 
 
 
-class FreeAudsServlet : HttpServletWithErrorHandling() {
+class FreeAudsServlet : HttpServletWithErrorHandling(), JsonServlet {
 
     /**
      * PARAMS:
@@ -24,8 +24,6 @@ class FreeAudsServlet : HttpServletWithErrorHandling() {
      * @param time - Lesson time in format "HH:mm" (Any time between start and end of lesson). Default: now
      */
     override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {
-        resp.setDefaultJsonHeaders()
-
         val params: Map<String, String> = req.singleParameters
 
         val building: Int = params["building"]?.toIntOrNull() ?: return resp.writeError("Building parameter is required")
