@@ -5,7 +5,10 @@ import men.brakh.bsuirapicore.model.data.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.sql.Time
+import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.math.roundToInt
 
 
 /*  DTO:  */
@@ -20,9 +23,75 @@ data class AuthorizationDto(val loggedIn: Boolean, val username: String, val fio
 
 data class PersonalInformationDto(val name: String, val group: String, val studentRecordBookNumber: String, val photoUrl: String)
 
+data class DiplomaDto(val name: String?, val theme: String?) {
+    fun toDiplomaInfoObject() = DiplomaInfo(topic = theme, head = name)
+}
+
 data class SkillDto(val id: Int, val name: String)
 
 data class ReferenceDto(val id: Int, val name: String, val reference: String)
+
+data class MarkDto(val subject: String,
+                   val formOfControl: String?,
+                   val hours: String,
+                   val mark: String,
+                   val date: String,
+                   val teacher: String?,
+                   val commonMark: Double?,
+                   val commonRetakes: Int?,
+                   val retakesCount: Int,
+                   val idSubject: Int,
+                   val idFormOfControl: Int
+)
+
+data class MarkPageDto(val averageMark: Double, val marks: List<MarkDto>) {
+    fun isEmpty() = marks.isEmpty()
+
+}
+
+data class MarkBookDto(val number: String,
+                       val averageMark: Double,
+                       val markPages: Map<String, MarkPageDto>) {
+    private fun String.toDate(): Date? {
+        return try {
+            SimpleDateFormat("dd.MM.yyyy").parse(this)
+        } catch (e: ParseException) {
+            null
+        }
+    }
+
+    fun toRecordBookObject() = RecordBook(
+                number = number,
+                averageMark = averageMark,
+                semesters = markPages.mapNotNull { (semester, marksPage) ->
+                    val marks = marksPage.marks.mapNotNull {
+                        if(it.formOfControl != null) {
+                            val subjectStatistic = SubjectStatistic(averageMark = it.commonMark, averageRetakes = it.commonRetakes)
+
+                            Mark(subject = it.subject,
+                                    date = it.date.toDate(),
+                                    formOfControl = it.formOfControl,
+                                    hours = it.hours.toDoubleOrNull()?.roundToInt(),
+                                    mark = if (it.mark == "") null else it.mark,
+                                    retakesCount = it.retakesCount,
+                                    teacher = it.teacher,
+                                    statistic = if(subjectStatistic.averageMark == null && subjectStatistic.averageRetakes == null)
+                                        null
+                                    else
+                                        subjectStatistic
+                            )
+                        }
+                        else
+                            null
+                    }
+                    if(marksPage.isEmpty())
+                        null
+                    else
+                        Semester(number = semester.toInt(), averageMark = marksPage.averageMark, marks = marks)
+                }
+        )
+    }
+
 
 data class PersonalCVDto(val id: Int,
                          val firstName: String,

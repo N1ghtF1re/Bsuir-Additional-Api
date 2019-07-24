@@ -34,6 +34,7 @@ object BsuirApi {
     private val passwordEncrypter = Config.passwordEncrypter
 
 
+
     // EXTENSION:
     private fun <T : HttpMessage> T.jsonRequest(): T {
         this.setHeader("Accept", "application/json")
@@ -60,6 +61,30 @@ object BsuirApi {
     private fun httpClient() = HttpClientBuilder
                 .create()
                 .build()
+
+    fun getDiploma(user: User): DiplomaDto {
+        httpClient().use { client ->
+            val get = HttpGet("$host/portal/markbook/diploma")
+                    .jsonRequest()
+                    .authorize(user)
+
+            client.execute(get).use { resp ->
+                return Gson().fromJson(resp.entity.content.reader(), DiplomaDto::class.java)
+            }
+        }
+    }
+
+    fun getMarkBook(user: User): MarkBookDto {
+        httpClient().use { client ->
+            val get = HttpGet("$host/portal/markbook")
+                    .jsonRequest()
+                    .authorize(user)
+
+            client.execute(get).use { resp ->
+                return Gson().fromJson(resp.entity.content.reader(), MarkBookDto::class.java)
+            }
+        }
+    }
 
     fun saveShowRating(user: User, isShow: Boolean) {
         httpClient().use { client ->

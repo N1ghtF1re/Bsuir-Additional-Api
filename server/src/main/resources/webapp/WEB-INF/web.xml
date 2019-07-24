@@ -66,10 +66,31 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
+    <servlet>
+        <servlet-name>recordBookServlet</servlet-name>
+        <servlet-class>men.brakh.bsuirapi.controller.RecordBookServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>diplomaInfoServlet</servlet-name>
+        <servlet-class>men.brakh.bsuirapi.controller.DiplomaServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>userInfoServlet</servlet-name>
         <url-pattern>/api/v1/users/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>recordBookServlet</servlet-name>
+        <url-pattern>/api/v1/user/record-book</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>diplomaInfoServlet</servlet-name>
+        <url-pattern>/api/v1/user/record-book/diploma</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
