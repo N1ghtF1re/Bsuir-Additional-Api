@@ -78,9 +78,21 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
+    <servlet>
+        <servlet-name>groupInfoServlet</servlet-name>
+        <servlet-class>men.brakh.bsuirapi.controller.GroupInfoServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+
     <servlet-mapping>
         <servlet-name>userInfoServlet</servlet-name>
         <url-pattern>/api/v1/users/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>groupInfoServlet</servlet-name>
+        <url-pattern>/api/v1/user/group</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>

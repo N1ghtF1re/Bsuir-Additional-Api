@@ -31,6 +31,8 @@ private fun String.toDate(): Date? {
     }
 }
 
+private fun String.getNotEmpty(): String? = if(this == "") null else this
+
 
 data class AuthorizationDto(val loggedIn: Boolean, val username: String, val fio: String, val message: String)
 
@@ -62,6 +64,20 @@ data class MarkPageDto(val averageMark: Double, val marks: List<MarkDto>) {
 
 }
 
+data class GroupInfoStudentDto(val position: String, val fio: String, val phone: String, val email: String)
+
+data class GroupInfoDto(val numberGroup: String, val groupInfoStudentDto: List<GroupInfoStudentDto>) {
+    fun toGroupInfoObject() = GroupInfo(
+            name = numberGroup,
+            members = groupInfoStudentDto.map { GroupMate(
+                    name = it.fio,
+                    email = it.email.getNotEmpty(),
+                    phone = it.phone.getNotEmpty(),
+                    role = it.position.getNotEmpty()
+            ) }
+    )
+}
+
 data class MarkBookDto(val number: String,
                        val averageMark: Double,
                        val markPages: Map<String, MarkPageDto>) {
@@ -78,7 +94,7 @@ data class MarkBookDto(val number: String,
                                     date = it.date.toDate(),
                                     formOfControl = it.formOfControl,
                                     hours = it.hours.toDoubleOrNull()?.roundToInt(),
-                                    mark = if (it.mark == "") null else it.mark,
+                                    mark = it.mark.getNotEmpty(),
                                     retakesCount = it.retakesCount,
                                     teacher = it.teacher,
                                     statistic = if(subjectStatistic.averageMark == null && subjectStatistic.retakeProbability == null)

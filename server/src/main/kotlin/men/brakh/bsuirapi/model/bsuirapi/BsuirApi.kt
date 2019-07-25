@@ -86,6 +86,18 @@ object BsuirApi {
         }
     }
 
+    fun getGroupInfo(user: User): GroupInfoDto {
+        httpClient().use { client ->
+            val get = HttpGet("$host/portal/groupInfo")
+                    .jsonRequest()
+                    .authorize(user)
+
+            client.execute(get).use { resp ->
+                return Gson().fromJson(resp.entity.content.reader(), GroupInfoDto::class.java)
+            }
+        }
+    }
+
     fun saveShowRating(user: User, isShow: Boolean) {
         httpClient().use { client ->
             val put = HttpPut("$host/portal/saveShowRating")
