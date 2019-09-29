@@ -6,18 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="core" />
-        <module name="server" />
-        <module name="news-parser" />
         <module name="bot" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="bot" target="1.5" />
-      <module name="bsuir-additional-api" target="1.5" />
-      <module name="core" target="1.5" />
-      <module name="news-parser" target="1.5" />
-      <module name="server" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
