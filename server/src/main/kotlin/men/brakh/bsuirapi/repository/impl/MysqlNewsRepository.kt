@@ -6,15 +6,16 @@ import men.brakh.bsuirapicore.extentions.toTimestamp
 import men.brakh.bsuirapicore.model.data.News
 import men.brakh.bsuirapicore.model.data.NewsSource
 import men.brakh.bsuirapi.repository.NewsRepository
+import men.brakh.bsuirapi.repository.NewsSourceRepository
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.Statement
 import java.util.*
 
-class MysqlNewsRepository(tableName: String) : MysqlRepository<News>(tableName), NewsRepository  {
-    private val srcRepo = Config.newsSourceRepository
+class MysqlNewsRepository(tableName: String, val srcRepo: NewsSourceRepository)
+                    : MysqlRepository<News>(tableName), NewsRepository  {
 
-    constructor() : this("news")
+    constructor(srcRepo: NewsSourceRepository) : this("news", srcRepo)
 
 
     override fun extractor(resultSet: ResultSet): News? {

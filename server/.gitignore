@@ -8,6 +8,7 @@
 .idea/**/dataSources.xml
 .idea/**/dataSources.local.xml
 .idea/**/sqldialects.xml
+.idea/artifacts/
 
 # Generated files
 .idea/**/contentModel.xml

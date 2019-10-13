@@ -1,22 +1,45 @@
 package men.brakh.bsuirapi.repository.impl
 
-import men.brakh.bsuirapicore.model.data.Token
+import men.brakh.bsuirapi.inrfastructure.authorization.Permission
+import men.brakh.bsuirapi.inrfastructure.authorization.servicetoken.ServiceToken
 import men.brakh.bsuirapi.repository.TokenRepository
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.Statement
 
-class MysqlTokenRepository (tablename: String) : MysqlRepository<Token>(tablename), TokenRepository {
+class MysqlTokenRepository (tablename: String) : MysqlRepository<ServiceToken>(tablename), TokenRepository {
     constructor() : this("tokens")
 
-    override fun extractor(resultSet: ResultSet): Token? {
-        return Token(
+    override fun extractor(resultSet: ResultSet): ServiceToken? {
+        return ServiceToken(
                 token = resultSet.getString("token"),
-                description = resultSet.getString("description")
+                description = resultSet.getString("description"),
+                id = resultSet.getLong("id"),
+                permissions = getPermissions(resultSet.getLong("id"))
         )
     }
 
-    override fun add(entity: Token): Token {
+    private fun getPermissions(id: Long): List<Permission> {
+        connection.use { connection ->
+            val statement = connection.prepareStatement("SELECT * FROM `permissions` WHERE token_id = ?")
+            statement.use {stmt ->
+                stmt.setLong(1, id)
+                val resultSet = stmt.executeQuery()
+
+                val sequence: Sequence<Permission> = generateSequence {
+                    if(!resultSet.next()) {
+                        return@generateSequence(null)
+                    }
+
+                    Permission.valueOf(resultSet.getString("permission"))
+                }
+
+                return sequence.toList()
+            }
+        }
+    }
+
+    override fun add(entity: ServiceToken): ServiceToken {
         connection.use { connection ->
             val statement: PreparedStatement
                     = connection.prepareStatement("INSERT INTO `$tableName` (`token`, `description`) VALUES (?, ?)",
@@ -33,7 +56,7 @@ class MysqlTokenRepository (tablename: String) : MysqlRepository<Token>(tablenam
         }
     }
 
-    override fun update(entity: Token): Token {
+    override fun update(entity: ServiceToken): ServiceToken {
         connection.use {
             val statement =
                     it.prepareStatement("UPDATE $tableName SET token = ?, description = ? WHERE id = ?")
@@ -48,7 +71,7 @@ class MysqlTokenRepository (tablename: String) : MysqlRepository<Token>(tablenam
         }
     }
 
-    override fun find(token: String): Token? {
+    override fun find(token: String): ServiceToken? {
         connection.use {
             val statement = it.prepareStatement("SELECT * FROM $tableName WHERE token = ?")
             statement.use {stmt ->

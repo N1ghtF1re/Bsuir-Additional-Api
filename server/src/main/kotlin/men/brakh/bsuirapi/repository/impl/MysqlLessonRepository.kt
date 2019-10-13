@@ -13,10 +13,10 @@ import java.sql.Statement
 import java.sql.Time
 
 
-class MysqlLessonRepository(tableName: String): MysqlRepository<Lesson>(tableName), LessonRepository {
+class MysqlLessonRepository(tableName: String, val audRepo: AuditoriumRepository)
+                : MysqlRepository<Lesson>(tableName), LessonRepository {
 
-    constructor() : this("lessons")
-    private val audRepo: AuditoriumRepository by lazy { Config.auditoriumRepository }
+    constructor(audRepo: AuditoriumRepository) : this("lessons", audRepo)
 
     private val logger = LoggerFactory.getLogger(MysqlLessonRepository::class.java)
 

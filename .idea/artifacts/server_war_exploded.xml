@@ -16,6 +16,7 @@
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:8.0.15" />
           <element id="library" level="project" name="Maven: com.google.protobuf:protobuf-java:3.6.1" />
+          <element id="library" level="project" name="Maven: javax.activation:activation:1.1" />
           <element id="archive" name="core-1.0.jar">
             <element id="module-output" name="core" />
           </element>

@@ -1,23 +1,23 @@
 package men.brakh.bsuirapi.repository.impl
 
-import men.brakh.bsuirapi.app.bsuirapi.BsuirApi
+import men.brakh.bsuirapi.Config
 import men.brakh.bsuirapi.app.filesstorage.model.*
+import men.brakh.bsuirapi.app.users.service.UserService
 import men.brakh.bsuirapi.repository.FileRepository
 import men.brakh.bsuirapicore.model.data.User
-import org.slf4j.LoggerFactory
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.Statement
 
-class MysqlFileRepository(tableName: String): MysqlRepository<AbstractFile>(tableName), FileRepository {
-    constructor() : this("fileRequests")
+class MysqlFileRepository(tableName: String, val userService: UserService)
+            : MysqlRepository<AbstractFile>(tableName), FileRepository {
+    constructor(userService: UserService) : this("fileRequests", userService)
 
-    private val bsuirApi = BsuirApi
 
     override fun extractor(resultSet: ResultSet): AbstractFile? {
         return FileFactory.create(
-                FileFactory.FileCreationRequest(
-                        user = bsuirApi.getUserCV(resultSet.getInt("user_id")).toUserInfoObject(),
+                FileDbDto(
+                        user = userService.getUserById(resultSet.getInt("user_id")),
                         fileName = resultSet.getString("filename"),
                         fileId = resultSet.getString("fileId"),
                         accessType = FileAccessType.valueOf(resultSet.getString("access_type")),

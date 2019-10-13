@@ -1,36 +1,37 @@
 package men.brakh.bsuirapi
 
-import io.jsonwebtoken.SignatureAlgorithm
-import io.jsonwebtoken.security.Keys
-import men.brakh.bsuirapi.dbconnection.ConnectionFactory
-import men.brakh.bsuirapi.dbconnection.MysqlConnectionFactory
-import men.brakh.bsuirapi.app.LessonsScheduleUpdater
-import men.brakh.bsuirapi.app.authorization.PasswordEncrypter
-import men.brakh.bsuirapi.app.bsuirapi.BsuirApi
-import men.brakh.bsuirapi.app.authorization.jwt.factories.AccessJwtTokensFactory
+import men.brakh.bsuirapi.app.auds.service.FreeAudsService
+import men.brakh.bsuirapi.app.education.service.EducationService
+import men.brakh.bsuirapi.app.education.service.impl.EducationServiceImpl
+import men.brakh.bsuirapi.app.news.service.NewsService
+import men.brakh.bsuirapi.app.news.service.impl.NewsServiceImpl
+import men.brakh.bsuirapi.app.users.service.UserService
+import men.brakh.bsuirapi.app.users.service.impl.UserServiceImpl
+import men.brakh.bsuirapi.inrfastructure.authorization.AuthenticationManager
+import men.brakh.bsuirapi.inrfastructure.authorization.PasswordEncrypter
+import men.brakh.bsuirapi.inrfastructure.authorization.jwt.factories.AccessJwtTokensFactory
+import men.brakh.bsuirapi.inrfastructure.bsuirapi.BsuirApi
+import men.brakh.bsuirapi.inrfastructure.bsuirapiinitializer.BsuirApiInitializer
+import men.brakh.bsuirapi.inrfastructure.db.DbInitializer
+import men.brakh.bsuirapi.inrfastructure.db.dbconnection.ConnectionFactory
+import men.brakh.bsuirapi.inrfastructure.db.dbconnection.MysqlConnectionFactory
+import men.brakh.bsuirapi.inrfastructure.keys.KeysInitializer
 import men.brakh.bsuirapi.repository.*
 import men.brakh.bsuirapi.repository.impl.*
-import men.brakh.bsuirapicore.model.data.Auditorium
-import men.brakh.bsuirapicore.model.data.Lesson
 import org.slf4j.LoggerFactory
 import java.io.FileInputStream
 import java.io.FileNotFoundException
-import java.net.URL
-import java.nio.file.Files
-import java.nio.file.Paths
 import java.util.*
-import javax.crypto.KeyGenerator
-
-
 
 
 object Config {
+    val authenticationManager: AuthenticationManager = AuthenticationManager
     private val logger = LoggerFactory.getLogger(Config::class.java)
 
-    val lessonsRepository: LessonRepository = MysqlLessonRepository()
     val auditoriumRepository: AuditoriumRepository = MysqlAuditoriumRepository()
+    val lessonsRepository: LessonRepository = MysqlLessonRepository(auditoriumRepository)
     val newsSourceRepository: NewsSourceRepository = MysqlNewsSourceRepository()
-    val newsRepository: NewsRepository = MysqlNewsRepository()
+    val newsRepository: NewsRepository = MysqlNewsRepository(newsSourceRepository)
     val tokenRepository: TokenRepository = MysqlTokenRepository()
     val userRepository: UserRepository = MysqlUserRepository()
     val connectionFactory: ConnectionFactory
@@ -45,67 +46,47 @@ object Config {
     lateinit var passwordEncrypter: PasswordEncrypter
     lateinit var accessJwtTokenFactory: AccessJwtTokensFactory
 
-    private fun initKeys() {
-        val keysFolder: URL = this::class.java.classLoader.getResource("")!!
+    /* SERVICES */
 
-        val keyFile = Paths.get(keysFolder.path + "aes.key")
+    lateinit var bsuirApi: BsuirApi
 
 
-        val secretPasswordsKey = if(Files.exists(keyFile)) {
-            String(Files.readAllBytes(keyFile))
-        } else {
-            val keyGenerator = KeyGenerator.getInstance("AES")
-            keyGenerator.init(256)
+    lateinit var newsService: NewsService
+    lateinit var  educationService: EducationService
+    lateinit var  freeAudsService: FreeAudsService
+    lateinit var  userService: UserService
 
-            val key = Base64.getEncoder().encodeToString(keyGenerator.generateKey().encoded)
-            Files.write(keyFile, key.toByteArray())
-            logger.info("Created aes key file: ${keyFile.toAbsolutePath()}")
-            key
-        }
-
-        this.passwordEncrypter = PasswordEncrypter(secretPasswordsKey)
-
-        val jwtKeyFile =  Paths.get(keysFolder.path + "jwt.key")
-        val secretJwtKey = if(Files.exists(jwtKeyFile)) {
-            String(Files.readAllBytes(jwtKeyFile))
-        } else {
-            val key = Keys.secretKeyFor(SignatureAlgorithm.HS256)
-            val base64Key = Base64.getEncoder().encodeToString(key.encoded)
-            Files.write(jwtKeyFile, base64Key.toByteArray())
-            logger.info("Created jwt key file: ${keyFile.toAbsolutePath()}")
-
-            base64Key
-        }
-
-        accessJwtTokenFactory = AccessJwtTokensFactory(key = secretJwtKey, userRepository = userRepository)
+    private fun initServices() {
+        bsuirApi = BsuirApi(bsuirApiHost, passwordEncrypter)
+        newsService = NewsServiceImpl(newsRepository, newsSourceRepository)
+        educationService =  EducationServiceImpl(bsuirApi, authenticationManager, userRepository)
+        freeAudsService = FreeAudsService(auditoriumRepository, lessonsRepository, bsuirApi)
+        userService = UserServiceImpl(bsuirApi, authenticationManager, userRepository,
+                passwordEncrypter, accessJwtTokenFactory)
     }
 
-    init {
+    fun getConfigProps(): Properties {
         val propsPath: String = this.javaClass.classLoader.getResource("config.properties")?.path
                 ?: throw FileNotFoundException("Config not found")
 
         val configProps = Properties()
         configProps.load(FileInputStream(propsPath))
 
+        return configProps
+    }
+
+    init {
+        this.passwordEncrypter = PasswordEncrypter(KeysInitializer.initPasswordKey())
+        this.accessJwtTokenFactory = AccessJwtTokensFactory(key = KeysInitializer.initJwtKey(),
+                userRepository = userRepository)
+
+        DbInitializer.init()
+
+        val configProps = getConfigProps()
         bsuirApiHost = configProps.getProperty("bsuir.api.host")
         newsAtPage = configProps.getProperty("default.news.at.page").toInt()
 
-
-        if(auditoriumRepository.count() == 0) {
-            logger.info("Loading the auditoriums list ... It takes a few minutes...")
-            val auds: List<Auditorium> = BsuirApi.getAuditoriums()
-            auditoriumRepository.add(auds)
-            logger.info("Auditoriums list loaded!")
-        }
-
-        if(lessonsRepository.count() == 0) {
-            logger.info("Loading the lessons list ... It takes a tens of minutes...")
-            val lessons: List<Lesson> = BsuirApi.getGroups().flatMap { BsuirApi.getSchedule(it.name) }
-            lessonsRepository.add(lessons)
-            logger.info("Lessons list loaded!")
-        }
-
-        initKeys()
-        LessonsScheduleUpdater.start()
+        initServices()
+        BsuirApiInitializer.initLessonsAndAuditoriums(auditoriumRepository, lessonsRepository)
     }
 }
