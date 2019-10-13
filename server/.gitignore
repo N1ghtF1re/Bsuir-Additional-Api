@@ -73,3 +73,5 @@ fabric.properties
 .idea/httpRequests
 
 keys/
+tokens/
+src/main/resources/gd-credentials.json

@@ -60,3 +60,19 @@ CREATE TABLE IF NOT EXISTS `users` (
    PRIMARY KEY (`id`),
    UNIQUE (`login`)
 ) DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `files` (
+   `id` INT NOT NULL AUTO_INCREMENT,
+   `user_id` INT NOT NULL,
+   `filename` VARCHAR(255) NOT NULL,
+   `fileId` VARCHAR(255) NOT NULL,
+   `access_type` VARCHAR(125) NOT NULL,
+   `group_owner` VARCHAR(125) NOT NULL,
+   `file_type` VARCHAR(24) NOT NULL,
+   `link` VARCHAR(255) DEFAULT NULL,
+   `parent` INT DEFAULT NULL,
+
+
+   PRIMARY KEY (`id`),
+   UNIQUE (`fileId`)
+) DEFAULT CHARSET=utf8;

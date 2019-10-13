@@ -4,10 +4,10 @@ import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
 import men.brakh.bsuirapi.dbconnection.ConnectionFactory
 import men.brakh.bsuirapi.dbconnection.MysqlConnectionFactory
-import men.brakh.bsuirapi.model.LessonsScheduleUpdater
-import men.brakh.bsuirapi.model.PasswordEncrypter
-import men.brakh.bsuirapi.model.bsuirapi.BsuirApi
-import men.brakh.bsuirapi.model.jwt.factories.AccessJwtTokensFactory
+import men.brakh.bsuirapi.app.LessonsScheduleUpdater
+import men.brakh.bsuirapi.app.authorization.PasswordEncrypter
+import men.brakh.bsuirapi.app.bsuirapi.BsuirApi
+import men.brakh.bsuirapi.app.authorization.jwt.factories.AccessJwtTokensFactory
 import men.brakh.bsuirapi.repository.*
 import men.brakh.bsuirapi.repository.impl.*
 import men.brakh.bsuirapicore.model.data.Auditorium

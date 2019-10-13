@@ -6,8 +6,8 @@ import men.brakh.bsuirapi.controller.basic.JsonServlet
 import men.brakh.bsuirapi.extentions.singleParameters
 import men.brakh.bsuirapi.extentions.writeError
 import men.brakh.bsuirapi.extentions.writeJson
-import men.brakh.bsuirapi.model.bsuirapi.BsuirApi
-import men.brakh.bsuirapicore.model.data.User
+import men.brakh.bsuirapi.app.bsuirapi.BsuirApi
+import men.brakh.bsuirapicore.model.data.UserAuthorizationRequest
 import java.util.*
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -49,7 +49,7 @@ class AuthServlet: HttpServletWithErrorHandling(), JsonServlet {
         
         val encryptedPassword = passwordEncrypter.encrypt(password)
 
-        val user = User(login = login, password = encryptedPassword)
+        val user = UserAuthorizationRequest(login = login, password = encryptedPassword)
 
         val dbUser = userRepo.find(login=login)
         if(dbUser == null) {

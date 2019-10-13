@@ -1,23 +1,23 @@
 package men.brakh.bsuirapi.repository.impl
 
 import men.brakh.bsuirapi.repository.UserRepository
-import men.brakh.bsuirapicore.model.data.User
+import men.brakh.bsuirapicore.model.data.UserAuthorizationRequest
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.Statement
 
-class MysqlUserRepository(tableName: String) : MysqlRepository<User>(tableName), UserRepository {
+class MysqlUserRepository(tableName: String) : MysqlRepository<UserAuthorizationRequest>(tableName), UserRepository {
     constructor() : this("users")
 
-    override fun extractor(resultSet: ResultSet): User? {
-        return User(
+    override fun extractor(resultSet: ResultSet): UserAuthorizationRequest? {
+        return UserAuthorizationRequest(
                 id = resultSet.getLong("id"),
                 login = resultSet.getString("login"),
                 password = resultSet.getString("password")
         )
     }
 
-    override fun add(entity: User): User {
+    override fun add(entity: UserAuthorizationRequest): UserAuthorizationRequest {
         connection.use { connection ->
             val statement: PreparedStatement
                     = connection.prepareStatement("INSERT INTO `$tableName` (`login`, `password`) VALUES (?, ?)",
@@ -34,7 +34,7 @@ class MysqlUserRepository(tableName: String) : MysqlRepository<User>(tableName),
         }
     }
 
-    override fun update(entity: User): User {
+    override fun update(entity: UserAuthorizationRequest): UserAuthorizationRequest {
         connection.use {
             val statement =
                     it.prepareStatement("UPDATE $tableName SET login = ?, password = ? WHERE id = ?")
@@ -49,7 +49,7 @@ class MysqlUserRepository(tableName: String) : MysqlRepository<User>(tableName),
         }
     }
 
-    override fun find(login: String): User? {
+    override fun find(login: String): UserAuthorizationRequest? {
         connection.use {
             val statement = it.prepareStatement("SELECT * FROM $tableName WHERE login = ?")
             statement.use {stmt ->

@@ -1,7 +1,7 @@
 package men.brakh.bsuirapi.repository
 
-import men.brakh.bsuirapicore.model.data.User
+import men.brakh.bsuirapicore.model.data.UserAuthorizationRequest
 
-interface UserRepository: Repository<User> {
-    fun find(login: String): User?
+interface UserRepository: Repository<UserAuthorizationRequest> {
+    fun find(login: String): UserAuthorizationRequest?
 }
