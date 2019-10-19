@@ -3,6 +3,8 @@ package men.brakh.bsuirapi
 import men.brakh.bsuirapi.app.auds.service.FreeAudsService
 import men.brakh.bsuirapi.app.education.service.EducationService
 import men.brakh.bsuirapi.app.education.service.impl.EducationServiceImpl
+import men.brakh.bsuirapi.app.file.service.FileService
+import men.brakh.bsuirapi.app.file.service.impl.FileServiceImpl
 import men.brakh.bsuirapi.app.news.service.NewsService
 import men.brakh.bsuirapi.app.news.service.impl.NewsServiceImpl
 import men.brakh.bsuirapi.app.users.service.UserService
@@ -13,12 +15,11 @@ import men.brakh.bsuirapi.inrfastructure.authorization.jwt.factories.AccessJwtTo
 import men.brakh.bsuirapi.inrfastructure.bsuirapi.BsuirApi
 import men.brakh.bsuirapi.inrfastructure.bsuirapiinitializer.BsuirApiInitializer
 import men.brakh.bsuirapi.inrfastructure.db.DbInitializer
-import men.brakh.bsuirapi.inrfastructure.db.dbconnection.ConnectionFactory
 import men.brakh.bsuirapi.inrfastructure.db.dbconnection.MysqlConnectionFactory
+import men.brakh.bsuirapi.inrfastructure.externalStorage.service.impl.GoogleDriveExternalFilesStorageService
 import men.brakh.bsuirapi.inrfastructure.keys.KeysInitializer
 import men.brakh.bsuirapi.repository.*
 import men.brakh.bsuirapi.repository.impl.*
-import org.slf4j.LoggerFactory
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.util.*
@@ -26,25 +27,23 @@ import java.util.*
 
 object Config {
     val authenticationManager: AuthenticationManager = AuthenticationManager
-    private val logger = LoggerFactory.getLogger(Config::class.java)
 
     val auditoriumRepository: AuditoriumRepository = MysqlAuditoriumRepository()
     val lessonsRepository: LessonRepository = MysqlLessonRepository(auditoriumRepository)
-    val newsSourceRepository: NewsSourceRepository = MysqlNewsSourceRepository()
-    val newsRepository: NewsRepository = MysqlNewsRepository(newsSourceRepository)
+    private val newsSourceRepository: NewsSourceRepository = MysqlNewsSourceRepository()
+    private val newsRepository: NewsRepository = MysqlNewsRepository(newsSourceRepository)
     val tokenRepository: TokenRepository = MysqlTokenRepository()
-    val userRepository: UserRepository = MysqlUserRepository()
-    val connectionFactory: ConnectionFactory
-        get() {
-            return MysqlConnectionFactory
-        }
+    private val userRepository: UserRepository = MysqlUserRepository()
+    private val fileRepository: FileRepository = MysqlFileRepository()
+
+    val connectionFactory = MysqlConnectionFactory
 
     val newsAtPage: Int
 
     val bsuirApiHost: String
 
-    lateinit var passwordEncrypter: PasswordEncrypter
-    lateinit var accessJwtTokenFactory: AccessJwtTokensFactory
+    var passwordEncrypter: PasswordEncrypter = PasswordEncrypter(KeysInitializer.initPasswordKey())
+    var accessJwtTokenFactory: AccessJwtTokensFactory
 
     /* SERVICES */
 
@@ -55,6 +54,8 @@ object Config {
     lateinit var  educationService: EducationService
     lateinit var  freeAudsService: FreeAudsService
     lateinit var  userService: UserService
+    private val externalFilesStorageService = GoogleDriveExternalFilesStorageService()
+    lateinit var fileService: FileService
 
     private fun initServices() {
         bsuirApi = BsuirApi(bsuirApiHost, passwordEncrypter)
@@ -63,9 +64,11 @@ object Config {
         freeAudsService = FreeAudsService(auditoriumRepository, lessonsRepository, bsuirApi)
         userService = UserServiceImpl(bsuirApi, authenticationManager, userRepository,
                 passwordEncrypter, accessJwtTokenFactory)
+
+        fileService = FileServiceImpl(externalFilesStorageService, fileRepository)
     }
 
-    fun getConfigProps(): Properties {
+    private fun getConfigProps(): Properties {
         val propsPath: String = this.javaClass.classLoader.getResource("config.properties")?.path
                 ?: throw FileNotFoundException("Config not found")
 
@@ -76,7 +79,6 @@ object Config {
     }
 
     init {
-        this.passwordEncrypter = PasswordEncrypter(KeysInitializer.initPasswordKey())
         this.accessJwtTokenFactory = AccessJwtTokensFactory(key = KeysInitializer.initJwtKey(),
                 userRepository = userRepository)
 

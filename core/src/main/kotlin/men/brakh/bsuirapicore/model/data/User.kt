@@ -2,7 +2,9 @@ package men.brakh.bsuirapicore.model.data
 
 import java.util.*
 
-data class UserAuthorizationRequest(override val id: Long = -1, val login: String, val password: String): Identifiable
+data class UserAuthorizationRequest(override val id: Long = -1,
+                                    val login: String,
+                                    val password: String): Identifiable
 
 data class StudyInfo(
         val faculty: String,

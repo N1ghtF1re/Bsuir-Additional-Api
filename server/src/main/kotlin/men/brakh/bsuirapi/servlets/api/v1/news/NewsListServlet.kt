@@ -4,7 +4,9 @@ import men.brakh.bsuirapi.Config
 import men.brakh.bsuirapi.app.news.dto.NewsListDto
 import men.brakh.bsuirapi.servlets.basic.BasicHttpServlet
 import java.util.*
+import javax.servlet.annotation.WebServlet
 
+@WebServlet("/api/v1/newsList", loadOnStartup = 1)
 class NewsListServlet : BasicHttpServlet() {
     companion object {
         private val newsService = Config.newsService

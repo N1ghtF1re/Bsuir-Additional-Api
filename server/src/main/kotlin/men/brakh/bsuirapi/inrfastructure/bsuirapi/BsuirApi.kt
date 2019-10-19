@@ -33,6 +33,7 @@ class BsuirApi(private val host: String, private val passwordEncrypter: Password
     private fun <T : HttpMessage> T.jsonRequest(): T {
         this.setHeader("Accept", "application/json")
         this.setHeader("Content-type", "application/json; charset=UTF-8")
+
         return this
     }
 

@@ -15,7 +15,8 @@ class EducationServiceImpl(private val bsuirApi: BsuirApi,
                            private val userRepository: UserRepository) : EducationService {
 
     private fun getCurrentUserCrenditals(): UserAuthorizationRequest {
-        val currentUserLogin = authenticationManager.getCurrentUserLogin() ?: throw UnauthorizedException()
+        val currentUserLogin = authenticationManager.getCurrentUserLogin()
+                ?: throw UnauthorizedException()
         return userRepository.find(login = currentUserLogin)!!
     }
 

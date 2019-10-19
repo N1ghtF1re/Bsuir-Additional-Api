@@ -4,7 +4,9 @@ import men.brakh.bsuirapi.Config
 import men.brakh.bsuirapi.repository.AuditoriumRepository
 import men.brakh.bsuirapi.servlets.basic.BasicHttpServlet
 import men.brakh.bsuirapicore.model.data.LessonType
+import javax.servlet.annotation.WebServlet
 
+@WebServlet("/api/v1/auditoriums", loadOnStartup = 1)
 class AudsServlet : BasicHttpServlet() {
     private val audsRepository: AuditoriumRepository = Config.auditoriumRepository
 

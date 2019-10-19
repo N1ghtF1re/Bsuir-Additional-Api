@@ -5,9 +5,12 @@ import men.brakh.bsuirapi.Config
 import men.brakh.bsuirapi.NotFoundException
 import men.brakh.bsuirapi.UnauthorizedException
 import men.brakh.bsuirapi.inrfastructure.authorization.Permission
+import java.io.InputStream
+import java.nio.file.Paths
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
+
 
 enum class HttpMethod {
     GET,
@@ -47,13 +50,18 @@ abstract class BasicHttpServlet : HttpServlet() {
         return block(context.get()!!.req.parameterMap)
     }
 
+    protected fun testUrl(urlPattern: Regex?): Boolean {
+        return urlPattern?.matches(context.get()!!.req.requestURL.toString()) ?: true
+    }
+
     /**
      * Get request handling
      * @param <R> response type
      */
-    protected inline fun <reified R : Any> get (block: BasicHttpServlet.(parameters: Parameters) -> R?) {
+    protected inline fun <reified R : Any> get (urlPattern: Regex? = null,
+                                                block: BasicHttpServlet.(parameters: Parameters) -> R?) {
         val context = context.get() ?: return
-        if (context.method == HttpMethod.GET) {
+        if (context.method == HttpMethod.GET && testUrl(urlPattern)) {
             handled.set(true)
             val result = block(Parameters(context.req.singleParameters))
             writeJson(result)
@@ -66,9 +74,10 @@ abstract class BasicHttpServlet : HttpServlet() {
      * @param <C> creation request type
      * @param <R> response type
      */
-    protected inline fun <reified C : Any, reified R : Any> post (block: BasicHttpServlet.(body: C) -> R?) {
+    protected inline fun <reified C : Any, reified R : Any> post (urlPattern: Regex? = null,
+                                                                  block: BasicHttpServlet.(body: C) -> R?) {
         val context = context.get() ?: return
-        if (context.method == HttpMethod.POST) {
+        if (context.method == HttpMethod.POST && testUrl(urlPattern)) {
             handled.set(true)
 
             val body = context.req.extractBody(C::class.java)
@@ -78,13 +87,38 @@ abstract class BasicHttpServlet : HttpServlet() {
     }
 
     /**
+     * Post request handling
+     * @param <C> creation request type
+     * @param <R> response type
+     */
+    protected inline fun <reified R : Any> postFile(urlPattern: Regex? = null,
+                                                    block: BasicHttpServlet.(fileName: String, content: InputStream) -> R?) {
+        val context = context.get() ?: return
+        if (context.method == HttpMethod.POST
+                && "multipart/form-data" in context.req.contentType
+                && testUrl(urlPattern)) {
+            handled.set(true)
+
+            val request = context.req
+
+            val filePart = request.getPart("file")
+            val fileName = Paths.get(filePart.submittedFileName).fileName.toString()
+            val fileContent = filePart.inputStream
+
+            val result = block(fileName, fileContent)
+            writeJson(result)
+        }
+    }
+
+    /**
      * Put request handling
      * @param <U> updating request type
      * @param <R> response type
      */
-    protected inline fun <reified U : Any, reified R : Any> put (block: BasicHttpServlet.(body: U) -> R?) {
+    protected inline fun <reified U : Any, reified R : Any> put (urlPattern: Regex? = null,
+                                                                 block: BasicHttpServlet.(body: U) -> R?) {
         val context = context.get() ?: return
-        if (context.method == HttpMethod.PUT) {
+        if (context.method == HttpMethod.PUT && testUrl(urlPattern)) {
             handled.set(true)
 
             val body = context.req.extractBody(U::class.java)
@@ -95,13 +129,14 @@ abstract class BasicHttpServlet : HttpServlet() {
     }
 
     /**
-     * Put request handling
+     * Delete request handling
      * @param <D> deleting request type
      * @param <R> response type
      */
-    protected inline fun <reified D : Any, reified R : Any> delete (block: BasicHttpServlet.(body: D) -> R?) {
+    protected inline fun <reified D : Any, reified R : Any> delete (urlPattern: Regex? = null,
+                                                                    block: BasicHttpServlet.(body: D) -> R?) {
         val context = context.get() ?: return
-        if (context.method == HttpMethod.DELETE) {
+        if (context.method == HttpMethod.DELETE && testUrl(urlPattern)) {
             handled.set(true)
 
             val body = context.req.extractBody(D::class.java)

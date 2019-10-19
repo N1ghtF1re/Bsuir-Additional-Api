@@ -5,10 +5,12 @@ import men.brakh.bsuirapi.repository.AuditoriumRepository
 import men.brakh.bsuirapi.servlets.basic.BasicHttpServlet
 import men.brakh.bsuirapi.servlets.basic.writeJson
 import men.brakh.bsuirapicore.model.data.Building
+import javax.servlet.annotation.WebServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 
+@WebServlet("/api/v1/buildings", loadOnStartup = 1)
 class BuildingsServlet : BasicHttpServlet() {
     private companion object {
         private val audsRepository: AuditoriumRepository = Config.auditoriumRepository

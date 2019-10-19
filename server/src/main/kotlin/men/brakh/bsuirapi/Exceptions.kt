@@ -15,5 +15,5 @@ class AccessDeniedException(msg: String): RuntimeException(msg) {
 open class NotFoundException(msg: String): RuntimeException(msg)
 
 class UserNotFoundException(msg: String): NotFoundException(msg) {
-    constructor(): this("UserAuthorizationRequest not found")
+    constructor(): this("User isn't found")
 }

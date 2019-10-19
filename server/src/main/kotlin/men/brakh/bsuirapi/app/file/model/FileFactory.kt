@@ -1,32 +1,32 @@
-package men.brakh.bsuirapi.app.filesstorage.model
+package men.brakh.bsuirapi.app.file.model
 
 object FileFactory {
     fun create (request: FileDbDto) : AbstractFile {
         return when (request.fileType) {
             FileType.FILE -> File(
                     id = request.id,
-                    user = request.user,
+                    userId = request.userId,
                     fileName = request.fileName,
-                    fileId = request.fileId,
+                    fileExternalId = request.fileExternalId,
                     accessType = request.accessType,
-                    groupOwner = request.groupOwner
+                    ownedGroup = request.ownedGroup
             )
             FileType.DIRECTORY -> Directory(
                     id = request.id,
-                    user = request.user,
+                    userId = request.userId,
                     fileName = request.fileName,
-                    fileId = request.fileId,
+                    fileExternalId = request.fileExternalId,
                     accessType = request.accessType,
-                    groupOwner = request.groupOwner,
+                    ownedGroup = request.ownedGroup,
                     files = request.files!!
             )
             FileType.LINK -> Link(
                     id = request.id,
-                    user = request.user,
+                    userId = request.userId,
                     fileName = request.fileName,
-                    fileId = request.fileId,
+                    fileExternalId = request.fileExternalId,
                     accessType = request.accessType,
-                    groupOwner = request.groupOwner,
+                    ownedGroup = request.ownedGroup,
                     url = request.url!!
             )
         }

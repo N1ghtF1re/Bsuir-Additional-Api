@@ -4,11 +4,12 @@ import men.brakh.bsuirapi.Config
 import men.brakh.bsuirapi.servlets.basic.BasicHttpServlet
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.servlet.annotation.WebServlet
 
 
-
+@WebServlet("/api/v1/auditoriums/free", loadOnStartup = 1)
 class FreeAudsServlet : BasicHttpServlet(){
-    val freeAudsService = Config.freeAudsService
+    private val freeAudsService = Config.freeAudsService
 
     override fun handle() {
         get { parameters ->

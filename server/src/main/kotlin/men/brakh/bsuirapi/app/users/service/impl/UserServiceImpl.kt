@@ -1,6 +1,7 @@
 package men.brakh.bsuirapi.app.users.service.impl
 
 import men.brakh.bsuirapi.UnauthorizedException
+import men.brakh.bsuirapi.UserNotFoundException
 import men.brakh.bsuirapi.app.users.service.UserService
 import men.brakh.bsuirapi.inrfastructure.authorization.AuthenticationManager
 import men.brakh.bsuirapi.inrfastructure.authorization.PasswordEncrypter
@@ -19,8 +20,8 @@ class UserServiceImpl(private val bsuirApi: BsuirApi,
                       private val accessJwtTokensFactory: AccessJwtTokensFactory) : UserService {
 
     private fun getCurrentUserCrenditals(): UserAuthorizationRequest {
-        val currentUserLogin = authenticationManager.getCurrentUserLogin() ?: throw UnauthorizedException()
-        return userRepository.find(login = currentUserLogin)!!
+        val login = authenticationManager.getCurrentUserLogin() ?: throw UnauthorizedException()
+        return userRepository.find(login)!!
     }
 
     override fun changeUserSettings(userSettings: UserSettings) {

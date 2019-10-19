@@ -4,8 +4,10 @@ import men.brakh.bsuirapi.Config
 import men.brakh.bsuirapi.inrfastructure.authorization.Permission
 import men.brakh.bsuirapi.servlets.basic.BasicHttpServlet
 import men.brakh.bsuirapicore.model.data.News
+import javax.servlet.annotation.WebServlet
 import javax.servlet.http.HttpServletResponse
 
+@WebServlet("/api/v1/news", loadOnStartup = 1)
 class NewsServlet : BasicHttpServlet() {
     companion object {
         private val newsService = Config.newsService

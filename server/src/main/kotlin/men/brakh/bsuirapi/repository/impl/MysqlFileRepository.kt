@@ -1,27 +1,27 @@
 package men.brakh.bsuirapi.repository.impl
 
-import men.brakh.bsuirapi.Config
-import men.brakh.bsuirapi.app.filesstorage.model.*
-import men.brakh.bsuirapi.app.users.service.UserService
+import men.brakh.bsuirapi.app.file.model.*
 import men.brakh.bsuirapi.repository.FileRepository
-import men.brakh.bsuirapicore.model.data.User
+import org.slf4j.LoggerFactory
+import java.sql.Connection
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.Statement
 
-class MysqlFileRepository(tableName: String, val userService: UserService)
+class MysqlFileRepository(tableName: String)
             : MysqlRepository<AbstractFile>(tableName), FileRepository {
-    constructor(userService: UserService) : this("fileRequests", userService)
+    constructor() : this("files")
 
+    private val logger = LoggerFactory.getLogger(MysqlFileRepository::class.java)
 
     override fun extractor(resultSet: ResultSet): AbstractFile? {
         return FileFactory.create(
                 FileDbDto(
-                        user = userService.getUserById(resultSet.getInt("user_id")),
+                        userId = resultSet.getInt("user_id"),
                         fileName = resultSet.getString("filename"),
-                        fileId = resultSet.getString("fileId"),
+                        fileExternalId = resultSet.getString("fileId"),
                         accessType = FileAccessType.valueOf(resultSet.getString("access_type")),
-                        groupOwner = resultSet.getString("group_owner"),
+                        ownedGroup = resultSet.getString("group_owner"),
                         fileType = FileType.valueOf(resultSet.getString("file_type")),
                         url = resultSet.getString("link"),
                         files = find(parent = resultSet.getLong("id")),
@@ -40,17 +40,17 @@ class MysqlFileRepository(tableName: String, val userService: UserService)
 
 
             statement.use {stmt: PreparedStatement ->
-                stmt.setInt(1, file.user.id)
+                stmt.setInt(1, file.userId)
                 stmt.setString(2, file.fileName)
-                stmt.setString(3, file.fileId)
+                stmt.setString(3, file.fileExternalId)
                 stmt.setString(4, file.accessType.toString())
-                stmt.setString(5, file.groupOwner)
+                stmt.setString(5, file.ownedGroup)
                 stmt.setString(6, file.fileType.toString())
                 stmt.setString(7, if (file is Link) file.url else null)
                 if (parentId == null) {
                     stmt.setObject(8, null)
                 } else {
-                    stmt.setLong(0, parentId)
+                    stmt.setLong(8, parentId)
                 }
 
                 stmt.executeUpdate()
@@ -62,7 +62,7 @@ class MysqlFileRepository(tableName: String, val userService: UserService)
                     )
                 }
 
-                return file.copy(id = stmt.generatedId)
+                return file.copyWithId(id = stmt.generatedId)
             }
         }
     }
@@ -72,16 +72,87 @@ class MysqlFileRepository(tableName: String, val userService: UserService)
         return add(entity, null)
     }
 
+    override fun getParentId(file: AbstractFile): Long? {
+        connection.use {
+            val statement = it.prepareStatement("SELECT parent FROM $tableName WHERE id = ?")
+            statement.use { stmt ->
+                stmt.setLong(1, file.id)
+                val resultSet = stmt.executeQuery()
+                resultSet.use {
+                    return if (resultSet.next()) {
+                        val res = resultSet.getLong(1)
+                        if (res == 0L) null else res
+                    } else {
+                        null
+                    }
+                }
+            }
+        }
 
-    override fun update(file: AbstractFile): AbstractFile {
-        TODO("At this moment file updating isn't work")
     }
 
-    override fun find(user: User?,
+    fun update(file: AbstractFile, connection: Connection): AbstractFile {
+        connection.let {
+
+            val statement = it.prepareStatement("UPDATE `$tableName` " +
+                    "SET `user_id` = ?, `filename` = ?, `fileId` = ?, `access_type` = ?, " +
+                    "`group_owner` = ?, `file_type` = ?, `link` = ? " +
+                    "WHERE id = ?",
+                    Statement.RETURN_GENERATED_KEYS)
+
+
+            statement.use { stmt: PreparedStatement ->
+                stmt.setInt(1, file.userId)
+                stmt.setString(2, file.fileName)
+                stmt.setString(3, file.fileExternalId)
+                stmt.setString(4, file.accessType.toString())
+                stmt.setString(5, file.ownedGroup)
+                stmt.setString(6, file.fileType.toString())
+                stmt.setString(7, if (file is Link) file.url else null)
+                stmt.setLong(8, file.id)
+
+                stmt.execute()
+
+                if (file is Directory) {
+                    val children = file.files.map { child ->
+                        if (file.id > 0) {
+                            update(child, connection)
+                        } else {
+                            add(child)
+                        }
+                    }
+
+                    return file.copy(files = children)
+                }
+
+                return file
+            }
+        }
+    }
+
+    override fun update(entity: AbstractFile): AbstractFile {
+        connection.use {
+            it.autoCommit = false
+            logger.info("Starting file updating transaction")
+            try {
+                val result = update(entity, connection)
+                it.commit()
+                logger.info("Successful transaction")
+                return result
+            } catch (e: Exception) {
+                it.rollback()
+                logger.error("Transaction failed", e)
+                throw e
+            }
+        }
+    }
+
+    override fun find(userId: Int?,
                       fileName: String?,
                       fileId: String?,
                       accessType: FileAccessType?,
                       ownerGroup: String?,
+                      ownedGroupLike: String?,
                       fileType: FileType?,
                       parent: Long?): List<AbstractFile> {
 
@@ -90,8 +161,8 @@ class MysqlFileRepository(tableName: String, val userService: UserService)
         val conditions=
                 mutableListOf<Pair<String, (stmt: PreparedStatement, index: Int) -> Unit>>()
 
-        if(user != null) conditions.add(
-                "user_id = ?" to {stmt, index -> stmt.setInt(index, user.id)}
+        if(userId != null) conditions.add(
+                "user_id = ?" to {stmt, index -> stmt.setInt(index, userId)}
         )
 
         if(fileName != null) conditions.add(
@@ -106,21 +177,31 @@ class MysqlFileRepository(tableName: String, val userService: UserService)
                 "access_type = ?" to {stmt, index -> stmt.setString(index, accessType.toString())}
         )
 
-        if(accessType != null) conditions.add(
+        if(ownerGroup != null) conditions.add(
                 "group_owner = ?" to {stmt, index -> stmt.setString(index, ownerGroup)}
         )
 
-        if(accessType != null) conditions.add(
+        if (ownedGroupLike != null) conditions.add(
+                "group_owner LIKE ?" to {stmt, index -> stmt.setString(index, ownedGroupLike)}
+        )
+
+        if(fileType != null) conditions.add(
                 "file_type = ?" to {stmt, index -> stmt.setString(index, fileType.toString())}
         )
 
-        if(parent != null) conditions.add(
-                "parent = ?" to {stmt, index -> stmt.setLong(index, parent)}
-        )
+        if (parent == null) {
+            conditions.add(
+                    "parent IS ?" to {stmt, index -> stmt.setObject(index, null)}
+            )
+        } else {
+            conditions.add(
+                    "parent = ?" to {stmt, index -> stmt.setLong(index, parent)}
+            )
+        }
 
         if(conditions.size == 0) return findAll()
 
-        val finalQuery = "$initQuery ${conditions.joinToString(separator = " AND ") { it.first }}"
+        val finalQuery = "$initQuery WHERE ${conditions.joinToString(separator = " AND ") { it.first }}"
 
         connection.use {
             val statement = it.prepareStatement(finalQuery)
