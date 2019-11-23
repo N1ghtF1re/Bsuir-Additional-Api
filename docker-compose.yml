@@ -1,0 +1,46 @@
+version: '3.3'
+
+services:
+  server:
+    build: server
+    ports:
+      - "9000:8080"
+    depends_on:
+      - bsuirdb
+    networks:
+      - bsuir-network
+  bot:
+    build: bot
+    networks:
+      - bsuir-network
+    depends_on:
+      - server
+
+  news-parser:
+    build: news-parser
+    networks:
+      - bsuir-network
+    depends_on:
+      - server
+
+  bsuirdb:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'bsuirapi'
+      MYSQL_USER: 'bsuir'
+      MYSQL_PASSWORD: '123321'
+      MYSQL_ROOT_PASSWORD: 'root'
+    networks:
+      - bsuir-network
+    ports:
+      - '3309:3306'
+    volumes:
+      - bsuir-data:/var/lib/mysql
+
+volumes:
+  bsuir-data:
+
+networks:
+  bsuir-network:
+    driver: bridge

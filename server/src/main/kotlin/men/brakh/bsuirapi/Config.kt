@@ -1,5 +1,6 @@
 package men.brakh.bsuirapi
 
+
 import men.brakh.bsuirapi.app.auds.service.FreeAudsService
 import men.brakh.bsuirapi.app.education.service.EducationService
 import men.brakh.bsuirapi.app.education.service.impl.EducationServiceImpl
@@ -22,7 +23,11 @@ import men.brakh.bsuirapi.repository.*
 import men.brakh.bsuirapi.repository.impl.*
 import java.io.FileInputStream
 import java.io.FileNotFoundException
+import java.net.URL
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.util.*
+import javax.crypto.KeyGenerator
 
 
 object Config {
