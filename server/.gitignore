@@ -74,5 +74,6 @@ fabric.properties
 .idea/httpRequests
 
 keys/
+!src/main/kotlin/men/brakh/bsuirapi/inrfastructure/keys/
 tokens/
 src/main/resources/gd-credentials.json
