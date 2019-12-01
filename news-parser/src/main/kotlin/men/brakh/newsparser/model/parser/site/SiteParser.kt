@@ -11,7 +11,7 @@ import org.jsoup.nodes.Document
 abstract class SiteParser : Parser {
 
     protected fun String.toMd(): String {
-        val remark = Remark(Options.pegdownAllExtensions())
+        val remark = Remark(Options.markdownExtra())
 
         return remark.convertFragment(this)
     }

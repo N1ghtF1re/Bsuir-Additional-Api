@@ -17,6 +17,8 @@ import kotlin.math.absoluteValue
 abstract class VKParser : Parser {
     abstract val groupId: Int
 
+    private val urlRegex = "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)".toRegex()
+
     private val WallPostFull.publicationDate: Date
         get() = Date(this.date * 1000L)
 
@@ -62,7 +64,12 @@ abstract class VKParser : Parser {
                 .filter { wallPostFull -> wallPostFull.publicationDate > lastUpdate  }
                 .map { wallPost: WallPostFull ->
                     val photo: String? = wallPost.attachments?.firstOrNull{ it.photo != null }?.photo?.photo604
-                    val title: String = wallPost.text.split("\n").first().split("\\.|!|\\?".toRegex()).first()
+                    val title: String = wallPost.text.split("\n")
+                            .first()
+                            .replace(urlRegex, "")
+                            .split("\\.|!|\\?".toRegex())
+                            .first()
+
 
                     val content = parsePost(wallPost) + (wallPost.copyHistory?.joinToString { parsePost(it) + "\n\n\n" } ?: "")
 
@@ -73,6 +80,7 @@ abstract class VKParser : Parser {
                             loadedAt = Date(),
                             publishedAt = wallPost.publicationDate,
                             source = source,
+                            shortContent = "",
                             url = "https://vk.com/wall${wallPost.ownerId}_${wallPost.id}",
                             urlToImage = photo
                     )

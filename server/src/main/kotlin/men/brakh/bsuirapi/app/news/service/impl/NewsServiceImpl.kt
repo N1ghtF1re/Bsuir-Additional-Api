@@ -49,7 +49,12 @@ class NewsServiceImpl(private val newsRepository: NewsRepository,
         if(newsList.count() != 0) throw EntityAlreadyExistsException()
 
 
-        return newsRepository.add(news.copy(source = src))
+        return newsRepository.add(news.copy(source = src, shortContent = truncateContent(news.content)))
+    }
+
+    private fun truncateContent(content: String): String {
+        return content.split("\n")
+                .firstOrNull() ?: ""
     }
 
     override fun getNewsList(title: String?,

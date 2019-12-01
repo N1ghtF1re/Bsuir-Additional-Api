@@ -9,12 +9,16 @@ services:
       - bsuirdb
     networks:
       - bsuir-network
+    restart: always
+    volumes:
+      - keys:/usr/local/tomcat/webapps/bsuir/WEB-INF/classes/keys
   bot:
     build: bot
     networks:
       - bsuir-network
     depends_on:
       - server
+    restart: always
 
   news-parser:
     build: news-parser
@@ -22,6 +26,9 @@ services:
       - bsuir-network
     depends_on:
       - server
+    volumes:
+      - last-update:/data
+    restart: always
 
   bsuirdb:
     image: mysql:8.0
@@ -40,6 +47,8 @@ services:
 
 volumes:
   bsuir-data:
+  last-update:
+  keys:
 
 networks:
   bsuir-network:

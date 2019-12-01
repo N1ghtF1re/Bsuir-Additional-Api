@@ -21,7 +21,7 @@ import kotlin.concurrent.timerTask
 
 val parsers:List<Parser> = ParsersLoader.load().map { clazz -> clazz.newInstance() }
 
-val updatesFilePath = "lastUpdate.data".toPath()
+val updatesFilePath = "data/lastUpdate.data".toPath()
 
 private fun String.toPath(): Path = Paths.get(this)
 

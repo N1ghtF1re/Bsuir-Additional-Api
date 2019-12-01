@@ -28,6 +28,7 @@ class MysqlNewsRepository(tableName: String, val srcRepo: NewsSourceRepository)
                 publishedAt = resultSet.getTimestamp("publication_date").toDate(),
                 loadedAt = resultSet.getTimestamp("loading_date").toDate(),
                 url = resultSet.getString("url"),
+                shortContent = resultSet.getString("shortContent"),
                 urlToImage = resultSet.getString("image_url")
         )
     }
@@ -35,7 +36,7 @@ class MysqlNewsRepository(tableName: String, val srcRepo: NewsSourceRepository)
     override fun add(entity: News): News {
         connection.use { con ->
             val statement = con.prepareStatement("INSERT INTO `$tableName` (`title`, `source_id`, " +
-                    "`content`, `publication_date`, `loading_date`, `url`, `image_url`) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                    "`content`, `publication_date`, `loading_date`, `url`, `image_url`, `shortContent`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS)
 
             statement.use { stmt ->
@@ -46,6 +47,7 @@ class MysqlNewsRepository(tableName: String, val srcRepo: NewsSourceRepository)
                 stmt.setTimestamp(5, entity.loadedAt.toTimestamp())
                 stmt.setString(6, entity.url)
                 stmt.setString(7, entity.urlToImage)
+                stmt.setString(8, entity.shortContent)
 
                 stmt.executeUpdate()
 
@@ -58,7 +60,7 @@ class MysqlNewsRepository(tableName: String, val srcRepo: NewsSourceRepository)
     override fun update(entity: News): News {
         connection.use { con ->
             val statement= con.prepareStatement("UPDATE $tableName SET `title` = ?, `source_id` = ?, " +
-                    "`content` = ?, `publication_date` = ?, `loading_date` = ?, `url` = ?, `image_url` = ? WHERE `id` = ? ")
+                    "`content` = ?, `publication_date` = ?, `loading_date` = ?, `url` = ?, `image_url` = ?, `shortContent` = ? WHERE `id` = ? ")
 
             statement.use { stmt ->
                 stmt.setString(1, entity.title)
@@ -68,7 +70,8 @@ class MysqlNewsRepository(tableName: String, val srcRepo: NewsSourceRepository)
                 stmt.setTimestamp(5, entity.loadedAt.toTimestamp())
                 stmt.setString(6, entity.url)
                 stmt.setString(7, entity.urlToImage)
-                stmt.setLong(8, entity.id)
+                stmt.setString(8, entity.shortContent)
+                stmt.setLong(9, entity.id)
 
                 stmt.execute()
                 return entity

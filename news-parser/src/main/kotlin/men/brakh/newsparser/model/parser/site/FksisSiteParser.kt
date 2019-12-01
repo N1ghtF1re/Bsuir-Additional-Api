@@ -71,7 +71,7 @@ class FksisSiteParser() : SiteParser() {
                                 .toMd()
 
                         News(title = title,  urlToImage = img, content = content, url = fullLink, publishedAt = date,
-                                loadedAt = Date(), source = source)
+                                loadedAt = Date(), source = source, shortContent = "")
                     }
                     news
                 }.sortedBy { it.publishedAt }

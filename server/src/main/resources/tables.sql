@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS `news` (
   `title` VARCHAR(255) NOT NULL,
   `source_id` INT NOT NULL,
   `content` MEDIUMTEXT NOT NULL,
+  `shortContent` TEXT NOT NULL,
   `publication_date` DATETIME NOT NULL,
   `loading_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `url` VARCHAR(255) NOT NULL,
