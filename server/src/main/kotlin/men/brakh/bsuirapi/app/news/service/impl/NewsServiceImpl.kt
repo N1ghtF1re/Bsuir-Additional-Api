@@ -12,6 +12,8 @@ import java.util.*
 class NewsServiceImpl(private val newsRepository: NewsRepository,
                       private val newsSourceRepository: NewsSourceRepository) : NewsService {
 
+    private val urlRegex = "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)"
+
     override fun getSourceById(id: Long): NewsSource? {
         return newsSourceRepository.findById(id)
     }
@@ -53,8 +55,15 @@ class NewsServiceImpl(private val newsRepository: NewsRepository,
     }
 
     private fun truncateContent(content: String): String {
-        return content.split("\n")
-                .firstOrNull() ?: ""
+        val withoutImages = content
+                .replace("!\\[[^\\]]+\\]\\([^\\)]+\\)".toRegex(), "")
+                .replace("\\[[^\\]]+\\]: $urlRegex".toRegex(), "")
+
+        return if (withoutImages.length < 255) {
+            withoutImages
+        } else {
+            withoutImages.substring(0..255) + "..."
+        }
     }
 
     override fun getNewsList(title: String?,
