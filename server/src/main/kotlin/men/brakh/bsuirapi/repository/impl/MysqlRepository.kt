@@ -46,6 +46,7 @@ abstract class MysqlRepository<T : Identifiable>(val tableName: String) : Reposi
             val statement = it.prepareStatement("DELETE FROM $tableName WHERE id = ?")
             statement.use { stmt ->
                 stmt.setLong(1, entity.id)
+                stmt.execute();
             }
         }
     }

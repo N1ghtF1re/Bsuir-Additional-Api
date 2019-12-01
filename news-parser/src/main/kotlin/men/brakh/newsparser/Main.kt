@@ -47,7 +47,7 @@ fun sendRequest(news: News) {
 
     client.use { httpClient ->
         val post = HttpPost("${Config.apiHost}/news")
-        post.addHeader("Authorization", Config.apiToken)
+        post.addHeader("X-News-Authorization", Config.apiToken)
         post.setHeader("Accept", "application/json")
         post.setHeader("Content-type", "application/json; charset=UTF-8")
 
