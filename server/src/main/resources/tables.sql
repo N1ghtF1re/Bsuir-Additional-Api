@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `news` (
 CREATE TABLE IF NOT EXISTS `tokens` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `token` VARCHAR(255) NOT NULL,
-  `description` VARCHAR(255) DEFAULT NULL,
+  `description` VARCHAR(255) NOT NULL,
 
   PRIMARY KEY  (`id`),
   UNIQUE (`token`)
