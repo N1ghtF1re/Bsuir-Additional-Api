@@ -203,6 +203,8 @@ abstract class BasicHttpServlet : HttpServlet() {
     protected fun setDefaultHeanders(resp: HttpServletResponse) {
         resp.characterEncoding = "UTF-8"
         resp.setHeader("Access-Control-Allow-Origin", "*")
+        resp.setHeader("Access-Control-Allow-Methods", "*")
+        resp.setHeader("Access-Control-Allow-Headers", "*")
         resp.contentType = "application/json"
     }
 
