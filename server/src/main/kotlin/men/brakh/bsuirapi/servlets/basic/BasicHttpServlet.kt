@@ -16,7 +16,10 @@ enum class HttpMethod {
     GET,
     POST,
     PUT,
-    DELETE;
+    DELETE,
+    OPTIONS,
+    UNDEFINED;
+
 
     companion object {
         fun contains(value: String): Boolean {
@@ -179,6 +182,11 @@ abstract class BasicHttpServlet : HttpServlet() {
 
     private fun basicHandle() {
         try {
+            if (context.get()?.method?.equals(HttpMethod.OPTIONS) == true) {
+                return
+            }
+
+
             handled.set(false)
             handle()
 
@@ -206,6 +214,12 @@ abstract class BasicHttpServlet : HttpServlet() {
         if (HttpMethod.contains(httpMethodString)) {
             context.set(HttpContext(
                     method = HttpMethod.valueOf(httpMethodString),
+                    req = req,
+                    resp = resp
+            ))
+        } else {
+            context.set(HttpContext(
+                    method = HttpMethod.UNDEFINED,
                     req = req,
                     resp = resp
             ))

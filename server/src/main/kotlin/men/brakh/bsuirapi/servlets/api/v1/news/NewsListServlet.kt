@@ -51,6 +51,14 @@ class NewsListServlet : BasicHttpServlet() {
                         ?.mapNotNull { id: Long -> newsService.getSourceById(id) }
                         ?.toList()
 
+                assert(page >= 1) {
+                    throw IllegalArgumentException("page must be >= 1")
+                }
+
+                assert (newsAtPage >= 1) {
+                    throw IllegalArgumentException("newsAtPage must be >= 1")
+                }
+
                 val news = if (sources?.count() != 0) {
                     newsService.getNewsList(
                             title = parameters["title"],
