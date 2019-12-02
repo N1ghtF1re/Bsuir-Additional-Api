@@ -19,4 +19,19 @@ interface NewsRepository : Repository<News> {
             page: Int?,
             newsAtPage: Int?
     ) : List<News>
+
+    fun count(
+            title: String? = null,
+            source: NewsSource? = null,
+            sources: List<NewsSource>? = null,
+            contentLike: String? = null,
+            publishedAfter: Date? = null,
+            publishedBefore: Date? = null,
+            loadedAfter: Date? = null,
+            loadedBefore: Date? = null,
+            url: String? = null,
+            urlToImage: String? = null,
+            page: Int? = null,
+            newsAtPage: Int? = null
+    ): Int
 }

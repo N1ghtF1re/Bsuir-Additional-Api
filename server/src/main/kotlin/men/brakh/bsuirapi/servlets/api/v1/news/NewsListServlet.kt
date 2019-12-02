@@ -59,25 +59,19 @@ class NewsListServlet : BasicHttpServlet() {
                     throw IllegalArgumentException("newsAtPage must be >= 1")
                 }
 
-                val news = if (sources?.count() != 0) {
-                    newsService.getNewsList(
-                            title = parameters["title"],
-                            contentLike = parameters["q"],
-                            urlToImage = parameters["urlToImage"],
-                            url = parameters["url"],
-                            loadedAfter = parameters["loadedAfter"]?.toIntOrNull()?.toDate(),
-                            loadedBefore = parameters["loadedBefore"]?.toIntOrNull()?.toDate(),
-                            publishedAfter = parameters["publishedAfter"]?.toIntOrNull()?.toDate(),
-                            publishedBefore = parameters["publishedBefore"]?.toIntOrNull()?.toDate(),
-                            sources = sources,
-                            page = page,
-                            newsAtPage = newsAtPage
-                    )
-                } else {
-                    listOf()
-                }
-
-                NewsListDto(newsAtPage = newsAtPage, page = page, count = news.count(), news = news)
+                newsService.getNewsList(
+                        title = parameters["title"],
+                        contentLike = parameters["q"],
+                        urlToImage = parameters["urlToImage"],
+                        url = parameters["url"],
+                        loadedAfter = parameters["loadedAfter"]?.toIntOrNull()?.toDate(),
+                        loadedBefore = parameters["loadedBefore"]?.toIntOrNull()?.toDate(),
+                        publishedAfter = parameters["publishedAfter"]?.toIntOrNull()?.toDate(),
+                        publishedBefore = parameters["publishedBefore"]?.toIntOrNull()?.toDate(),
+                        sources = sources,
+                        page = page,
+                        newsAtPage = newsAtPage
+                )
             }
         }
     }

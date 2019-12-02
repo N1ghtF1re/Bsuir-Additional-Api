@@ -1,5 +1,6 @@
 package men.brakh.bsuirapi.app.news.service
 
+import men.brakh.bsuirapi.app.news.dto.NewsListDto
 import men.brakh.bsuirapicore.model.data.News
 import men.brakh.bsuirapicore.model.data.NewsSource
 import java.util.*
@@ -20,7 +21,7 @@ interface NewsService {
             loadedBefore: Date? = null,
             url: String? = null,
             urlToImage: String? = null,
-            page: Int?,
-            newsAtPage: Int?
-    ) : List<News>
+            page: Int,
+            newsAtPage: Int
+    ) : NewsListDto
 }

@@ -80,10 +80,10 @@ class MysqlNewsRepository(tableName: String, val srcRepo: NewsSourceRepository)
         }
     }
 
-    override fun find(title: String?, source: NewsSource?, sources: List<NewsSource>?, contentLike: String?,
-                      publishedAfter: Date?, publishedBefore: Date?, loadedAfter: Date?, loadedBefore: Date?,
-                      url: String?, urlToImage: String?, page: Int?, newsAtPage: Int?): List<News> {
-        val initQuery = "SELECT * FROM $tableName "
+
+    fun <T> request(initQuery: String, title: String?, source: NewsSource?, sources: List<NewsSource>?, contentLike: String?,
+                publishedAfter: Date?, publishedBefore: Date?, loadedAfter: Date?, loadedBefore: Date?,
+                url: String?, urlToImage: String?, page: Int?, newsAtPage: Int?, callback: (PreparedStatement) -> T ): T {
 
         val conditions=
                 mutableListOf<Pair<String, (stmt: PreparedStatement, index: Int) -> Unit>>()
@@ -163,10 +163,59 @@ class MysqlNewsRepository(tableName: String, val srcRepo: NewsSourceRepository)
                     stmt.setInt(lastIndex + 2, newsAtPage)
                 }
 
-                return extract(stmt)
+                return callback(stmt)
             }
         }
+    }
 
+    override fun find(title: String?, source: NewsSource?, sources: List<NewsSource>?, contentLike: String?,
+                      publishedAfter: Date?, publishedBefore: Date?, loadedAfter: Date?, loadedBefore: Date?,
+                      url: String?, urlToImage: String?, page: Int?, newsAtPage: Int?): List<News> {
+        val initQuery = "SELECT * FROM $tableName "
+
+        return request(initQuery = initQuery,
+                title = title,
+                source = source,
+                sources = sources,
+                contentLike = contentLike,
+                publishedAfter = publishedAfter,
+                publishedBefore = publishedBefore,
+                loadedBefore = loadedBefore,
+                loadedAfter = loadedAfter,
+                url = url,
+                urlToImage = urlToImage,
+                page = page,
+                newsAtPage = newsAtPage) {
+            extract(it)
+        }
+
+    }
+
+
+    override fun count(title: String?, source: NewsSource?, sources: List<NewsSource>?, contentLike: String?, publishedAfter: Date?, publishedBefore: Date?, loadedAfter: Date?, loadedBefore: Date?, url: String?, urlToImage: String?, page: Int?, newsAtPage: Int?): Int {
+        val initQuery = "SELECT COUNT(*) FROM $tableName "
+
+        return request(initQuery = initQuery,
+                title = title,
+                source = source,
+                sources = sources,
+                contentLike = contentLike,
+                publishedAfter = publishedAfter,
+                publishedBefore = publishedBefore,
+                loadedBefore = loadedBefore,
+                loadedAfter = loadedAfter,
+                url = url,
+                urlToImage = urlToImage,
+                page = page,
+                newsAtPage = newsAtPage) {
+            val resultSet = it.executeQuery()
+
+            if (resultSet.next()) {
+                resultSet.getInt(1)
+            } else {
+                0
+            }
+        }
     }
 
 }

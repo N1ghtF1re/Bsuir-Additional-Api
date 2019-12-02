@@ -2,6 +2,7 @@ package men.brakh.bsuirapi.app.news.service.impl
 
 import men.brakh.bsuirapi.EntityAlreadyExistsException
 import men.brakh.bsuirapi.NotFoundException
+import men.brakh.bsuirapi.app.news.dto.NewsListDto
 import men.brakh.bsuirapi.app.news.service.NewsService
 import men.brakh.bsuirapi.repository.NewsRepository
 import men.brakh.bsuirapi.repository.NewsSourceRepository
@@ -76,9 +77,29 @@ class NewsServiceImpl(private val newsRepository: NewsRepository,
                              loadedBefore: Date?,
                              url: String?,
                              urlToImage: String?,
-                             page: Int?,
-                             newsAtPage: Int?): List<News> {
-        return newsRepository.find(
+                             page: Int,
+                             newsAtPage: Int): NewsListDto {
+
+        val news = if (sources?.count() != 0) {
+            newsRepository.find(
+                    title = title,
+                    source = source,
+                    sources = sources,
+                    contentLike = contentLike,
+                    publishedAfter = publishedAfter,
+                    publishedBefore = publishedBefore,
+                    loadedAfter = loadedAfter,
+                    loadedBefore = loadedBefore,
+                    url = url,
+                    urlToImage = urlToImage,
+                    page = page,
+                    newsAtPage = newsAtPage
+            )
+        } else {
+            listOf()
+        }
+
+        val count = newsRepository.count(
                 title = title,
                 source = source,
                 sources = sources,
@@ -88,9 +109,10 @@ class NewsServiceImpl(private val newsRepository: NewsRepository,
                 loadedAfter = loadedAfter,
                 loadedBefore = loadedBefore,
                 url = url,
-                urlToImage = urlToImage,
-                page = page,
-                newsAtPage = newsAtPage
+                urlToImage = urlToImage
         )
+
+        return NewsListDto(newsAtPage = newsAtPage, page = page, count = count, news = news)
+
     }
 }
