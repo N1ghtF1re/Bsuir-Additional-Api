@@ -255,4 +255,23 @@ class BsuirApi(private val host: String, private val passwordEncrypter: Password
 
         return currDate.weeksBetween(firstSeptember) % 4 + 1
     }
+
+    fun getFaculties(): List<FacultyDto> {
+        val json: String = URL("$host/faculties").readText()
+
+        return Gson().fromJson(json, Array<FacultyDto>::class.java).toList()
+    }
+
+    fun getSpecialities(): List<SpecialityDto> {
+        val json: String = URL("$host/specialities").readText()
+
+        return Gson().fromJson(json, Array<SpecialityDto>::class.java).toList()
+    }
+
+    fun getRating(year: Int, specialityId: Int): List<RatingDto> {
+        val json: String = URL("$host/portal/allRating?year=$year&sdef=$specialityId").readText()
+
+        return Gson().fromJson(json, Array<RatingDto>::class.java).toList()
+
+    }
 }

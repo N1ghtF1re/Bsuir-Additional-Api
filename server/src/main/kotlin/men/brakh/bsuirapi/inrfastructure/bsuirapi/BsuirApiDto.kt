@@ -248,3 +248,16 @@ data class DayScheduleDto(val weekDay: String, val schedule: List<ScheduleDto>) 
 
 
 data class ScheduleResponseDto(val schedules: List<DayScheduleDto>)
+
+data class FacultyDto(val name: String, val abbrev: String, val id: Int)
+
+data class EducationFormDto(val name: String, val id: Int)
+
+data class SpecialityDto(val id: Int, val name: String, val abbrev: String,
+                         val educationForm: EducationFormDto, val facultyId: Int,
+                         val code: String)
+
+
+data class RatingDto(val studentCardNumber: String, val average: Double?, val hours: Int?, val fistAverage: Double?,
+                     val firstHours: Int?, val secondAverage: Double?, val secondHours: Int?, val thirdAverage: Double?,
+                     val thirdHours: Int?, val averageShift: Double?)

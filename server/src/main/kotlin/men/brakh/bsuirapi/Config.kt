@@ -4,10 +4,12 @@ package men.brakh.bsuirapi
 import men.brakh.bsuirapi.app.auds.service.FreeAudsService
 import men.brakh.bsuirapi.app.education.service.EducationService
 import men.brakh.bsuirapi.app.education.service.impl.EducationServiceImpl
+import men.brakh.bsuirapi.app.faculty.service.FacultyService
 import men.brakh.bsuirapi.app.file.service.FileService
 import men.brakh.bsuirapi.app.file.service.impl.FileServiceImpl
 import men.brakh.bsuirapi.app.news.service.NewsService
 import men.brakh.bsuirapi.app.news.service.impl.NewsServiceImpl
+import men.brakh.bsuirapi.app.rating.service.RatingService
 import men.brakh.bsuirapi.app.users.service.UserService
 import men.brakh.bsuirapi.app.users.service.impl.UserServiceImpl
 import men.brakh.bsuirapi.inrfastructure.authorization.AuthenticationManager
@@ -61,6 +63,8 @@ object Config {
     lateinit var  userService: UserService
     private val externalFilesStorageService = GoogleDriveExternalFilesStorageService()
     lateinit var fileService: FileService
+    lateinit var facultyService: FacultyService
+    lateinit var ratingService: RatingService
 
     private fun initServices() {
         bsuirApi = BsuirApi(bsuirApiHost, passwordEncrypter)
@@ -71,6 +75,8 @@ object Config {
                 passwordEncrypter, accessJwtTokenFactory)
 
         fileService = FileServiceImpl(externalFilesStorageService, fileRepository)
+        facultyService = FacultyService(bsuirApi)
+        ratingService = RatingService(bsuirApi)
     }
 
     private fun getConfigProps(): Properties {

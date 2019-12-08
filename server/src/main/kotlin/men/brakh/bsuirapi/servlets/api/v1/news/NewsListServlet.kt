@@ -42,7 +42,7 @@ class NewsListServlet : BasicHttpServlet() {
                 val sourcesIds = if ("sources" in parameters && "," in parameters["sources"]!!) {
                     parameters["sources"]!!.split(",")
                 } else {
-                    multipleParameters["sources"]?.toList()
+                    multipleParameters["sources"]?.toList() ?: multipleParameters["sources[]"]?.toList()
                 }
 
                 val sources = sourcesIds
