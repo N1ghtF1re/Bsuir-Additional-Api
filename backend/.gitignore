@@ -1,0 +1,12 @@
+.gradle/*
+build/*
+gradle/*
+.idea/*
+.ideaDataSources/*
+out/*
+log/*
+*.iml
+*.ipr
+*.iws
+logs/
+src/main/resources/application-local.properties
