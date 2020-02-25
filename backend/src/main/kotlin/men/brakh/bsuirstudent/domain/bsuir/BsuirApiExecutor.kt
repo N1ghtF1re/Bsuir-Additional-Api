@@ -1,20 +1,21 @@
 package men.brakh.bsuirstudent.domain.bsuir
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import men.brakh.bsuirstudent.application.exception.IisException
 import men.brakh.bsuirstudent.application.exception.UnauthorizedException
 import men.brakh.bsuirstudent.security.authentication.credentials.useBsuirCredentials
 import org.apache.http.HttpMessage
+import org.apache.http.HttpResponse
 import org.apache.http.client.entity.EntityBuilder
-import org.apache.http.client.methods.HttpEntityEnclosingRequestBase
-import org.apache.http.client.methods.HttpGet
-import org.apache.http.client.methods.HttpPost
-import org.apache.http.client.methods.HttpRequestBase
+import org.apache.http.client.methods.*
 import org.apache.http.entity.ContentType
 import org.apache.http.impl.client.HttpClientBuilder
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
+import java.io.Reader
+
 
 @Component
 class BsuirApiExecutor (
@@ -31,7 +32,21 @@ class BsuirApiExecutor (
         return this
     }
 
-    private fun <T> HttpEntityEnclosingRequestBase.setJsonEntity(obj: T) {
+    private fun <T: Reader> T.readAsString(): String {
+        var intValueOfChar: Int
+        val targetString = StringBuilder()
+        while (this.read().also { intValueOfChar = it } != -1) {
+            targetString.append(intValueOfChar.toChar())
+        }
+
+        return targetString.toString()
+    }
+
+    private fun <T : HttpResponse> T.isSuccessful(): Boolean {
+        return this.statusLine.statusCode in 200..299
+    }
+
+    fun <T> HttpEntityEnclosingRequestBase.setJsonEntity(obj: T) {
         this.entity = EntityBuilder.create()
             .setContentType(ContentType.APPLICATION_JSON)
             .setContentEncoding("UTF-8")
@@ -50,6 +65,13 @@ class BsuirApiExecutor (
         return this
     }
 
+    private fun throwIfInvalidRequest(resp: CloseableHttpResponse) {
+        if (!resp.isSuccessful()) {
+            throw IisException(
+                resp.entity.content.reader().readAsString()
+            )
+        }
+    }
 
     fun tryAuth(login: String, password: String): String? {
         fun getToken(cookie: String): String {
@@ -69,6 +91,8 @@ class BsuirApiExecutor (
             post.setJsonEntity(userData)
 
             httpClient.execute(post).use { resp ->
+                throwIfInvalidRequest(resp)
+
                 val respReader = resp.entity.content.reader()
                 val authDto = objectMapper.readValue<AuthorizationDto>(respReader, AuthorizationDto::class.java)
 
@@ -84,6 +108,20 @@ class BsuirApiExecutor (
 
     }
 
+    fun <T : Any> makeUnauthorizedRequest(request: HttpRequestBase, resClass: Class<T>): T {
+        httpClient().use { client ->
+            val req = request
+                .jsonRequest()
+
+            client.execute(req).use { resp ->
+                throwIfInvalidRequest(resp)
+
+                return objectMapper.readValue(resp.entity.content.reader(), resClass)
+            }
+        }
+    }
+
+
     fun <T : Any> makeAuthorizedRequest(request: HttpRequestBase, resClass: Class<T>): T {
         useBsuirCredentials { username, password ->
             httpClient().use { client ->
@@ -92,11 +130,15 @@ class BsuirApiExecutor (
                     .authorize(username, password)
 
                 client.execute(get).use { resp ->
+
+                    throwIfInvalidRequest(resp)
+
                     val result: T = objectMapper.readValue(resp.entity.content.reader(), resClass)
 
                     if (result is UsernameAware) {
                         result.username = username
                     }
+
 
                     return result
                 }
@@ -106,6 +148,9 @@ class BsuirApiExecutor (
         throw IllegalArgumentException()
     }
 
+
+
     inline fun <reified T : Any> makeAuthorizedGetRequest(url: String): T
         = makeAuthorizedRequest(HttpGet("${host}${url}"),  T::class.java)
+
 }

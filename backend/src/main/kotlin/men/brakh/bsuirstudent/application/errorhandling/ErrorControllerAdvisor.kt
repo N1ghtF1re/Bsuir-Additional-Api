@@ -1,6 +1,7 @@
 package men.brakh.bsuirstudent.application.errorhandling
 
 import men.brakh.bsuirstudent.application.exception.BadRequestException
+import men.brakh.bsuirstudent.application.exception.IisException
 import men.brakh.bsuirstudent.application.exception.ResourceNotFoundException
 import men.brakh.bsuirstudent.application.exception.UnauthorizedException
 import org.slf4j.LoggerFactory
@@ -45,6 +46,14 @@ class ErrorControllerAdvisor : ResponseEntityExceptionHandler() {
     return processUnhandledException(ex, request, HttpStatus.FORBIDDEN)
   }
 
+  @ExceptionHandler(IisException::class)
+  fun handleIisException(
+    ex: IisException,
+    request: WebRequest
+  ): ResponseEntity<Any> {
+    return processUnhandledException(ex, request, HttpStatus.I_AM_A_TEAPOT, message = "Iis is down")
+  }
+
   @ExceptionHandler(Exception::class)
   fun handleAnyException(
     ex: Exception,
@@ -57,7 +66,8 @@ class ErrorControllerAdvisor : ResponseEntityExceptionHandler() {
   private fun processUnhandledException(
     ex: Exception,
     request: WebRequest,
-    status: HttpStatus
+    status: HttpStatus,
+    message: String? = null
   ): ResponseEntity<Any> {
     if (status == HttpStatus.INTERNAL_SERVER_ERROR) {
       log.error("Unhandler exception", ex)
@@ -65,7 +75,7 @@ class ErrorControllerAdvisor : ResponseEntityExceptionHandler() {
       log.warn("Exception: ", ex)
 
     }
-    val error = ErrorResponse(ex.message ?: "Unhandler error")
+    val error = ErrorResponse(message ?: ex.message ?: "Unhandler error")
     return ResponseEntity(error, status)
   }
 }

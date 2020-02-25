@@ -2,6 +2,10 @@ package men.brakh.bsuirstudent.domain.bsuir
 
 data class AuthorizationDto(val loggedIn: Boolean, val username: String?, val fio: String?, val message: String?)
 
+data class SkillDto(val id: Int, val name: String)
+
+data class ReferenceDto(val id: Int, val name: String, val reference: String)
+
 data class PersonalCVDto(val id: Int,
                          val firstName: String,
                          val lastName: String,
@@ -18,5 +22,7 @@ data class PersonalCVDto(val id: Int,
                          val showRating: Boolean,
                          val published: Boolean,
                          val searchJob: Boolean,
+                         val skills: List<SkillDto>,
+                         val references: List<ReferenceDto>,
                          override var username: String?
 ) : UsernameAware

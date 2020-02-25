@@ -5,6 +5,35 @@ import men.brakh.bsuirstudent.domain.bsuir.BsuirEntity
 import java.util.*
 import javax.persistence.*
 
+@Entity(name = "student_skill")
+data class StudentSkill(
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    override var id: Int? = null,
+
+    @ManyToOne
+    @JoinColumn(name = "student_id", referencedColumnName = "id")
+    val student: Student,
+
+    val iisId: Int,
+    val name: String
+): BaseEntity<Int>
+
+@Entity(name = "student_reference")
+data class StudentReference(
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    override var id: Int? = null,
+
+    @ManyToOne
+    @JoinColumn(name = "student_id", referencedColumnName = "id")
+    val student: Student,
+
+    val iisId: Int,
+    val name: String,
+    val reference: String
+) : BaseEntity<Int>
+
 @Entity(name = "student_education_information")
 data class EducationInformation  (
     @Id
@@ -73,5 +102,21 @@ data class Student (
         cascade = [CascadeType.ALL],
         fetch = FetchType.LAZY
     )
-    var settings: UserSettings ?= null
+    var settings: UserSettings ?= null,
+
+    @OneToMany(
+        mappedBy = "student",
+        cascade = [CascadeType.ALL],
+        orphanRemoval = true,
+        fetch = FetchType.LAZY
+    )
+    var references: List<StudentReference> = listOf(),
+
+    @OneToMany(
+        mappedBy = "student",
+        cascade = [CascadeType.ALL],
+        orphanRemoval = true,
+        fetch = FetchType.LAZY
+    )
+    var skills: List<StudentSkill> = listOf()
 ) : BaseEntity<Int>, BsuirEntity

@@ -4,6 +4,18 @@ import com.fasterxml.jackson.annotation.JsonFormat
 import men.brakh.bsuirstudent.domain.Dto
 import java.util.*
 
+data class StudentSkillDto(
+    val id: Int,
+    val name: String
+)
+
+data class StudentReferenceDto(
+    val id: Int,
+    val name: String,
+    val reference: String
+)
+
+
 data class EducationInformationDto  (
     val faculty: String,
     val course: Int,
@@ -32,6 +44,9 @@ data class StudentDto (
     val photo: String?,
     val summary: String?,
     val rating: Int,
+
+    val skills: List<StudentSkillDto>,
+    val references: List<StudentReferenceDto>,
 
     val educationInfo: EducationInformationDto,
 

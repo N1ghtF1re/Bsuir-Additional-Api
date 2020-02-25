@@ -1,9 +1,7 @@
 package men.brakh.bsuirstudent.domain.student.mapping
 
 import men.brakh.bsuirstudent.domain.bsuir.PersonalCVDto
-import men.brakh.bsuirstudent.domain.student.EducationInformation
-import men.brakh.bsuirstudent.domain.student.Student
-import men.brakh.bsuirstudent.domain.student.UserSettings
+import men.brakh.bsuirstudent.domain.student.*
 import org.springframework.stereotype.Component
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -52,6 +50,23 @@ class StudentBsuirMapping() {
             isSearchJob = bsuirDto.searchJob,
             isShowRating =  bsuirDto.showRating
         )
+
+        student.references = bsuirDto.references.map {
+            StudentReference(
+                iisId = it.id,
+                name = it.name,
+                reference = it.reference,
+                student = student
+            )
+        }
+
+        student.skills = bsuirDto.skills.map {
+            StudentSkill(
+                iisId = it.id,
+                name = it.name,
+                student = student
+            )
+        }
 
         return student
     }

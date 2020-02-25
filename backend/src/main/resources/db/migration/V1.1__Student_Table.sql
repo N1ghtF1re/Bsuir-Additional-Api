@@ -26,7 +26,11 @@ CREATE TABLE student_education_information (
     `speciality` VARCHAR(64) NOT NULL,
     `group` VARCHAR(16) NOT NULL,
 
-    `course` INT NOT NULL
+    `course` INT NOT NULL,
+
+    FOREIGN KEY (student_id) REFERENCES student (id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE student_settings (
@@ -35,6 +39,32 @@ CREATE TABLE student_settings (
 
     is_show_rating TINYINT NOT NULL,
     is_public_profile TINYINT NOT NULL,
-    is_search_job TINYINT NOT NULL
+    is_search_job TINYINT NOT NULL,
 
+    FOREIGN KEY (student_id) REFERENCES student (id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE student_skill (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    student_id INT NOT NULL,
+    iis_id INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+
+    FOREIGN KEY (student_id) REFERENCES student (id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE student_reference (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    student_id INT NOT NULL,
+    iis_id INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    reference VARCHAR(255) NOT NULL,
+
+    FOREIGN KEY (student_id) REFERENCES student (id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8;

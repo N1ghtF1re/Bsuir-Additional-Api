@@ -8,10 +8,11 @@ import men.brakh.bsuirstudent.security.authentication.credentials.getCurrentUser
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import javax.transaction.Transactional
 
 @RestController
 @RequestMapping(path = ["/api/v2/students"])
-class StudentService(
+open class StudentService(
     private val bsuirService : BsuirProfileService,
     private val studentBsuirMapping: StudentBsuirMapping,
     private val presenter: StudentPresenter,
@@ -23,7 +24,8 @@ class StudentService(
     )
 
     @GetMapping("/me")
-    fun getMe() : StudentDto {
+    @Transactional
+    open fun getMe() : StudentDto {
         val currentUserUsername = getCurrentUserUsername();
         return cachedGetTemplate.get(
             getDataFunc = { studentBsuirMapping.mapPersonalCvToStudent(bsuirService.getPersonalCV()) },
