@@ -129,7 +129,7 @@ class BsuirApiExecutor (
     }
 
 
-    fun <T : Any> makeAuthorizedRequest(request: HttpRequestBase, resClass: Class<T>): T {
+    fun <T : Any> makeAuthorizedRequest(request: HttpRequestBase, resClass: Class<T>): T? {
         useBsuirCredentials { username, password ->
             httpClient().use { client ->
                 val get = request
@@ -140,14 +140,20 @@ class BsuirApiExecutor (
 
                     throwIfInvalidRequest(resp)
 
-                    val result: T = objectMapper.readValue(resp.entity.content.reader(), resClass)
+                    return if (resClass != Void::class.java) {
+                        val result: T = objectMapper.readValue(resp.entity.content.reader(), resClass)
 
-                    if (result is UsernameAware) {
-                        result.username = username
+                        if (result is UsernameAware) {
+                            result.username = username
+                        }
+
+                        result
+                    } else {
+                        null
                     }
 
 
-                    return result
+
                 }
             }
         }
@@ -157,7 +163,18 @@ class BsuirApiExecutor (
 
 
 
-    inline fun <reified T : Any> makeAuthorizedGetRequest(url: String): T
+    inline fun <reified T : Any> makeAuthorizedGetRequest(url: String): T?
         = makeAuthorizedRequest(HttpGet("${host}${url}"),  T::class.java)
 
+    inline fun <reified T : Any> makeAuthorizedPostRequest(url: String, body: Any): T? {
+        val httpPost = HttpPost("${host}${url}")
+        httpPost.setJsonEntity(body)
+        return makeAuthorizedRequest(httpPost,  T::class.java)
+    }
+
+    inline fun <reified T : Any> makeAuthorizedPutRequest(url: String, body: Any): T? {
+        val httpPut = HttpPut("${host}${url}")
+        httpPut.setJsonEntity(body)
+        return makeAuthorizedRequest(httpPut,  T::class.java)
+    }
 }

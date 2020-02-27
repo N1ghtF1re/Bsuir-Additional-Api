@@ -9,23 +9,33 @@ open class BsuirStudentService (
     private val bsuirApiExecutor: BsuirApiExecutor
 ) {
     fun getPersonalCV(): PersonalCVBsuirDto
-        = bsuirApiExecutor.makeAuthorizedGetRequest("/portal/personalCV")
+        = bsuirApiExecutor.makeAuthorizedGetRequest("/portal/personalCV")!!
 
     fun getMarkBook(): MarkBookBsuirDto
-        = bsuirApiExecutor.makeAuthorizedGetRequest("/portal/markbook")
+        = bsuirApiExecutor.makeAuthorizedGetRequest("/portal/markbook")!!
 
     fun getDiploma(): DiplomaBsuirDto
-        = bsuirApiExecutor.makeAuthorizedGetRequest("/portal/markbook/diploma")
+        = bsuirApiExecutor.makeAuthorizedGetRequest("/portal/markbook/diploma")!!
 
     fun getUserCV(id: Int): PersonalCVBsuirDto {
         return try {
-            bsuirApiExecutor.makeAuthorizedGetRequest("/profiles?id=$id")
+            bsuirApiExecutor.makeAuthorizedGetRequest("/profiles?id=$id")!!
         } catch (e: IisException) {
             throw ResourceNotFoundException("User with iis id $id is not found")
         }
     }
 
     fun getGroup(): GroupInfoBsuirDto
-        = bsuirApiExecutor.makeAuthorizedGetRequest("/portal/groupInfo")
+        = bsuirApiExecutor.makeAuthorizedGetRequest("/portal/groupInfo")!!
+
+    fun saveShowRating(isShow: Boolean)
+        = bsuirApiExecutor.makeAuthorizedPutRequest<Void>("/portal/saveShowRating", mapOf("showRating" to isShow))
+
+    fun savePublished(isPublished: Boolean)
+            = bsuirApiExecutor.makeAuthorizedPutRequest<Void>("/portal/savePublished", mapOf("published" to isPublished))
+
+    fun saveSearchJob(isSearchJob: Boolean)
+            = bsuirApiExecutor.makeAuthorizedPutRequest<Void>("/portal/saveSearchJob", mapOf("searchJob" to isSearchJob))
+
 
 }

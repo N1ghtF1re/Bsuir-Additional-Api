@@ -2,6 +2,7 @@ package men.brakh.bsuirstudent.domain.iis.student
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import men.brakh.bsuirstudent.domain.Dto
+import men.brakh.bsuirstudent.domain.UpdateDto
 import java.util.*
 
 data class StudentSkillDto(
@@ -29,6 +30,12 @@ data class UserSettingsDto(
     val isPublicProfile: Boolean,
     val isSearchJob: Boolean
 ) : Dto
+
+data class UpdateUserSettingsRequest (
+    val isShowRating: Boolean,
+    val isPublicProfile: Boolean,
+    val isSearchJob: Boolean
+) : Dto, UpdateDto
 
 
 data class StudentDto (

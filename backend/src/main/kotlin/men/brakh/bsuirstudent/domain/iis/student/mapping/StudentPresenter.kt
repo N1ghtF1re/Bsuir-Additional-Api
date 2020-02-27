@@ -2,10 +2,13 @@ package men.brakh.bsuirstudent.domain.iis.student.mapping
 
 import men.brakh.bsuirstudent.application.mapping.presenter.EntityPresenter
 import men.brakh.bsuirstudent.domain.iis.student.*
+import men.brakh.bsuirstudent.domain.iis.student.settings.StudentSettingsPresenter
 import org.springframework.stereotype.Component
 
 @Component
-class StudentPresenter : EntityPresenter<Student, StudentDto>{
+class StudentPresenter(
+    private val studentSettingsPresenter: StudentSettingsPresenter
+) : EntityPresenter<Student, StudentDto>{
 
     override fun mapToDto(entity: Student, dtoClass: Class<out StudentDto>): StudentDto {
         return StudentDto(
@@ -23,11 +26,7 @@ class StudentPresenter : EntityPresenter<Student, StudentDto>{
                 group = entity.educationInfo!!.group,
                 faculty = entity.educationInfo!!.faculty
             ),
-            settings = UserSettingsDto(
-                isShowRating = entity.settings!!.isShowRating,
-                isSearchJob = entity.settings!!.isSearchJob,
-                isPublicProfile = entity.settings!!.isPublicProfile
-            ),
+            settings = studentSettingsPresenter.mapToDto(entity.settings!!, UserSettingsDto::class.java),
             references = entity.references.map {
                 StudentReferenceDto(
                     name = it.name,
