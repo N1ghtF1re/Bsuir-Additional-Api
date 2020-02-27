@@ -41,4 +41,11 @@ open class GetTemplate<T : BaseEntity<I>, D : Dto, I : Any>(
 
         return presenter.mapToDto(entity, dtoClass)
     }
+
+    fun getAll(dtoClass: Class<out D>): List<out D> {
+        return presenter.mapListToDto(
+            repository.findAll(),
+            dtoClass
+        )
+    }
 }
