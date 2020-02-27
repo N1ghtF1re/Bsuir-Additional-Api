@@ -1,5 +1,6 @@
-package men.brakh.bsuirstudent.domain.student
+package men.brakh.bsuirstudent.domain.student.repository
 
+import men.brakh.bsuirstudent.domain.student.Student
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 

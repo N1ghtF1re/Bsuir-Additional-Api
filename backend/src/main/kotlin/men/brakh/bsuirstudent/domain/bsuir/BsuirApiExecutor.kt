@@ -94,7 +94,7 @@ class BsuirApiExecutor (
                 throwIfInvalidRequest(resp)
 
                 val respReader = resp.entity.content.reader()
-                val authDto = objectMapper.readValue<AuthorizationDto>(respReader, AuthorizationDto::class.java)
+                val authDto = objectMapper.readValue<AuthorizationBsuirDto>(respReader, AuthorizationBsuirDto::class.java)
 
                 return if(authDto.loggedIn) {
                     val header = resp.getHeaders("Set-Cookie").first()

@@ -1,6 +1,6 @@
 package men.brakh.bsuirstudent.domain.student.mapping
 
-import men.brakh.bsuirstudent.domain.bsuir.PersonalCVDto
+import men.brakh.bsuirstudent.domain.bsuir.PersonalCVBsuirDto
 import men.brakh.bsuirstudent.domain.student.*
 import org.springframework.stereotype.Component
 import java.text.ParseException
@@ -22,7 +22,7 @@ class StudentBsuirMapping() {
         }
     }
 
-    fun mapPersonalCvToStudent(bsuirDto: PersonalCVDto): Student {
+    fun mapPersonalCvToStudent(bsuirDto: PersonalCVBsuirDto): Student {
         val student =  Student(
             firstName = bsuirDto.firstName,
             lastName = bsuirDto.lastName,

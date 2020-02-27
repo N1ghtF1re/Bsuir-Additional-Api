@@ -91,8 +91,7 @@ data class Student (
 
     @OneToOne(
         mappedBy = "student",
-        cascade = [CascadeType.ALL],
-        fetch = FetchType.LAZY
+        cascade = [CascadeType.ALL]
     )
     @JoinColumn(name = "id")
     var educationInfo: EducationInformation ? = null,
