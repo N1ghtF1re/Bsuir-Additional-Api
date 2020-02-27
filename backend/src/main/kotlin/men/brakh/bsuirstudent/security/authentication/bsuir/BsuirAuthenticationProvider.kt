@@ -1,7 +1,7 @@
 package men.brakh.bsuirstudent.security.authentication.bsuir
 
 import men.brakh.bsuirstudent.application.exception.UnauthorizedException
-import men.brakh.bsuirstudent.domain.bsuir.BsuirApiExecutor
+import men.brakh.bsuirstudent.domain.iis.bsuir.BsuirApiExecutor
 import men.brakh.bsuirstudent.security.authentication.credentials.UserCredentials
 import men.brakh.bsuirstudent.security.authentication.credentials.UserCredentialsRepository
 import org.springframework.security.authentication.AuthenticationProvider
