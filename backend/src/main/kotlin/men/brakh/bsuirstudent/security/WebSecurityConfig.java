@@ -1,6 +1,7 @@
 package men.brakh.bsuirstudent.security;
 
-import men.brakh.bsuirstudent.security.authentication.AuthenticationFilter;
+import men.brakh.bsuirstudent.security.authentication.JwtAuthenticationFilter;
+import men.brakh.bsuirstudent.security.authentication.ServiceUsersAuthenticationFilter;
 import men.brakh.bsuirstudent.security.authentication.bsuir.BsuirAuthenticationProvider;
 import men.brakh.bsuirstudent.security.authentication.credentials.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +29,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   private final UserDetailsService jwtUserDetailsService;
-  private final AuthenticationFilter authenticationFilter;
+  private final JwtAuthenticationFilter jwtAuthenticationFilter;
+  private final ServiceUsersAuthenticationFilter serviceUsersAuthenticationFilter;
   private final AuthenticationEntryPoint authenticationEntryPoint;
   private final BsuirAuthenticationProvider authenticationProvider;
 
   public WebSecurityConfig(final UserDetailsServiceImpl jwtUserDetailsService,
-                           final AuthenticationFilter authenticationFilter,
+                           final JwtAuthenticationFilter jwtAuthenticationFilter,
+                           final ServiceUsersAuthenticationFilter serviceUsersAuthenticationFilter,
                            final AuthenticationEntryPoint authenticationEntryPoint,
                            final BsuirAuthenticationProvider authenticationProvider) {
     this.jwtUserDetailsService = jwtUserDetailsService;
-    this.authenticationFilter = authenticationFilter;
+    this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    this.serviceUsersAuthenticationFilter = serviceUsersAuthenticationFilter;
     this.authenticationEntryPoint = authenticationEntryPoint;
     this.authenticationProvider = authenticationProvider;
   }
@@ -81,7 +85,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
           .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
 
-    httpSecurity.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
+    httpSecurity.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+    httpSecurity.addFilterBefore(serviceUsersAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
   }
 
   @Bean

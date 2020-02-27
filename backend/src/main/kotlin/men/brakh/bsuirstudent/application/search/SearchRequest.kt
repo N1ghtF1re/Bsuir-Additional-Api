@@ -22,12 +22,17 @@ class SearchRequest(
         val predicates =
             buildPredicates(root, criteriaQuery, criteriaBuilder)
         addSort(root, criteriaQuery, criteriaBuilder)
-        return if (predicates.size > 1) {
-            criteriaBuilder.and(*predicates.toTypedArray())
-        } else if (predicates.size == 1) {
-            predicates[0]
-        } else {
-            criteriaBuilder.isTrue(criteriaBuilder.literal(true))
+
+        return when {
+            predicates.size > 1 -> {
+                criteriaBuilder.and(*predicates.toTypedArray())
+            }
+            predicates.size == 1 -> {
+                predicates[0]
+            }
+            else -> {
+                criteriaBuilder.isTrue(criteriaBuilder.literal(true))
+            }
         }
     }
 
@@ -74,115 +79,121 @@ class SearchRequest(
         criteriaQuery: CriteriaQuery<*>,
         criteriaBuilder: CriteriaBuilder
     ): Predicate {
+        val path = getPath(root, condition.field)
         return when (condition.comparison) {
             Comparison.EQ -> buildEqualsPredicateToCriteria(
                 condition,
-                root,
-                criteriaQuery,
+                path,
                 criteriaBuilder
             )
             Comparison.GT -> buildGreaterThanPredicate(
                 condition,
-                root,
-                criteriaQuery,
+                path,
                 criteriaBuilder
             )
             Comparison.LT -> buildLessThanPredicate(
                 condition,
-                root,
-                criteriaQuery,
+                path,
                 criteriaBuilder
             )
             Comparison.NE -> buildNotEqualsPredicateToCriteria(
                 condition,
-                root,
-                criteriaQuery,
+                path,
                 criteriaBuilder
             )
             Comparison.CT -> buildContainsPredicate(
                 condition,
-                root,
-                criteriaQuery,
+                path as Path<String>,
                 criteriaBuilder
             )
             Comparison.ISNULL -> buildIsNullPredicate(
-                condition,
-                root,
-                criteriaQuery,
+                path,
                 criteriaBuilder
             )
             Comparison.IN -> throw IllegalArgumentException("Not supported")
         }
-        throw RuntimeException()
     }
 
     private fun buildEqualsPredicateToCriteria(
         condition: Condition,
-        root: Root<*>,
-        criteriaQuery: CriteriaQuery<*>,
+        path: Path<*>,
         cb: CriteriaBuilder
     ): Predicate {
-        return cb.equal(root.get<Any>(condition.field), condition.fieldValue)
+        return cb.equal(path, condition.fieldValue)
     }
 
     private fun buildNotEqualsPredicateToCriteria(
         condition: Condition,
-        root: Root<*>,
-        criteriaQuery: CriteriaQuery<*>,
+        path: Path<*>,
         cb: CriteriaBuilder
     ): Predicate {
-        return cb.notEqual(root.get<Any>(condition.field), condition.fieldValue)
+        return cb.notEqual(path, condition.fieldValue)
     }
 
     private fun buildGreaterThanPredicate(
         condition: Condition,
-        root: Root<*>,
-        criteriaQuery: CriteriaQuery<*>,
+        path: Path<*>,
         cb: CriteriaBuilder
     ): Predicate {
         return if (condition.type === Type.date) {
             cb.greaterThan(
-                root.get<Any>(condition.field) as Path<Date>?,
+                path as Path<Date>,
                 condition.fieldValue as Date
             )
         } else {
-            cb.gt(root[condition.field], condition.fieldValue as Number)
+            cb.gt(path as Path<Number>, condition.fieldValue as Number)
         }
     }
 
     private fun buildLessThanPredicate(
         condition: Condition,
-        root: Root<*>,
-        criteriaQuery: CriteriaQuery<*>,
+        path: Path<*>,
         cb: CriteriaBuilder
     ): Predicate {
         return if (condition.type === Type.date) {
             cb.lessThan(
-                root.get<Any>(condition.field) as Path<Date>?,
+                path as Path<Date>?,
                 condition.fieldValue as Date
             )
         } else {
-            cb.lt(root[condition.field], condition.fieldValue as Number)
+            cb.lt(path as Path<Number>, condition.fieldValue as Number)
         }
     }
 
     private fun buildContainsPredicate(
         condition: Condition,
-        root: Root<*>,
-        criteriaQuery: CriteriaQuery<*>,
+        path: Path<String>,
         cb: CriteriaBuilder
     ): Predicate {
         require(!(condition.type !== Type.string)) { "Contains criteria can be used only with strings" }
         val valueString = condition.fieldValue.toString().replace("%".toRegex(), "~%")
-        return cb.like(root[condition.field], "%$valueString%", '~')
+        return cb.like(path, "%$valueString%", '~')
     }
 
     private fun buildIsNullPredicate(
-        condition: Condition,
-        root: Root<*>,
-        criteriaQuery: CriteriaQuery<*>,
+        path: Path<*>,
         cb: CriteriaBuilder
     ): Predicate {
-        return cb.isNull(root.get<Any>(condition.field))
+        return cb.isNull(path)
     }
+
+    private fun getPath(root: Root<*>, fieldName: String): Path<*> {
+        val fieldPath = listOf(*fieldName.split(".").toTypedArray())
+        val resultPath: Path<*>
+        if (isRootField(fieldPath)) {
+            resultPath = root.get<Any>(fieldName)
+        } else {
+            var resultJoin: Join<*, *> = root.join<Any, Any>(fieldPath[0])
+            for (i in 1..fieldPath.size - 2) {
+                resultJoin = resultJoin.join<Any, Any>(fieldPath[i])
+            }
+            resultPath = resultJoin.get<Any>(fieldPath[fieldPath.size - 1])
+        }
+        return resultPath
+    }
+
+    private fun isRootField(fieldPath: List<String>): Boolean {
+        return fieldPath.size == 1
+    }
+
 }

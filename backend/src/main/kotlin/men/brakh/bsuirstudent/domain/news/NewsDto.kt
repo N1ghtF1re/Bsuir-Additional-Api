@@ -5,6 +5,13 @@ import men.brakh.bsuirstudent.domain.CreateDto
 import men.brakh.bsuirstudent.domain.Dto
 import java.util.*
 
+class NewsSourceDto (
+    val id: Int,
+    val sourceName: String,
+    val sourceType: String,
+    val sourceAlias: String
+) : Dto
+
 open class ShortNewsDto (
     val id: Int,
 

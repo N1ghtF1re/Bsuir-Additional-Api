@@ -4,7 +4,7 @@ import men.brakh.bsuirstudent.application.mapping.mapper.CreateDtoMapper
 import men.brakh.bsuirstudent.domain.news.CreateNewsRequest
 import men.brakh.bsuirstudent.domain.news.News
 import men.brakh.bsuirstudent.domain.news.NewsSource
-import men.brakh.bsuirstudent.domain.news.NewsSourceRepository
+import men.brakh.bsuirstudent.domain.news.repository.NewsSourceRepository
 import org.springframework.stereotype.Component
 import java.util.*
 
@@ -14,7 +14,6 @@ class NewsMapper(
 ) : CreateDtoMapper<CreateNewsRequest, News> {
 
     private val urlRegex = "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)"
-
     override fun mapToEntity(createRequest: CreateNewsRequest): News {
         val newsSource = getSource(createRequest)
         return News(

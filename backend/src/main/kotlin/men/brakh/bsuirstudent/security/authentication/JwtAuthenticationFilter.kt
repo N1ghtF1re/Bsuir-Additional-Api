@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Component
-class AuthenticationFilter(
+class JwtAuthenticationFilter(
   private val jwtService: JwtService,
   private val userDetailsService: UserDetailsServiceImpl
 ) : OncePerRequestFilter() {

@@ -1,5 +1,6 @@
 package men.brakh.bsuirstudent.security.authentication.credentials;
 
+import men.brakh.bsuirstudent.security.Role
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -25,7 +26,7 @@ open class UserDetailsServiceImpl(
     return User.builder()
       .password(credentials.password)
       .username(credentials.username)
-      .roles("STUDENT")
+      .roles(Role.STUDENT)
       .build()
 
   }
