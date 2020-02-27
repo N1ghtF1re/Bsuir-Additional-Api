@@ -122,7 +122,7 @@ class SearchRequest(
         criteriaQuery: CriteriaQuery<*>,
         cb: CriteriaBuilder
     ): Predicate {
-        return cb.equal(root.get<Any>(condition.field), condition.value)
+        return cb.equal(root.get<Any>(condition.field), condition.fieldValue)
     }
 
     private fun buildNotEqualsPredicateToCriteria(
@@ -131,7 +131,7 @@ class SearchRequest(
         criteriaQuery: CriteriaQuery<*>,
         cb: CriteriaBuilder
     ): Predicate {
-        return cb.notEqual(root.get<Any>(condition.field), condition.value)
+        return cb.notEqual(root.get<Any>(condition.field), condition.fieldValue)
     }
 
     private fun buildGreaterThanPredicate(
@@ -143,10 +143,10 @@ class SearchRequest(
         return if (condition.type === Type.date) {
             cb.greaterThan(
                 root.get<Any>(condition.field) as Path<Date>?,
-                condition.value as Date
+                condition.fieldValue as Date
             )
         } else {
-            cb.gt(root[condition.field], condition.value as Number)
+            cb.gt(root[condition.field], condition.fieldValue as Number)
         }
     }
 
@@ -159,10 +159,10 @@ class SearchRequest(
         return if (condition.type === Type.date) {
             cb.lessThan(
                 root.get<Any>(condition.field) as Path<Date>?,
-                condition.value as Date
+                condition.fieldValue as Date
             )
         } else {
-            cb.lt(root[condition.field], condition.value as Number)
+            cb.lt(root[condition.field], condition.fieldValue as Number)
         }
     }
 
@@ -173,7 +173,7 @@ class SearchRequest(
         cb: CriteriaBuilder
     ): Predicate {
         require(!(condition.type !== Type.string)) { "Contains criteria can be used only with strings" }
-        val valueString = condition.value.toString().replace("%".toRegex(), "~%")
+        val valueString = condition.fieldValue.toString().replace("%".toRegex(), "~%")
         return cb.like(root[condition.field], "%$valueString%", '~')
     }
 

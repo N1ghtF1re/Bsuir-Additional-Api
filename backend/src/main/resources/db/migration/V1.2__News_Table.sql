@@ -1,0 +1,26 @@
+CREATE TABLE `news_source` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `type` VARCHAR(255) NOT NULL,
+  `name` VARCHAR(255) NOT NULL,
+  `alias` VARCHAR(255) NOT NULL UNIQUE,
+
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY (name, type)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE `news` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(255) NOT NULL,
+  `source_id` INT NOT NULL,
+  `content` MEDIUMTEXT NOT NULL,
+  `short_content` TEXT NOT NULL,
+  `published_at` DATETIME NOT NULL,
+  `loaded_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `url` VARCHAR(255) NOT NULL,
+  `url_to_image` VARCHAR(255) DEFAULT NULL,
+
+   FOREIGN KEY (source_id) REFERENCES news_source (id)
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

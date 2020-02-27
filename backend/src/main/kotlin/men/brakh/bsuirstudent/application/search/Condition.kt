@@ -7,19 +7,19 @@ import java.text.SimpleDateFormat
 data class Condition(
      val type: Type,
      val comparison: Comparison,
-     private val _value: Any,
+     private val value: Any,
      val field: String
 ) {
 
-  val value: Any
+  val fieldValue: Any
     get() {
       try {
         when (type) {
-          Type.numeric, Type.string, Type.bool, Type.uuid -> return _value
-          Type.date -> return if (_value is String) {
-            dateFormat.parse(_value.toString())
+          Type.numeric, Type.string, Type.bool, Type.uuid -> return value
+          Type.date -> return if (value is String) {
+            dateFormat.parse(value.toString())
           } else {
-            _value
+            value
           }
           Type.list -> {
           }

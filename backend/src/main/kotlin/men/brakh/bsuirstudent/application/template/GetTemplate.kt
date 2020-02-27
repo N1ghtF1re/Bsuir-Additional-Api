@@ -27,7 +27,7 @@ open class GetTemplate<T : BaseEntity<I>, D : Dto, I : Any>(
      * @return entity mapped to dto
      * @throws BadRequestException if something went wrong
      */
-    fun getById(id: I, dtoClass: Class<D>): D {
+    fun getById(id: I, dtoClass: Class<out D>): D {
         val entity = repository.findByIdOrNull(id)
             ?: throw ResourceNotFoundException("Entity "
                     + dtoClass.simpleName.replace("Dto", "") + " with id " + id + "isn't found")

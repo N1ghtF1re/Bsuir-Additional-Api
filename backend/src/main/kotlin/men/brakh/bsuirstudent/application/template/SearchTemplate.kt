@@ -11,8 +11,8 @@ import org.springframework.data.jpa.domain.Specification
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor
 
 class SearchTemplate<T : BaseEntity<out Any>, D : Dto>(
-  private val specificationExecutor: JpaSpecificationExecutor<T>,
-  private val presenter: EntityPresenter<T, D>
+  private val presenter: EntityPresenter<T, D>,
+  private val specificationExecutor: JpaSpecificationExecutor<T>
 ) {
 
   fun search(searchRequest: SearchRequest, dtoClass: Class<D>): SearchResponse<D> {
