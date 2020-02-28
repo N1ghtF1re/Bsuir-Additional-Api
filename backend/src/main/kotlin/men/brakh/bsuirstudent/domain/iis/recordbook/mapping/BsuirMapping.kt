@@ -25,8 +25,9 @@ class RecordBookBsuirMapping() {
         }
     }
 
-    fun mapToRecordBook(markBookBsuirDto: MarkBookBsuirDto, diplomaBsuirDto: DiplomaBsuirDto): RecordBook {
+    fun mapToRecordBook(markBookBsuirDto: MarkBookBsuirDto, diplomaBsuirDto: DiplomaBsuirDto, id: Int? = null): RecordBook {
         val recordBook = RecordBook(
+            id =  id,
             number = markBookBsuirDto.number,
             averageMark = markBookBsuirDto.averageMark
         )

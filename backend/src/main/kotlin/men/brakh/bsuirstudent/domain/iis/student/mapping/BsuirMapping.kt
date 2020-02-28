@@ -22,8 +22,9 @@ class StudentBsuirMapping() {
         }
     }
 
-    fun mapPersonalCvToStudent(bsuirDto: PersonalCVBsuirDto): Student {
+    fun mapPersonalCvToStudent(bsuirDto: PersonalCVBsuirDto, id: Int? = null): Student {
         val student =  Student(
+            id = id,
             firstName = bsuirDto.firstName,
             lastName = bsuirDto.lastName,
             middleName = bsuirDto.middleName,

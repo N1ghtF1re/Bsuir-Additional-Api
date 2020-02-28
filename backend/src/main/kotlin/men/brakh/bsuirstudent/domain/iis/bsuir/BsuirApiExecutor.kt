@@ -162,6 +162,8 @@ class BsuirApiExecutor (
     }
 
 
+    inline fun <reified T : Any> makeUnauthorizedGetRequest(url: String): T?
+            = makeUnauthorizedRequest(HttpGet("${host}${url}"),  T::class.java)
 
     inline fun <reified T : Any> makeAuthorizedGetRequest(url: String): T?
         = makeAuthorizedRequest(HttpGet("${host}${url}"),  T::class.java)

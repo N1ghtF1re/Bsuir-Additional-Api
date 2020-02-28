@@ -9,7 +9,7 @@ data class GroupMember(
     @GeneratedValue(strategy = GenerationType.AUTO)
     override var id: Int? = null,
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "group_id", referencedColumnName = "id")
     val group: Group,
 

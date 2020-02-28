@@ -8,8 +8,9 @@ import org.springframework.stereotype.Component
 
 @Component
 class GroupBsuirMapping {
-    fun mapToGroup(groupInfoBsuirDto: GroupInfoBsuirDto): Group {
+    fun mapToGroup(groupInfoBsuirDto: GroupInfoBsuirDto, id: Int? = null): Group {
         val group = Group(
+            id = id,
             number = groupInfoBsuirDto.numberGroup
         )
 
