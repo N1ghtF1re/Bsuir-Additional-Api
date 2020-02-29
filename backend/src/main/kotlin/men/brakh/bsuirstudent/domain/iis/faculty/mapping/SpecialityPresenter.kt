@@ -12,7 +12,8 @@ class SpecialityPresenter : EntityPresenter<Speciality, SpecialityDto> {
         return SpecialityDto(
             name = entity.name,
             alias = entity.alias,
-            educationForm = EducationFormDto.valueOf(entity.educationForm.toString())
+            educationForm = EducationFormDto.valueOf(entity.educationForm.toString()),
+            id = entity.iisId
         )
     }
 

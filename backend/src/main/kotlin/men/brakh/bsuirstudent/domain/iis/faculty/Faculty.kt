@@ -29,6 +29,8 @@ data class Speciality(
     @GeneratedValue(strategy = GenerationType.AUTO)
     override var id: Int? = null,
 
+    val iisId: Int,
+
     @ManyToOne
     @JoinColumn(name = "faculty_id", referencedColumnName = "id")
     val faculty: Faculty,

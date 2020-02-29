@@ -20,7 +20,8 @@ class FacultyBsuirMapping {
                 3 -> EducationForm.DISTANCE
                 else -> EducationForm.UNKNOWN
             },
-            faculty = faculty
+            faculty = faculty,
+            iisId = specialityBsuirDto.id
         )
     }
     fun mapToFaculties(facultiesBsuirDto: List<FacultyBsuirDto>, specialitiesDto: List<SpecialityBsuirDto>): List<Faculty> {

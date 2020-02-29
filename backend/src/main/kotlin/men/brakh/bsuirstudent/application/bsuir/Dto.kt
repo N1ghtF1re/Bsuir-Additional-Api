@@ -83,3 +83,7 @@ data class EducationFormBsuirDto(val name: String, val id: Int)
 data class SpecialityBsuirDto(val id: Int, val name: String, val abbrev: String,
                          val educationForm: EducationFormBsuirDto, val facultyId: Int,
                          val code: String)
+
+data class RatingBsuirDto(val studentCardNumber: String, val average: Double?, val hours: Int?, val fistAverage: Double?,
+                     val firstHours: Int?, val secondAverage: Double?, val secondHours: Int?, val thirdAverage: Double?,
+                     val thirdHours: Int?, val averageShift: Double?)

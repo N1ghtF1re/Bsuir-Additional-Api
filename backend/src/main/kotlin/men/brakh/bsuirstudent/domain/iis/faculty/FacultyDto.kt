@@ -11,7 +11,7 @@ data class FacultyDto(
 
 data class SpecialityDto(
     val name: String,
-
+    val id: Int,
     val alias: String,
 
     val educationForm: EducationFormDto
