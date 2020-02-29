@@ -1,10 +1,10 @@
 package men.brakh.bsuirapi.bot
 
 import men.brakh.bsuirapi.bot.api.Api
+import men.brakh.bsuirapi.bot.api.AuditoriumDto
 import men.brakh.bsuirapi.bot.config.AuditoriumTypeDescription
 import men.brakh.bsuirapi.bot.config.LessonsTime
 import men.brakh.bsuirapi.bot.config.StringsConfig
-import men.brakh.bsuirapicore.model.data.Auditorium
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -41,7 +41,7 @@ abstract class AbstractBot(threadsCount: Int) {
         sendList(userId, listOf(StringsConfig.TODAY), StringsConfig.SELECT_DATE)
     }
 
-    fun sendFreeAudsList(userId: Int, auds: List<Auditorium>) {
+    fun sendFreeAudsList(userId: Int, auds: List<AuditoriumDto>) {
         val response = auds.groupBy { it.type }
                 .asSequence()
                 .map { (type, list) -> AuditoriumTypeDescription.get(type) to list }

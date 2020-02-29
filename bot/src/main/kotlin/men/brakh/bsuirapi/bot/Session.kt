@@ -2,6 +2,8 @@ package men.brakh.bsuirapi.bot
 
 import men.brakh.bsuirapi.bot.api.Api
 import men.brakh.bsuirapi.bot.config.StringsConfig
+import java.text.SimpleDateFormat
+import java.util.*
 
 enum class SessionState(private val index: Int) {
     SELECT_BUILDING(0),
@@ -55,10 +57,10 @@ class Session(private val userId: Int, private val bot: AbstractBot) {
         state = state.next()
     }
 
-    private fun extractDate(str: String): String? {
+    private fun extractDate(str: String): String {
         val regex = "\\d+\\.\\d+\\.\\d{4}".toRegex()
 
-        return regex.find(str)?.value
+        return regex.find(str)?.value ?: SimpleDateFormat("dd.MM.yyyy").format(Date())
     }
 
     private fun extractInt(str: String): Int? {
@@ -70,14 +72,14 @@ class Session(private val userId: Int, private val bot: AbstractBot) {
      *
      * Note: this method return time of start lesson + 1 minute
      */
-    internal fun extractTime(str: String): String? {
+    internal fun extractTime(str: String): String {
         val regex = "\\d+:\\d+".toRegex()
         val result = regex.find(str)
-        val time = result?.value ?: return null
+        val time = result?.value ?: return SimpleDateFormat("HH:mm").format(Date())
 
         val numbers = time.split(":").mapNotNull { it.toIntOrNull() }
 
-        if (numbers.size != 2) return null
+        if (numbers.size != 2) return SimpleDateFormat("HH:mm").format(Date())
 
         return "${numbers[0]}:${numbers[1] + 1}"
     }
