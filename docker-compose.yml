@@ -4,18 +4,24 @@ services:
   server:
     build: backend
     ports:
-      - "8000:8082"
+      - "9000:8082"
     depends_on:
       - bsuirdb
     networks:
       - bsuir-network
     restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
   bot:
     build: bot
     networks:
       - bsuir-network
     depends_on:
-      - server
+      server:
+        condition: service_healthy
     restart: always
 
   news-parser:
@@ -23,7 +29,8 @@ services:
     networks:
       - bsuir-network
     depends_on:
-      - server
+      server:
+        condition: service_healthy
     volumes:
       - last-update:/data
     restart: always
