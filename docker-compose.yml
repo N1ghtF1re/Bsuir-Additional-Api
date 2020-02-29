@@ -4,7 +4,7 @@ services:
   server:
     build: backend
     ports:
-      - "8082:8080"
+      - "8000:8082"
     depends_on:
       - bsuirdb
     networks:
