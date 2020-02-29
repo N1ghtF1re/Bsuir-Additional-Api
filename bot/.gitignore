@@ -49,3 +49,5 @@ build/
 
 lastUpdate.data
 dependency-reduced-pom.xml
+
+.gradle

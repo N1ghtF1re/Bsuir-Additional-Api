@@ -2,16 +2,14 @@ version: '3.3'
 
 services:
   server:
-    build: server
+    build: backend
     ports:
-      - "9000:8080"
+      - "8082:8080"
     depends_on:
       - bsuirdb
     networks:
       - bsuir-network
     restart: always
-    volumes:
-      - keys:/usr/local/tomcat/webapps/bsuir/WEB-INF/classes/keys
   bot:
     build: bot
     networks:
@@ -43,10 +41,10 @@ services:
     ports:
       - '3309:3306'
     volumes:
-      - bsuir-data:/var/lib/mysql
+      - db-data:/var/lib/mysql
 
 volumes:
-  bsuir-data:
+  db-data:
   last-update:
   keys:
 

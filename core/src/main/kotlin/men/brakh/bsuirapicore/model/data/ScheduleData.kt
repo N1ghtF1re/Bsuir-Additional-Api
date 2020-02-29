@@ -53,7 +53,7 @@ data class Auditorium(@Transient override val id: Long = -1, val name: String, v
     }
 }
 
-data class Lesson(@Transient override val id: Long = -1, val aud: Auditorium, val weeks: Weeks, val day: Int,
+data class Lesson(@Transient override val id: Long = -1, val aud: Auditorium, val weeksMask: Weeks, val day: Int,
                   val startTime: Time, val endTime: Time, val group: String) : Identifiable
 
 

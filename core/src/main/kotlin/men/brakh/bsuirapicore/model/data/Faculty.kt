@@ -1,5 +1,6 @@
 package men.brakh.bsuirapicore.model.data
 
+
 data class Faculty(
         val id: Int,
         val name: String,
