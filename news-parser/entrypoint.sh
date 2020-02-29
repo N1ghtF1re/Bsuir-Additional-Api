@@ -15,4 +15,4 @@ done
 
 >&2 echo "Conteiner_A is up - executing command"
 
-exec $cmd
+java -jar parser.jar
