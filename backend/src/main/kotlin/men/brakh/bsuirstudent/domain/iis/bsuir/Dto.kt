@@ -1,7 +1,5 @@
 package men.brakh.bsuirstudent.domain.iis.bsuir
 
-import com.fasterxml.jackson.annotation.JsonProperty
-
 data class AuthorizationBsuirDto(val loggedIn: Boolean, val username: String?, val fio: String?, val message: String?)
 
 data class SkillBsuirDto(val id: Int, val name: String)
@@ -62,13 +60,18 @@ data class AuditoriumTypeBsuirDto(val name: String, val abbrev: String)
 data class BuildingBsuirDto(val id: Int, val name: String)
 
 data class AuditoriumBsuirDto(
-    @JsonProperty("name") val rawname: String,
+    val name: String,
     val auditoryType: AuditoriumTypeBsuirDto,
     val buildingNumber: BuildingBsuirDto
-) {
-    val name: String
-        get() {
-            val withoutEngA = rawname.replace("a", "а") // Replacing eng a to russian а
-            return withoutEngA.substringBeforeLast("-")
-        }
-}
+)
+
+data class ScheduleBsuirGroupDto(val id: Int, val name: String, val course: Int?)
+
+
+data class ScheduleBsuirDto(val weekNumber: List<Int>, val studentGroup: List<String>, val numSubgroup: Int,
+                       val auditory: List<String>, val startLessonTime: String, val endLessonTime: String,
+                       val subject: String, val note: String?, val lessonType: String)
+
+data class DayScheduleBsuirDto(val weekDay: String, val schedule: List<ScheduleBsuirDto>)
+
+data class ScheduleResponseBsuirDto(val schedules: List<DayScheduleBsuirDto>)

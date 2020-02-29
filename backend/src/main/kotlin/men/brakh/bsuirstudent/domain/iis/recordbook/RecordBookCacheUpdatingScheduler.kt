@@ -14,16 +14,16 @@ import org.springframework.transaction.annotation.Transactional
 
 
 @Component
-open class StudentCacheUpdatingScheduler(
+open class RecordBookCacheUpdatingScheduler(
     private val repository: RecordBookRepository,
     private val bsuirService : BsuirStudentService,
     private val recordBookBsuirMapping: RecordBookBsuirMapping,
     credentialsRepository: UserCredentialsRepository,
     userDetailsService: UserDetailsServiceImpl
 ) : AuthorizedCacheUpdatingScheduler(credentialsRepository, userDetailsService) {
-    private val logger = LoggerFactory.getLogger(StudentCacheUpdatingScheduler::class.java)
+    private val logger = LoggerFactory.getLogger(RecordBookCacheUpdatingScheduler::class.java)
 
-    @Scheduled(cron = "0 0 2 ? * * *")
+    @Scheduled(cron = "0 0 2 * * *")
     override fun updateCache() {
         super.updateCache()
     }

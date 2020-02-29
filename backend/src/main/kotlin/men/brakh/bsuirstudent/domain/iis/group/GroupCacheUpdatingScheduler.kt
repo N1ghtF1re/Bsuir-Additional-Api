@@ -23,7 +23,7 @@ open class GroupCacheUpdatingScheduler(
 ) : AuthorizedCacheUpdatingScheduler(credentialsRepository, userDetailsService) {
     private val logger = LoggerFactory.getLogger(GroupCacheUpdatingScheduler::class.java)
 
-    @Scheduled(cron = "0 0 3 ? * SAT *")
+    @Scheduled(cron = "0 0 3 * * SAT")
     override fun updateCache() {
         super.updateCache()
     }

@@ -5,39 +5,6 @@ import men.brakh.bsuirstudent.domain.iis.auditoriums.Auditorium
 import java.sql.Time
 import javax.persistence.*
 
-/**
- * Value - bit mask
- */
-enum class WeekNumber(val weekMask: Int) {
-    WEEK_ANY(0b1111),
-    WEEK_FIRST(0b0001),
-    WEEK_SECOND(0b0010),
-    WEEK_THIRD(0b0100),
-    WEEK_FOURTH(0b1000)
-}
-
-
-/**
- * Weeks container
- */
-data class Weeks(val mask: Int) {
-    val weeks: List<WeekNumber>
-        get() = WeekNumber.values().drop(1).filter { mask and it.weekMask != 0 }
-
-    constructor(weeks: List<WeekNumber>) : this(
-        weeks.map { it.weekMask }.fold(0) { result, element -> result or element }
-    )
-
-    fun toInt(): Int {
-        return mask
-    }
-
-    fun isSingleDay(): Boolean{
-        return this.weeks.size == 1 && !this.weeks.contains(WeekNumber.WEEK_ANY)
-    }
-
-}
-
 
 @Entity(name = "lesson")
 data class Lesson(
@@ -49,7 +16,10 @@ data class Lesson(
     @JoinColumn(name = "auditorium_id", referencedColumnName = "id")
     val aud: Auditorium,
 
-    val weeksMask: Int,
+    @ElementCollection
+    @CollectionTable(name = "lesson_weeks", joinColumns = [JoinColumn(name = "lesson_id")])
+    @Column(name = "week")
+    val weeks: List<Int>,
 
     val day: Int,
 
@@ -57,5 +27,6 @@ data class Lesson(
 
     val endTime: Time,
 
+    @Column(name = "`group`")
     val group: String
 ) : BaseEntity<Int>

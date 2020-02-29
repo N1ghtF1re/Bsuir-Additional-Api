@@ -1,10 +1,7 @@
 package men.brakh.bsuirstudent.domain.iis.auditoriums
 
 import men.brakh.bsuirstudent.domain.BaseEntity
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
+import javax.persistence.*
 
 
 /**
@@ -27,18 +24,13 @@ data class Auditorium(
     override var id: Int? = null,
 
     val name: String,
+
+    @Enumerated(EnumType.STRING)
     val type: LessonType,
     val floor: Int,
     val building: Int
 
-) : BaseEntity<Int> {
-    companion object {
-        fun isCorrectName(name: String): Boolean {
-            val regex = Regex(pattern = "\\d{2,3}([а-г]|-\\d)?$")
-            return regex.matches(input = name)
-        }
-    }
-}
+) : BaseEntity<Int>
 
 
 

@@ -22,7 +22,7 @@ open class StudentCacheUpdatingScheduler(
 ) : AuthorizedCacheUpdatingScheduler(credentialsRepository, userDetailsService) {
     private val logger = LoggerFactory.getLogger(StudentCacheUpdatingScheduler::class.java)
 
-    @Scheduled(cron = "0 0 4 ? * * *")
+    @Scheduled(cron = "0 0 4 * * *")
     override fun updateCache() {
         super.updateCache()
     }
