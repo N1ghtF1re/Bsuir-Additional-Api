@@ -1,9 +1,9 @@
 package men.brakh.bsuirstudent.domain.iis.auditoriums
 
+import men.brakh.bsuirstudent.application.bsuir.BsuirScheduleService
 import men.brakh.bsuirstudent.application.scheduling.CacheUpdatingScheduler
 import men.brakh.bsuirstudent.domain.iis.auditoriums.mapping.AuditoriumBsuirMapping
 import men.brakh.bsuirstudent.domain.iis.auditoriums.repository.AuditoriumRepository
-import men.brakh.bsuirstudent.application.bsuir.BsuirScheduleService
 import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
@@ -28,10 +28,12 @@ open class AuditoriumCacheUpdatingScheduler(
     @Transactional
     @Scheduled(cron = "0 0 12 1 * *")
     override fun updateCache() {
-        val auditoriums = bsuirService.getAuditoriums().mapNotNull { bsuirMapping.mapToAuditorium(it) }
-        repository.deleteAll()
-        repository.saveAll(auditoriums)
+        synchronized(repository) {
+            val auditoriums = bsuirService.getAuditoriums().mapNotNull { bsuirMapping.mapToAuditorium(it) }
+            repository.deleteAll()
+            repository.saveAll(auditoriums)
 
-        logger.info("Auditoriums were updated")
+            logger.info("Auditoriums were updated")
+        }
     }
 }
