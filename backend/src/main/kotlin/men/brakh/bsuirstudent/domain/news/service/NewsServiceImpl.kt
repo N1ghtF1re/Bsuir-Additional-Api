@@ -48,7 +48,7 @@ open class NewsServiceImpl(
     @PostMapping("/search")
     override fun search(@RequestBody searchRequest: SearchRequest): SearchResponse<ShortNewsDto> {
         val sortedSearchRequest = if (searchRequest.sortBy == null)
-            searchRequest.copy(sortBy = Sort(field = "id", type = SortType.DESC))
+            searchRequest.copy(sortBy = Sort(field = "publishedAt", type = SortType.DESC))
         else
             searchRequest
 

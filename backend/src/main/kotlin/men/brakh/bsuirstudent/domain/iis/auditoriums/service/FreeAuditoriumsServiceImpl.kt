@@ -1,10 +1,10 @@
 package men.brakh.bsuirstudent.domain.iis.auditoriums.service
 
+import men.brakh.bsuirstudent.application.bsuir.BsuirScheduleService
 import men.brakh.bsuirstudent.domain.iis.auditoriums.Auditorium
 import men.brakh.bsuirstudent.domain.iis.auditoriums.AuditoriumDto
 import men.brakh.bsuirstudent.domain.iis.auditoriums.mapping.AuditoriumPresenter
 import men.brakh.bsuirstudent.domain.iis.auditoriums.repository.AuditoriumRepository
-import men.brakh.bsuirstudent.application.bsuir.BsuirScheduleService
 import men.brakh.bsuirstudent.domain.iis.lesson.Lesson
 import men.brakh.bsuirstudent.domain.iis.lesson.repository.LessonRepository
 import org.springframework.stereotype.Service
@@ -81,8 +81,8 @@ class FreeAuditoriumsServiceImpl(
             val audsJoin: Join<Lesson, Auditorium> = root.join<Lesson, Auditorium>("aud")
             cb.and(
                 cb.equal(root.get<Int>("day"), dayOfWeek),
-                cb.lessThan(root.get<Time>("endTime"), Time(dateTime.time)),
-                cb.greaterThan(root.get<Time>("startTime"), Time(dateTime.time)),
+                cb.greaterThan(root.get<Time>("endTime"), Time(dateTime.time)),
+                cb.lessThan(root.get<Time>("startTime"), Time(dateTime.time)),
                 cb.equal(audsJoin.get<Int>("building"), building),
                 if (floor != null) cb.equal(audsJoin.get<Int>("floor"), floor) else cb.isNotNull(audsJoin.get<Int>("floor")),
                 cb.equal(weeks, currWeek)
