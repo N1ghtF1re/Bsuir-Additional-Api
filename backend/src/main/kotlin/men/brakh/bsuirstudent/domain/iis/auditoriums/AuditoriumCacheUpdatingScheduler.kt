@@ -29,7 +29,7 @@ open class AuditoriumCacheUpdatingScheduler(
     @Scheduled(cron = "0 0 12 1 * *")
     override fun updateCache() {
         synchronized(repository) {
-            val auditoriums = bsuirService.getAuditoriums().mapNotNull { bsuirMapping.mapToAuditorium(it) }
+            val auditoriums = bsuirService.getAuditoriums().mapNotNull { bsuirMapping.mapToAuditorium(it) }.distinct()
             repository.deleteAll()
             repository.saveAll(auditoriums)
 
