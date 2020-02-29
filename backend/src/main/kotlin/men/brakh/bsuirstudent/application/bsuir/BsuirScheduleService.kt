@@ -1,4 +1,4 @@
-package men.brakh.bsuirstudent.domain.iis.bsuir
+package men.brakh.bsuirstudent.application.bsuir
 
 import men.brakh.bsuirstudent.application.exception.ResourceNotFoundException
 import men.brakh.bsuirstudent.application.extensions.weeksBetween

@@ -1,7 +1,7 @@
 package men.brakh.bsuirstudent.domain.iis.group
 
+import men.brakh.bsuirstudent.application.bsuir.BsuirStudentService
 import men.brakh.bsuirstudent.application.scheduling.AuthorizedCacheUpdatingScheduler
-import men.brakh.bsuirstudent.domain.iis.bsuir.BsuirStudentService
 import men.brakh.bsuirstudent.domain.iis.group.mapping.GroupBsuirMapping
 import men.brakh.bsuirstudent.domain.iis.group.repository.GroupRepository
 import men.brakh.bsuirstudent.security.authentication.credentials.UserCredentialsRepository

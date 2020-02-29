@@ -1,8 +1,8 @@
 package men.brakh.bsuirstudent.domain.iis.recordbook.mapping
 
-import men.brakh.bsuirstudent.domain.iis.bsuir.DiplomaBsuirDto
-import men.brakh.bsuirstudent.domain.iis.bsuir.MarkBookBsuirDto
-import men.brakh.bsuirstudent.domain.iis.bsuir.MarkPageBsuirDto
+import men.brakh.bsuirstudent.application.bsuir.DiplomaBsuirDto
+import men.brakh.bsuirstudent.application.bsuir.MarkBookBsuirDto
+import men.brakh.bsuirstudent.application.bsuir.MarkPageBsuirDto
 import men.brakh.bsuirstudent.domain.iis.recordbook.*
 import org.springframework.stereotype.Component
 import java.text.ParseException

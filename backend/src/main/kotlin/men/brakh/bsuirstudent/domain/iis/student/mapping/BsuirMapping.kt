@@ -1,6 +1,6 @@
 package men.brakh.bsuirstudent.domain.iis.student.mapping
 
-import men.brakh.bsuirstudent.domain.iis.bsuir.PersonalCVBsuirDto
+import men.brakh.bsuirstudent.application.bsuir.PersonalCVBsuirDto
 import men.brakh.bsuirstudent.domain.iis.student.*
 import org.springframework.stereotype.Component
 import java.text.ParseException

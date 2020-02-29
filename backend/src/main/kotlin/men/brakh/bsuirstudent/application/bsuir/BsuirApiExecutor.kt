@@ -1,4 +1,4 @@
-package men.brakh.bsuirstudent.domain.iis.bsuir
+package men.brakh.bsuirstudent.application.bsuir
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import men.brakh.bsuirstudent.application.exception.IisException

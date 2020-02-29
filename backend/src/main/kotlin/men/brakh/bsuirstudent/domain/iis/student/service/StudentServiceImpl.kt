@@ -1,7 +1,7 @@
 package men.brakh.bsuirstudent.domain.iis.student.service
 
 import men.brakh.bsuirstudent.application.template.CachedGetTemplate
-import men.brakh.bsuirstudent.domain.iis.bsuir.BsuirStudentService
+import men.brakh.bsuirstudent.application.bsuir.BsuirStudentService
 import men.brakh.bsuirstudent.domain.iis.student.Student
 import men.brakh.bsuirstudent.domain.iis.student.StudentDto
 import men.brakh.bsuirstudent.domain.iis.student.UpdateUserSettingsRequest

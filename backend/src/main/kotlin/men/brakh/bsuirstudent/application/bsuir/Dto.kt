@@ -1,4 +1,4 @@
-package men.brakh.bsuirstudent.domain.iis.bsuir
+package men.brakh.bsuirstudent.application.bsuir
 
 data class AuthorizationBsuirDto(val loggedIn: Boolean, val username: String?, val fio: String?, val message: String?)
 
@@ -75,3 +75,11 @@ data class ScheduleBsuirDto(val weekNumber: List<Int>, val studentGroup: List<St
 data class DayScheduleBsuirDto(val weekDay: String, val schedule: List<ScheduleBsuirDto>)
 
 data class ScheduleResponseBsuirDto(val schedules: List<DayScheduleBsuirDto>)
+
+data class FacultyBsuirDto(val name: String, val abbrev: String, val id: Int)
+
+data class EducationFormBsuirDto(val name: String, val id: Int)
+
+data class SpecialityBsuirDto(val id: Int, val name: String, val abbrev: String,
+                         val educationForm: EducationFormBsuirDto, val facultyId: Int,
+                         val code: String)

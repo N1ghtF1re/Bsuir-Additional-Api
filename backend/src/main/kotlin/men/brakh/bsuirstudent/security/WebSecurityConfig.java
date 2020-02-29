@@ -78,7 +78,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .authorizeRequests()
           .antMatchers(HttpMethod.OPTIONS,"/**")
             .permitAll()//allow CORS option calls
-          .antMatchers("/api/v2/auth", "/api/v2/news/**")
+          .antMatchers("/api/v2/auth", "/api/v2/news/**", "/api/v2/auditoriums/**", "/api/v2/buildings")
             .permitAll()
           .anyRequest()
             .authenticated()

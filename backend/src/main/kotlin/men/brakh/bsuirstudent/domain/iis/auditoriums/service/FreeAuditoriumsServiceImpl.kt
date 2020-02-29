@@ -4,7 +4,7 @@ import men.brakh.bsuirstudent.domain.iis.auditoriums.Auditorium
 import men.brakh.bsuirstudent.domain.iis.auditoriums.AuditoriumDto
 import men.brakh.bsuirstudent.domain.iis.auditoriums.mapping.AuditoriumPresenter
 import men.brakh.bsuirstudent.domain.iis.auditoriums.repository.AuditoriumRepository
-import men.brakh.bsuirstudent.domain.iis.bsuir.BsuirScheduleService
+import men.brakh.bsuirstudent.application.bsuir.BsuirScheduleService
 import men.brakh.bsuirstudent.domain.iis.lesson.Lesson
 import men.brakh.bsuirstudent.domain.iis.lesson.repository.LessonRepository
 import org.springframework.stereotype.Service

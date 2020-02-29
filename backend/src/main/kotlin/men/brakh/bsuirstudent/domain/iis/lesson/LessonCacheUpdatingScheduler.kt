@@ -1,7 +1,7 @@
 package men.brakh.bsuirstudent.domain.iis.lesson
 
 import men.brakh.bsuirstudent.application.scheduling.CacheUpdatingScheduler
-import men.brakh.bsuirstudent.domain.iis.bsuir.BsuirScheduleService
+import men.brakh.bsuirstudent.application.bsuir.BsuirScheduleService
 import men.brakh.bsuirstudent.domain.iis.lesson.mapping.LessonBsuirMapping
 import men.brakh.bsuirstudent.domain.iis.lesson.repository.LessonRepository
 import org.slf4j.LoggerFactory

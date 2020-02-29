@@ -1,7 +1,7 @@
 package men.brakh.bsuirstudent.domain.iis.recordbook.service
 
 import men.brakh.bsuirstudent.application.template.CachedGetTemplate
-import men.brakh.bsuirstudent.domain.iis.bsuir.BsuirStudentService
+import men.brakh.bsuirstudent.application.bsuir.BsuirStudentService
 import men.brakh.bsuirstudent.domain.iis.recordbook.RecordBook
 import men.brakh.bsuirstudent.domain.iis.recordbook.RecordBookDto
 import men.brakh.bsuirstudent.domain.iis.recordbook.mapping.RecordBookBsuirMapping

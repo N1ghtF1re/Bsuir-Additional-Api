@@ -3,7 +3,7 @@ package men.brakh.bsuirstudent.domain.iis.lesson.mapping
 import men.brakh.bsuirstudent.domain.iis.auditoriums.Auditorium
 import men.brakh.bsuirstudent.domain.iis.auditoriums.mapping.AuditoriumBsuirMapping
 import men.brakh.bsuirstudent.domain.iis.auditoriums.repository.AuditoriumRepository
-import men.brakh.bsuirstudent.domain.iis.bsuir.*
+import men.brakh.bsuirstudent.application.bsuir.*
 import men.brakh.bsuirstudent.domain.iis.lesson.Lesson
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component

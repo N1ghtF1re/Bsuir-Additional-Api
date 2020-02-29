@@ -3,7 +3,7 @@ package men.brakh.bsuirstudent.domain.iis.auditoriums
 import men.brakh.bsuirstudent.application.scheduling.CacheUpdatingScheduler
 import men.brakh.bsuirstudent.domain.iis.auditoriums.mapping.AuditoriumBsuirMapping
 import men.brakh.bsuirstudent.domain.iis.auditoriums.repository.AuditoriumRepository
-import men.brakh.bsuirstudent.domain.iis.bsuir.BsuirScheduleService
+import men.brakh.bsuirstudent.application.bsuir.BsuirScheduleService
 import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component

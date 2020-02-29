@@ -1,7 +1,7 @@
 package men.brakh.bsuirstudent.domain.iis.group.service
 
+import men.brakh.bsuirstudent.application.bsuir.BsuirStudentService
 import men.brakh.bsuirstudent.application.template.CachedGetTemplate
-import men.brakh.bsuirstudent.domain.iis.bsuir.BsuirStudentService
 import men.brakh.bsuirstudent.domain.iis.group.Group
 import men.brakh.bsuirstudent.domain.iis.group.GroupDto
 import men.brakh.bsuirstudent.domain.iis.group.mapping.GroupBsuirMapping

@@ -40,4 +40,16 @@ class CachedGetTemplate<T : BaseEntity<I>, D : Dto, I : Any>(
         }
     }
 
+    fun getAll(
+        getDataFunc: () -> List<T>,
+        dtoClass: Class<D>
+    ): List<D> {
+        return if (repository.count() != 0L) {
+            getTemplate.getAll(dtoClass)
+        } else {
+            val entity = getDataFunc()
+            val savedEntity = repository.saveAll(entity)
+            presenter.mapListToDto(savedEntity, dtoClass)
+        }
+    }
 }

@@ -1,7 +1,7 @@
 package men.brakh.bsuirstudent.domain.iis.student
 
 import men.brakh.bsuirstudent.domain.BaseEntity
-import men.brakh.bsuirstudent.domain.iis.bsuir.BsuirEntity
+import men.brakh.bsuirstudent.application.bsuir.BsuirEntity
 import java.util.*
 import javax.persistence.*
 
