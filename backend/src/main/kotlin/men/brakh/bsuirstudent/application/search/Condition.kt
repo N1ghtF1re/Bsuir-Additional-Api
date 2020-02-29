@@ -22,6 +22,7 @@ data class Condition(
             value
           }
           Type.list -> {
+            value
           }
           Type.raw -> {
           }

@@ -110,8 +110,26 @@ data class SearchRequest(
                 path,
                 criteriaBuilder
             )
-            Comparison.IN -> throw IllegalArgumentException("Not supported")
+            Comparison.IN -> buildInPredicate(
+                condition,
+                path,
+                criteriaBuilder
+            )
         }
+    }
+
+    private fun buildInPredicate(
+        condition: Condition,
+        path: Path<*>,
+        cb: CriteriaBuilder
+    ): Predicate {
+        val inCriteria = cb.`in`(path)
+
+        (condition.fieldValue as Iterable<*>).forEach {
+            inCriteria.value(it)
+        }
+
+        return inCriteria
     }
 
     private fun buildEqualsPredicateToCriteria(
