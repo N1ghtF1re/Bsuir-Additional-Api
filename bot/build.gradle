@@ -57,7 +57,7 @@ configurations.implementation.canBeResolved = true
 jar {
 
     manifest {
-        attributes 'Main-Class': 'men.brakh.newsparser.MainKt'
+        attributes 'Main-Class': 'men.brakh.bsuirapi.bot.MainKt'
     }
 
     from { configurations.implementation.collect { it.isDirectory() ? it : zipTree(it) } }

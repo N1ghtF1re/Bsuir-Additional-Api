@@ -1,11 +1,13 @@
 buildscript {
     ext.kotlin_version = '1.3.61'
+    ext.spring_boot_version = '2.2.4.RELEASE'
     repositories {
         mavenCentral()
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-noarg:$kotlin_version"
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.2.4.RELEASE")
     }
 }
 plugins {
@@ -22,6 +24,7 @@ sourceCompatibility = 1.8
 apply plugin: "kotlin-noarg"
 apply plugin: 'java'
 apply plugin: 'kotlin'
+apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 repositories {
@@ -55,6 +58,10 @@ dependencies {
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+}
+
+jar {
+    baseName = 'backend'
 }
 
 compileKotlin {
