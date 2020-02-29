@@ -1,8 +1,10 @@
 package men.brakh.newsparser.model.parser.vk
 
-import men.brakh.bsuirapicore.model.data.NewsSource
+import men.brakh.newsparser.model.dto.NewsSourceDto
+
 
 class ProfcomVKParser : VKParser() {
     override val groupId: Int = 92161895
-    override val source: NewsSource = NewsSource(type = "OTHER", name = "BSUIR Profcom VK Group")
+    override val source: NewsSourceDto
+            = NewsSourceDto(type = "Другое", name = "Группа профкома БГУИР ВК", alias = "PROFKOM_BSUIR")
 }

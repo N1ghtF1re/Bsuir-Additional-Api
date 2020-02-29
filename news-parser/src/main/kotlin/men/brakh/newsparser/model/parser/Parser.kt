@@ -1,11 +1,11 @@
 package men.brakh.newsparser.model.parser
 
-import men.brakh.bsuirapicore.model.data.News
-import men.brakh.bsuirapicore.model.data.NewsSource
+import men.brakh.newsparser.model.dto.CreateNewsRequest
+import men.brakh.newsparser.model.dto.NewsSourceDto
 import java.util.*
 
 interface Parser {
-    val source: NewsSource
+    val source: NewsSourceDto
 
-    fun parse(lastUpdate: Date): List<News>
+    fun parse(lastUpdate: Date): List<CreateNewsRequest>
 }

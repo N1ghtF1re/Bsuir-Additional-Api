@@ -1,13 +1,14 @@
 package men.brakh.newsparser.model.parser.site
 
-import men.brakh.bsuirapicore.model.data.News
-import men.brakh.bsuirapicore.model.data.NewsSource
+
+import men.brakh.newsparser.model.dto.CreateNewsRequest
+import men.brakh.newsparser.model.dto.NewsSourceDto
 import org.jsoup.select.Elements
 import java.text.SimpleDateFormat
 import java.util.*
 
 class FksisSiteParser() : SiteParser() {
-    override val source = NewsSource(type = "FKSIS", name = "FKSIS Portal")
+    override val source = NewsSourceDto(type = "ФКСиС", name = "Портал ФКСиС", alias = "FKSIS_PORTAL")
 
     private val host = "http://fksis.bsuir.by"
     private val newsUrl = "$host/p/allnews"
@@ -31,7 +32,7 @@ class FksisSiteParser() : SiteParser() {
         return SimpleDateFormat("dd.MM.yyyy").parse(this)
     }
 
-    override fun parse(lastUpdate: Date): List<News> {
+    override fun parse(lastUpdate: Date): List<CreateNewsRequest> {
         return (parseAnnounces().asSequence() + parseNews().asSequence())
                 .filter { htmlEl ->
                     val dateStr = htmlEl.getElementsByTag("small").first().text()
@@ -51,7 +52,7 @@ class FksisSiteParser() : SiteParser() {
                             .getElementsByClass("b-text-news")
                             .first()
 
-                    val news: News = with(fullNewsEl) {
+                    val news: CreateNewsRequest = with(fullNewsEl) {
                         val date: Date = getElementsByTag("small")
                                 .first()
                                 .text()
@@ -70,8 +71,8 @@ class FksisSiteParser() : SiteParser() {
                                 .replace( "href=\"/", "href=\"$host/")
                                 .toMd()
 
-                        News(title = title,  urlToImage = img, content = content, url = fullLink, publishedAt = date,
-                                loadedAt = Date(), source = source, shortContent = "")
+                        CreateNewsRequest(title = title,  urlToImage = img, content = content, url = fullLink, publishedAt = date,
+                                loadedAt = Date(), sourceName = source.name, sourceType = source.type, sourceAlias = source.alias)
                     }
                     news
                 }.sortedBy { it.publishedAt }

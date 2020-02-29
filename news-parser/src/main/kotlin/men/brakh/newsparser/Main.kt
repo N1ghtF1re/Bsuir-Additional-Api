@@ -1,15 +1,16 @@
 package men.brakh.newsparser
 
-import men.brakh.bsuirapicore.extentions.gson
-import men.brakh.bsuirapicore.model.data.News
+import com.fasterxml.jackson.databind.ObjectMapper
 import men.brakh.newsparser.config.Config
 import men.brakh.newsparser.model.ParsersLoader
+import men.brakh.newsparser.model.dto.CreateNewsRequest
 import men.brakh.newsparser.model.parser.Parser
 import org.apache.http.client.entity.EntityBuilder
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.entity.ContentType
 import org.apache.http.impl.client.HttpClientBuilder
 import org.slf4j.LoggerFactory
+import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStreamReader
 import java.nio.file.Files
@@ -39,27 +40,28 @@ fun updateDate() {
 }
 
 fun getLastUpdate() = Date(String(Files.readAllBytes(updatesFilePath)).toLong())
-
-fun sendRequest(news: News) {
+val objectMapper = ObjectMapper()
+fun sendRequest(news: CreateNewsRequest) {
     val client = HttpClientBuilder
             .create()
             .build()
 
     client.use { httpClient ->
         val post = HttpPost("${Config.apiHost}/news")
-        post.addHeader("X-News-Authorization", Config.apiToken)
+        post.addHeader("X-Service-User-Authorization", Config.apiToken)
         post.setHeader("Accept", "application/json")
         post.setHeader("Content-type", "application/json; charset=UTF-8")
 
         post.entity = EntityBuilder.create()
                 .setContentType(ContentType.APPLICATION_JSON)
                 .setContentEncoding("UTF-8")
-                .setText( gson.toJson(news) )
+                .setText( objectMapper.writeValueAsString(news) )
                 .build()
 
         httpClient.execute(post).use { resp ->
             if(resp.statusLine.statusCode !in 200..201) {
                 logger.error("ERROR. Can't send response to add: ${InputStreamReader(resp.entity.content).readText()}")
+                logger.error("REQUEST: $news")
             }
         }
 

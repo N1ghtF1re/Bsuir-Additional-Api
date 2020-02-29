@@ -7,8 +7,8 @@ import com.vk.api.sdk.httpclient.HttpTransportClient
 import com.vk.api.sdk.objects.wall.WallPost
 import com.vk.api.sdk.objects.wall.WallPostFull
 import com.vk.api.sdk.objects.wall.WallpostAttachmentType.*
-import men.brakh.bsuirapicore.model.data.News
 import men.brakh.newsparser.config.Config
+import men.brakh.newsparser.model.dto.CreateNewsRequest
 import men.brakh.newsparser.model.parser.Parser
 import java.util.*
 import kotlin.math.absoluteValue
@@ -49,7 +49,7 @@ abstract class VKParser : Parser {
         return content.toMd()
     }
 
-    override fun parse(lastUpdate: Date): List<News> {
+    override fun parse(lastUpdate: Date): List<CreateNewsRequest> {
         val transportClient = HttpTransportClient.getInstance()
 
         val serviceActor = ServiceActor(Config.vkAppId, Config.vkAppToken)
@@ -74,13 +74,14 @@ abstract class VKParser : Parser {
                     val content = parsePost(wallPost) + (wallPost.copyHistory?.joinToString { parsePost(it) + "\n\n\n" } ?: "")
 
 
-                    News(
+                    CreateNewsRequest(
                             title = title,
                             content = content,
                             loadedAt = Date(),
                             publishedAt = wallPost.publicationDate,
-                            source = source,
-                            shortContent = "",
+                            sourceAlias = source.alias,
+                            sourceType = source.type,
+                            sourceName = source.name,
                             url = "https://vk.com/wall${wallPost.ownerId}_${wallPost.id}",
                             urlToImage = photo
                     )

@@ -8,7 +8,7 @@ import java.util.jar.JarFile
 
 
 
-
+@SuppressWarnings("unchecked")
 object ParsersLoader {
     private val logger = LoggerFactory.getLogger(ParsersLoader::class.java)
 

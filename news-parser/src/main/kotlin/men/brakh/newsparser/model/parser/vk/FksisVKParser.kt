@@ -1,8 +1,9 @@
 package men.brakh.newsparser.model.parser.vk
 
-import men.brakh.bsuirapicore.model.data.NewsSource
+import men.brakh.newsparser.model.dto.NewsSourceDto
 
 class FksisVKParser : VKParser() {
     override val groupId: Int = 62992887
-    override val source: NewsSource = NewsSource(type = "FKSIS", name = "FKSIS VK Group")
+    override val source: NewsSourceDto
+            = NewsSourceDto(type = "ФКСиС", name = "Группа ФКСиС ВК", alias = "FKSIS_VK")
 }
