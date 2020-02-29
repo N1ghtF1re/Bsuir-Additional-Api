@@ -70,7 +70,7 @@ open class WebSecurityConfig(
       .authorizeRequests()
       .antMatchers(HttpMethod.OPTIONS, "/**")
       .permitAll() //allow CORS option calls
-      .antMatchers("/api/v2/auth", "/api/v2/news/**", "/api/v2/auditoriums/**", "/api/v2/buildings")
+      .antMatchers("/api/v2/auth", "/api/v2/news/**", "/api/v2/auditoriums/**", "/api/v2/buildings", "/heath")
       .permitAll()
       .anyRequest()
       .authenticated()
