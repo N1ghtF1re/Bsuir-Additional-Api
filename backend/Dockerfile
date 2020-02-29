@@ -1,0 +1,7 @@
+FROM java:8
+
+WORKDIR /
+
+ADD target/bsuir-student-backend-1.0.jar server.jar
+
+ENTRYPOINT java -jar server.jar
