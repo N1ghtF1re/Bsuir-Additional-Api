@@ -33,7 +33,7 @@ class NewsMapper(
             .replace("!\\[[^\\]]+\\]\\([^\\)]+\\)".toRegex(), "")
             .replace("\\[[^\\]]+\\]: $urlRegex".toRegex(), "")
 
-        return if (withoutImages.length < 255) {
+        return if (withoutImages.length <= 255) {
             withoutImages
         } else {
             withoutImages.substring(0..255) + "..."

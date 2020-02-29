@@ -7,9 +7,9 @@ import java.util.*
 
 class NewsSourceDto (
     val id: Int,
-    val sourceName: String,
-    val sourceType: String,
-    val sourceAlias: String
+    val name: String,
+    val type: String,
+    val alias: String
 ) : Dto
 
 open class ShortNewsDto (

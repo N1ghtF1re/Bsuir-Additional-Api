@@ -7,7 +7,7 @@ import java.util.*
 import java.util.function.Consumer
 import javax.persistence.criteria.*
 
-class SearchRequest(
+data class SearchRequest(
     val filters: List<Condition>? = null,
     val sortBy: Sort? = null,
     val page: Int = 0,

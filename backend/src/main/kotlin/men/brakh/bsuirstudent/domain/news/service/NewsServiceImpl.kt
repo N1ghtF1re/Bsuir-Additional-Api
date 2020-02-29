@@ -2,6 +2,8 @@ package men.brakh.bsuirstudent.domain.news.service
 
 import men.brakh.bsuirstudent.application.search.SearchRequest
 import men.brakh.bsuirstudent.application.search.SearchResponse
+import men.brakh.bsuirstudent.application.search.Sort
+import men.brakh.bsuirstudent.application.search.SortType
 import men.brakh.bsuirstudent.application.template.CreateTemplate
 import men.brakh.bsuirstudent.application.template.GetTemplate
 import men.brakh.bsuirstudent.application.template.SearchTemplate
@@ -45,7 +47,12 @@ open class NewsServiceImpl(
     @Transactional(readOnly = true)
     @PostMapping("/search")
     override fun search(@RequestBody searchRequest: SearchRequest): SearchResponse<ShortNewsDto> {
-        return searchTemplate.search(searchRequest, ShortNewsDto::class.java)
+        val sortedSearchRequest = if (searchRequest.sortBy == null)
+            searchRequest.copy(sortBy = Sort(field = "id", type = SortType.DESC))
+        else
+            searchRequest
+
+        return searchTemplate.search(sortedSearchRequest, ShortNewsDto::class.java)
     }
 
     @GetMapping("/{id}")

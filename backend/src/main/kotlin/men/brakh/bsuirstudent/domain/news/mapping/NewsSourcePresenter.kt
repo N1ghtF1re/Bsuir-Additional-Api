@@ -10,9 +10,9 @@ class NewsSourcePresenter : EntityPresenter<NewsSource, NewsSourceDto> {
     override fun mapToDto(entity: NewsSource, dtoClass: Class<out NewsSourceDto>): NewsSourceDto {
         return NewsSourceDto(
             id = entity.id ?: -1,
-            sourceName = entity.name,
-            sourceType = entity.type,
-            sourceAlias = entity.alias
+            name = entity.name,
+            type = entity.type,
+            alias = entity.alias
         )
     }
 

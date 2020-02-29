@@ -74,4 +74,6 @@ fabric.properties
 
 
 lastUpdate.data
+build/
 dependency-reduced-pom.xml
+.gradle
