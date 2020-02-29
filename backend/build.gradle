@@ -52,7 +52,7 @@ dependencies {
 
     )
 
-    implementation group: 'mysql', name: 'mysql-connector-java', version: '5.1.6'
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.12'
 
     compile group: 'org.flywaydb', name: 'flyway-core', version: '6.2.4'
 
