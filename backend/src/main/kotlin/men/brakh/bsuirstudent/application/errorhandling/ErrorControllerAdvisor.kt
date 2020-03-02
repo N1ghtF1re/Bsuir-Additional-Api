@@ -11,6 +11,7 @@ import org.springframework.security.access.AccessDeniedException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.context.request.WebRequest
+import org.springframework.web.multipart.MaxUploadSizeExceededException
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
 
 @ControllerAdvice
@@ -54,6 +55,13 @@ class ErrorControllerAdvisor : ResponseEntityExceptionHandler() {
     return processUnhandledException(ex, request, HttpStatus.I_AM_A_TEAPOT, message = "Iis is down")
   }
 
+  @ExceptionHandler(MaxUploadSizeExceededException::class)
+  fun handleSizeLimitException(
+    ex: MaxUploadSizeExceededException,
+    request: WebRequest
+  ): ResponseEntity<Any> {
+    return processUnhandledException(ex, request, HttpStatus.PAYLOAD_TOO_LARGE, message = "Maximum upload size exceeded")
+  }
   @ExceptionHandler(Exception::class)
   fun handleAnyException(
     ex: Exception,

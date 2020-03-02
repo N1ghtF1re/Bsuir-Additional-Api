@@ -10,3 +10,5 @@ log/*
 *.iws
 logs/
 src/main/resources/application-local.properties
+
+src/main/resources/gd-credentials.json
