@@ -87,15 +87,15 @@ data class Student (
     val summary: String?,
     val rating: Int,
 
-    override val updatedAt: Date,
-
+    override val updatedAt: Date
+) : BaseEntity<Int>, BsuirEntity {
     @OneToOne(
         mappedBy = "student",
         cascade = [CascadeType.ALL],
         orphanRemoval = true
     )
     @JoinColumn(name = "id")
-    var educationInfo: EducationInformation ? = null,
+    lateinit var educationInfo: EducationInformation
 
     @OneToOne(
         mappedBy = "student",
@@ -103,7 +103,7 @@ data class Student (
         fetch = FetchType.LAZY,
         orphanRemoval = true
     )
-    var settings: UserSettings ?= null,
+    lateinit var settings: UserSettings
 
     @OneToMany(
         mappedBy = "student",
@@ -111,7 +111,7 @@ data class Student (
         orphanRemoval = true,
         fetch = FetchType.LAZY
     )
-    var references: List<StudentReference> = listOf(),
+    lateinit var references: List<StudentReference>
 
     @OneToMany(
         mappedBy = "student",
@@ -119,5 +119,5 @@ data class Student (
         orphanRemoval = true,
         fetch = FetchType.LAZY
     )
-    var skills: List<StudentSkill> = listOf()
-) : BaseEntity<Int>, BsuirEntity
+    lateinit var skills: List<StudentSkill>
+}

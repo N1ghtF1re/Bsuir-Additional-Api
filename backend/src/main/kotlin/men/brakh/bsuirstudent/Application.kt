@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.EnableScheduling
 import javax.validation.Validation
 import javax.validation.Validator
 
+
 @SpringBootApplication
 @EnableScheduling
 open class BsuirStudentApplication {

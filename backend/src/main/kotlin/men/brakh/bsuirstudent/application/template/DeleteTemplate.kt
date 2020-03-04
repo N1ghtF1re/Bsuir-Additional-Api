@@ -1,9 +1,11 @@
 package men.brakh.bsuirstudent.application.template;
 
+import men.brakh.bsuirstudent.application.event.EntityDeletedEvent
 import men.brakh.bsuirstudent.application.exception.BadRequestException
 import men.brakh.bsuirstudent.application.exception.ResourceNotFoundException
 import men.brakh.bsuirstudent.domain.BaseEntity
 import org.slf4j.LoggerFactory
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.repository.findByIdOrNull
 
@@ -13,7 +15,8 @@ import org.springframework.data.repository.findByIdOrNull
  * @param <I> identifier's type
 </I></T> */
 open class DeleteTemplate<T : BaseEntity<*>, I> (
-    private val repository: JpaRepository<T, I>
+    private val repository: JpaRepository<T, I>,
+    private val eventPublisher: ApplicationEventPublisher? = null
 ) {
 
     /**
@@ -26,7 +29,9 @@ open class DeleteTemplate<T : BaseEntity<*>, I> (
      * After deleting hook
      * @param entity removed enityt.
      */
-    protected fun afterDeleting(entity: T) {}
+    protected fun afterDeleting(entity: T) {
+        eventPublisher?.publishEvent(EntityDeletedEvent(entity.id!!, entity::class.java))
+    }
 
     /**
      * Delete entity from db

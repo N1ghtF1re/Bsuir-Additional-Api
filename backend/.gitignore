@@ -11,4 +11,6 @@ log/*
 logs/
 src/main/resources/application-local.properties
 
+# Keys
 src/main/resources/gd-credentials.json
+*.p8

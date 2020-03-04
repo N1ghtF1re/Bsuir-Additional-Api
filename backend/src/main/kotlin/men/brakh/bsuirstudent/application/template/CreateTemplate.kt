@@ -1,5 +1,6 @@
 package men.brakh.bsuirstudent.application.template
 
+import men.brakh.bsuirstudent.application.event.EntityCreatedEvent
 import men.brakh.bsuirstudent.application.exception.BadRequestException
 import men.brakh.bsuirstudent.application.mapping.mapper.CreateDtoMapper
 import men.brakh.bsuirstudent.application.mapping.presenter.EntityPresenter
@@ -8,6 +9,7 @@ import men.brakh.bsuirstudent.domain.BaseEntity
 import men.brakh.bsuirstudent.domain.CreateDto
 import men.brakh.bsuirstudent.domain.Dto
 import org.slf4j.LoggerFactory
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.jpa.repository.JpaRepository
 import javax.validation.Validator
 
@@ -18,12 +20,12 @@ import javax.validation.Validator
  * @param <D> DTO which will be returned after creation
  */
 open class CreateTemplate<T : BaseEntity<out Any>, R : CreateDto, D : Dto>(
-    private val repository: JpaRepository<T, *>?,
+    private val repository: JpaRepository<T, *>,
     private val dtoMapper: CreateDtoMapper<R, T>,
     private val entityPresenter: EntityPresenter<T, D>,
-    private val validator: Validator? = null
+    private val validator: Validator? = null,
+    private val eventPublisher: ApplicationEventPublisher? = null
 ) {
-
     companion object {
         private val logger = LoggerFactory.getLogger(CreateTemplate::class.java)
     }
@@ -42,7 +44,9 @@ open class CreateTemplate<T : BaseEntity<out Any>, R : CreateDto, D : Dto>(
      * After saving hook.
      * @param entity saved entity.
      */
-    protected fun afterSaving(entity: T) {}
+    protected fun afterSaving(entity: T) {
+        eventPublisher?.publishEvent(EntityCreatedEvent(entity.id!!, entity::class.java))
+    }
 
     /**
      * Save entity in db and return mepped to dto
@@ -57,9 +61,9 @@ open class CreateTemplate<T : BaseEntity<out Any>, R : CreateDto, D : Dto>(
         beforeSaving(entity, request)
 
         entity = try {
-            repository!!.save(entity)
+            repository.saveAndFlush(entity)
         } catch (e: Exception) {
-            logger!!.error(
+            logger.error(
                 entity.javaClass.getSimpleName().toString() + " " + entity.toString() + "creation error",
                 e
             )

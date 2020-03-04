@@ -1,5 +1,6 @@
 package men.brakh.bsuirstudent.application.template
 
+import men.brakh.bsuirstudent.application.event.EntityUpdatedEvent
 import men.brakh.bsuirstudent.application.exception.BadRequestException
 import men.brakh.bsuirstudent.application.exception.ResourceNotFoundException
 import men.brakh.bsuirstudent.application.mapping.mapper.UpdateDtoMapper
@@ -9,6 +10,7 @@ import men.brakh.bsuirstudent.domain.BaseEntity
 import men.brakh.bsuirstudent.domain.Dto
 import men.brakh.bsuirstudent.domain.UpdateDto
 import org.slf4j.LoggerFactory
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.repository.findByIdOrNull
 import javax.validation.Validator
@@ -24,7 +26,8 @@ open class UpdateTemplate<T : BaseEntity<out Any>, R : UpdateDto, D : Dto, I>(
     private val repository: JpaRepository<T, I>,
     private val dtoMapper: UpdateDtoMapper<R, T>,
     private val entityPresenter: EntityPresenter<T, D>,
-    private val validator: Validator? = null
+    private val validator: Validator? = null,
+    private val eventPublisher: ApplicationEventPublisher? = null
 ) {
     companion object {
         private val logger = LoggerFactory.getLogger(UpdateTemplate::class.java)
@@ -36,7 +39,7 @@ open class UpdateTemplate<T : BaseEntity<out Any>, R : UpdateDto, D : Dto, I>(
      * @param request request
      * @throws BadRequestException if something went wrong
      */
-    protected fun beforeSaving(entity: T?, request: R?) {
+    protected fun beforeSaving(entity: T, request: R) {
         ValidationUtils.validateAndThowIfInvalid(validator, entity)
     }
 
@@ -44,7 +47,9 @@ open class UpdateTemplate<T : BaseEntity<out Any>, R : UpdateDto, D : Dto, I>(
      * After saving hook
      * @param entity entity
      */
-    protected fun afterSaving(entity: T?) {}
+    protected fun afterSaving(entity: T) {
+        eventPublisher?.publishEvent(EntityUpdatedEvent(entity.id!!, entity::class.java))
+    }
 
     /**
      * Update entity by id and return updated entity mapped to dto
@@ -61,7 +66,7 @@ open class UpdateTemplate<T : BaseEntity<out Any>, R : UpdateDto, D : Dto, I>(
         beforeSaving(updatedEntity, request)
 
         val savedEntity = try {
-            repository.save(updatedEntity)
+            repository.saveAndFlush(updatedEntity)
         } catch (e: Exception) {
             logger!!.error(
                 updatedEntity.javaClass.simpleName.toString() + " " + javaClass.toString() + " updating error",

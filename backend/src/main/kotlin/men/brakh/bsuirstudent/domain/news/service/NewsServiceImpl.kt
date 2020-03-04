@@ -14,6 +14,7 @@ import men.brakh.bsuirstudent.domain.news.ShortNewsDto
 import men.brakh.bsuirstudent.domain.news.mapping.NewsMapper
 import men.brakh.bsuirstudent.domain.news.mapping.NewsPresenter
 import men.brakh.bsuirstudent.domain.news.repository.NewsRepository
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.transaction.annotation.Transactional
@@ -24,12 +25,14 @@ import org.springframework.web.bind.annotation.*
 open class NewsServiceImpl(
     newsPresenter: NewsPresenter,
     newsMapper: NewsMapper,
-    newsRepository: NewsRepository
+    newsRepository: NewsRepository,
+    eventPublisher: ApplicationEventPublisher
 ): NewsService {
     private val createTemplate: CreateTemplate<News, CreateNewsRequest, ShortNewsDto> = CreateTemplate(
         newsRepository,
         newsMapper,
-        newsPresenter
+        newsPresenter,
+        eventPublisher = eventPublisher
     )
     private val getTemplate: GetTemplate<News, ShortNewsDto, Int> = GetTemplate(newsPresenter, newsRepository)
     private val searchTemplate: SearchTemplate<News, ShortNewsDto> = SearchTemplate(newsPresenter, newsRepository)
