@@ -2,6 +2,7 @@ package men.brakh.bsuirstudent.security.authentication;
 
 import io.jsonwebtoken.ExpiredJwtException
 import men.brakh.bsuirstudent.application.exception.UnauthorizedException
+import men.brakh.bsuirstudent.application.logging.LoggingContext
 import men.brakh.bsuirstudent.security.authentication.credentials.UserDetailsServiceImpl
 import men.brakh.bsuirstudent.security.authentication.jwt.JwtService
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -18,7 +19,8 @@ import javax.servlet.http.HttpServletResponse
 @Component
 class JwtAuthenticationFilter(
   private val jwtService: JwtService,
-  private val userDetailsService: UserDetailsServiceImpl
+  private val userDetailsService: UserDetailsServiceImpl,
+  private val loggingContext: LoggingContext
 ) : OncePerRequestFilter() {
 
   companion object {
@@ -56,6 +58,7 @@ class JwtAuthenticationFilter(
           )
         usernamePasswordAuthenticationToken.details = WebAuthenticationDetailsSource().buildDetails(request)
         SecurityContextHolder.getContext().authentication = usernamePasswordAuthenticationToken
+        loggingContext.authenticatedUser = username
       }
     }
     try {

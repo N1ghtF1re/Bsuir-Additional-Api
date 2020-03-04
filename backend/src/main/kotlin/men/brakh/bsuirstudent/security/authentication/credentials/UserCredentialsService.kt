@@ -10,7 +10,7 @@ val userCredentialsRepository = SpringContext.getBean(UserCredentialsRepository:
 val passwordEncrypt = SpringContext.getBean(PasswordEncrypt::class.java)
 val studentRepository = SpringContext.getBean(StudentRepository::class.java)
 fun getCurrentUserUsername(): String {
-    val principal = SecurityContextHolder.getContext().authentication.principal
+    val principal = SecurityContextHolder.getContext()?.authentication?.principal
 
     return if (principal is UserDetails) {
         principal.username

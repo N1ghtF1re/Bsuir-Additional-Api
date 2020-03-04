@@ -35,12 +35,21 @@ noArg {
     annotation("javax.persistence.Entity")
 }
 
+configurations {
+    all {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
+}
+
 dependencies {
+
     implementation (
-            'org.springframework.boot:spring-boot-starter-web',
             'org.springframework.boot:spring-boot-starter-data-jpa',
+            "org.springframework.boot:spring-boot-starter-web",
             'org.springframework.boot:spring-boot-starter-security',
-             "com.fasterxml.jackson.module:jackson-module-kotlin:2.10.+",
+            'org.springframework.boot:spring-boot-starter-log4j2',
+
+            "com.fasterxml.jackson.module:jackson-module-kotlin:2.10.+",
             "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version",
             "io.jsonwebtoken:jjwt:0.9.1",
             'org.hibernate:hibernate-search-orm:5.5.6.Final',
@@ -62,6 +71,8 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
+
+
 
 jar {
     baseName = 'backend'

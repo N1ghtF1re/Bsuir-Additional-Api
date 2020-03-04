@@ -1,5 +1,6 @@
 package men.brakh.bsuirstudent.security.authentication
 
+import men.brakh.bsuirstudent.application.logging.LoggingContext
 import men.brakh.bsuirstudent.security.authentication.serviceusers.ServiceUserDetailsService
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
@@ -12,7 +13,8 @@ import javax.servlet.http.HttpServletResponse
 
 @Component
 class ServiceUsersAuthenticationFilter(
-    private val serviceUserDetailsService: ServiceUserDetailsService
+    private val serviceUserDetailsService: ServiceUserDetailsService,
+    private val loggingContext: LoggingContext
 ) : OncePerRequestFilter() {
     val HEADER_NAME = "X-Service-User-Authorization";
 
@@ -35,6 +37,7 @@ class ServiceUsersAuthenticationFilter(
 
             usernamePasswordAuthenticationToken.details = WebAuthenticationDetailsSource().buildDetails(request)
             SecurityContextHolder.getContext().authentication = usernamePasswordAuthenticationToken
+            loggingContext.authenticatedUser = userDetails.username
         }
         try {
             chain.doFilter(request, response)

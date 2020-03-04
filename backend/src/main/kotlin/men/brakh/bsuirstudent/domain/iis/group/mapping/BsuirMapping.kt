@@ -1,6 +1,6 @@
 package men.brakh.bsuirstudent.domain.iis.group.mapping
 
-import men.brakh.bsuirstudent.application.extensions.getNotEmpty
+import men.brakh.bsuirstudent.extensions.getNotEmpty
 import men.brakh.bsuirstudent.application.bsuir.GroupInfoBsuirDto
 import men.brakh.bsuirstudent.domain.iis.group.Group
 import men.brakh.bsuirstudent.domain.iis.group.GroupMember

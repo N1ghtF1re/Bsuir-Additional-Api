@@ -1,7 +1,7 @@
 package men.brakh.bsuirstudent.application.bsuir
 
 import men.brakh.bsuirstudent.application.exception.ResourceNotFoundException
-import men.brakh.bsuirstudent.application.extensions.weeksBetween
+import men.brakh.bsuirstudent.extensions.weeksBetween
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import java.util.*
