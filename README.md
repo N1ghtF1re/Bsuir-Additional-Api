@@ -19,9 +19,9 @@ This project expands of the standard API for BSUIR IIS. Includes, for example, a
 - View bsuir news
 - View bsuir news sources
 - Parse bsuir news from given sources 
+- Share files with groupmates
+- View bsuir profile
 
-## Technologies 
-Project created using Kotlin, Servlet API, JDBC, Gson Library, VK SDK and JSoup. 
 
 ## Documentation
-Detailed documentation on api methods located [here](https://app.swaggerhub.com/apis-docs/N1ghtF1re/BsuirAdditionalApi/1.0.0)
+Detailed documentation on api methods located [here](https://app.swaggerhub.com/apis-docs/N1ghtF1re/BsuirAdditionalApi/2.0.0)
