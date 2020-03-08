@@ -21,12 +21,12 @@ class StudentPresenter(
             photo = entity.photo,
             id = entity.id ?: -1,
             educationInfo = EducationInformationDto(
-                course = entity.educationInfo!!.course,
-                speciality = entity.educationInfo!!.speciality,
-                group = entity.educationInfo!!.group,
-                faculty = entity.educationInfo!!.faculty
+                course = entity.educationInfo.course,
+                speciality = entity.educationInfo.speciality,
+                group = entity.educationInfo.group,
+                faculty = entity.educationInfo.faculty
             ),
-            settings = studentSettingsPresenter.mapToDto(entity.settings!!, UserSettingsDto::class.java),
+            settings = studentSettingsPresenter.mapToDto(entity.settings, UserSettingsDto::class.java),
             references = entity.references.map {
                 StudentReferenceDto(
                     name = it.name,

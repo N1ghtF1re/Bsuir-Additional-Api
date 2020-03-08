@@ -25,6 +25,7 @@ class NewsPresenter(
             )
         }
 
+
         if (dtoClass == NewsDto::class.java) {
             return  NewsDto(
                 title = entity.title,
