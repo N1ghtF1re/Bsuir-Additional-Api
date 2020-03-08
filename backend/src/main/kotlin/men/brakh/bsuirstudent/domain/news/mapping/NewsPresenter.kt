@@ -3,11 +3,14 @@ package men.brakh.bsuirstudent.domain.news.mapping
 import men.brakh.bsuirstudent.application.mapping.presenter.EntityPresenter
 import men.brakh.bsuirstudent.domain.news.News
 import men.brakh.bsuirstudent.domain.news.NewsDto
+import men.brakh.bsuirstudent.domain.news.NewsSourceDto
 import men.brakh.bsuirstudent.domain.news.ShortNewsDto
 import org.springframework.stereotype.Component
 
 @Component
-class NewsPresenter : EntityPresenter<News, ShortNewsDto> {
+class NewsPresenter(
+    private val newsSourcePresenter: NewsSourcePresenter
+) : EntityPresenter<News, ShortNewsDto> {
     override fun mapToDto(entity: News, dtoClass: Class<out ShortNewsDto>): ShortNewsDto {
         if (dtoClass == ShortNewsDto::class.java) {
             return ShortNewsDto(
@@ -17,9 +20,7 @@ class NewsPresenter : EntityPresenter<News, ShortNewsDto> {
                 shortContent = entity.shortContent,
                 publishedAt = entity.publishedAt,
                 loadedAt = entity.loadedAt,
-                sourceAlias = entity.source.alias,
-                sourceName = entity.source.name,
-                sourceType = entity.source.type,
+                source = newsSourcePresenter.mapToDto(entity = entity.source, dtoClass = NewsSourceDto::class.java),
                 id = entity.id ?: -1
             )
         }
@@ -32,9 +33,7 @@ class NewsPresenter : EntityPresenter<News, ShortNewsDto> {
                 shortContent = entity.shortContent,
                 publishedAt = entity.publishedAt,
                 loadedAt = entity.loadedAt,
-                sourceAlias = entity.source.alias,
-                sourceName = entity.source.name,
-                sourceType = entity.source.type,
+                source = newsSourcePresenter.mapToDto(entity = entity.source, dtoClass = NewsSourceDto::class.java),
                 id = entity.id ?: -1,
                 content = entity.content
             )

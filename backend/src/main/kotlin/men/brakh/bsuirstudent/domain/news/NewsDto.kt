@@ -17,9 +17,7 @@ open class ShortNewsDto (
 
     val title: String,
 
-    val sourceName: String,
-    val sourceType: String,
-    val sourceAlias: String,
+    val source: NewsSourceDto,
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     val publishedAt: Date,
@@ -38,9 +36,7 @@ open class ShortNewsDto (
 open class NewsDto(
     id: Int,
     title: String,
-    sourceName: String,
-    sourceType: String,
-    sourceAlias: String,
+    source: NewsSourceDto,
     publishedAt: Date,
     loadedAt: Date,
     url: String,
@@ -50,9 +46,7 @@ open class NewsDto(
 ) : ShortNewsDto(
     id,
     title,
-    sourceName,
-    sourceType,
-    sourceAlias,
+    source,
     publishedAt,
     loadedAt,
     url,
