@@ -22,6 +22,7 @@ class SearchTemplate<T : BaseEntity<out Any>, D : Dto>(
       val content: List<D> = presenter.mapListToDto(page.content, dtoClass)
 
       SearchResponse(
+        totalElements = page.totalElements,
         content = content,
         page = searchRequest.page,
         pageSize = searchRequest.pageSize,
