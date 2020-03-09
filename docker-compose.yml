@@ -10,7 +10,8 @@ services:
     networks:
       - bsuir-network
     restart: always
-
+    env_file:
+      - ./.env
   bot:
     build: bot
     networks:
