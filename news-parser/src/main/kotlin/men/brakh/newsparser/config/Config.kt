@@ -10,16 +10,11 @@ object Config {
     val apiToken: String
 
     init {
-        val props = Properties()
-        val input = ClassLoader.getSystemClassLoader().getResourceAsStream("config.properties")
-        input.use {
-            props.load(it)
-        }
 
-        vkAppId = props.getProperty("vk.app.id").toInt()
-        vkAppToken = props.getProperty("vk.app.token")
+        vkAppId = System.getenv("BSUIR_STUDENT_NEWS_PARSER_VK_APP_ID").toInt()
+        vkAppToken = System.getenv("BSUIR_STUDENT_NEWS_PARSER_VK_APP_TOKEN")
 
-        apiHost = props.getProperty("api.host")
-        apiToken = props.getProperty("api.token")
+        apiHost = System.getenv("BSUIR_STUDENT_API_HOST")
+        apiToken = System.getenv("BSUIR_STUDENT_API_TOKEN")
     }
 }
