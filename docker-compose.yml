@@ -18,6 +18,8 @@ services:
       - bsuir-network
     depends_on:
       - server
+    env_file:
+      - ./.env
     restart: always
 
   news-parser:
@@ -28,6 +30,8 @@ services:
       - server
     volumes:
       - last-update:/data
+    env_file:
+      - ./.env
     restart: always
 
   bsuirdb:
