@@ -4,27 +4,19 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import men.brakh.bsuirapi.bot.FreeAudsRequest
 import men.brakh.bsuirapi.bot.ResourceLoader
+import men.brakh.bsuirapi.bot.config.ApplicationConfig
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.HttpClientBuilder
 import org.slf4j.LoggerFactory
 import java.util.*
 
 object Api {
-    private val host: String
+    private val host: String = ApplicationConfig.apiHost
 
     private val logger = LoggerFactory.getLogger(Api::class.java)
 
     private var audsListType = object : TypeToken<List<AuditoriumDto>>() {}.type
     private var buildingsListType = object : TypeToken<List<BuildingDto>>() {}.type
-
-
-    init {
-        val properties = Properties()
-
-        properties.load(ResourceLoader.load("application.properties"))
-
-        host = properties.getProperty("api.host")
-    }
 
     private fun getRequest(url: String): String {
         logger.info("GET request to $url")
