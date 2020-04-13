@@ -99,7 +99,11 @@ data class RecordBook(
         orphanRemoval = true,
         fetch = FetchType.EAGER
     )
-    lateinit var semesters: List<RecordBookSemester>
+    var semesters: MutableList<RecordBookSemester> = mutableListOf()
+        set(value) {
+            semesters.clear()
+            semesters.addAll(value)
+        }
 
     @OneToOne(
         mappedBy = "recordBook",
