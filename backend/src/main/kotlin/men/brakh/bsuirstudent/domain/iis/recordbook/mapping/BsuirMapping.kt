@@ -48,7 +48,7 @@ class RecordBookBsuirMapping() {
     private fun mapSemesters(
         markBookBsuirDto: MarkBookBsuirDto,
         recordBook: RecordBook
-    ): List<RecordBookSemester> {
+    ): MutableList<RecordBookSemester> {
         return markBookBsuirDto.markPages.mapNotNull { (semester, marksPage) ->
             val recordBookSemester = RecordBookSemester(
                 number = semester.toInt(),
@@ -64,7 +64,7 @@ class RecordBookBsuirMapping() {
             else
                 recordBookSemester
 
-        }
+        }.toMutableList()
     }
 
     private fun mapMarks(
