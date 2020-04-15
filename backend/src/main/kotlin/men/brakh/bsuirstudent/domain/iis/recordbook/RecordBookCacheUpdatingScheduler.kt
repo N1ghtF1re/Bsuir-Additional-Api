@@ -38,6 +38,7 @@ open class RecordBookCacheUpdatingScheduler(
             recordBook.id
         )
 
+        repository.delete(recordBook)
         repository.save(newRecordBook)
 
         logger.info("Record book updated $username")
