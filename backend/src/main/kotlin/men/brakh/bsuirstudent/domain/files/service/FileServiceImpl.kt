@@ -134,9 +134,29 @@ open class FileServiceImpl(private val externalFilesStorageService: ExternalFile
             parent = parent
         )
 
-        val allFiles = (filesAvailableForGroup + filesAvailableForStream).distinct().sortedBy { it.id }
+        val allFiles: List<AbstractFile> =  (
+                filesAvailableForGroup + filesAvailableForStream
+        ).distinct().sortedBy { it.id }
 
-        return filePresenter.mapListToDto(allFiles, FileDto::class.java)
+        val parentFileDto = getParentFileDto(parent)
+
+        return listOfNotNull(parentFileDto) + filePresenter.mapListToDto(allFiles, FileDto::class.java)
+    }
+
+    private fun getParentFileDto(parent: Directory?): FileDto? {
+        return parent?.let {
+            FileDto(
+                id = it.id!!,
+                studentName = "root",
+                fileName = "..",
+                type = it.type.toString(),
+                mimeType = it.mimeType,
+                parentFileId = it.parent?.id,
+                accessType = it.accessType.toString(),
+                groupOwner = it.groupOwner,
+                studentIisId = it.student.iisId
+            )
+        }
     }
 
     @PreAuthorize("hasPermission(#id, 'File', 'READ')")
@@ -162,7 +182,7 @@ open class FileServiceImpl(private val externalFilesStorageService: ExternalFile
         )
     }
 
-    @PreAuthorize("hasPermission(#id, 'File', 'READ')")
+    @PreAuthorize("hasPermission(#id, 'File', 'UPDATE')")
     @Transactional(rollbackFor = [Exception::class])
     override fun update(id:Int, request: UpdateFileRequest): FileDto {
         throwIfUnauthorizedToMoveInFolder(request)
@@ -180,6 +200,12 @@ open class FileServiceImpl(private val externalFilesStorageService: ExternalFile
             fileRepository.save(currentFile)
             currentFile = currentFile.parent;
         }
+    }
+
+    @PreAuthorize("hasPermission(#id, 'File', 'UPDATE')")
+    @Transactional(rollbackFor = [Exception::class])
+    override fun delete(id:Int) {
+        fileRepository.deleteById(id)
     }
 
     private fun updateChildFiles(directory: Directory, newAccessType: FileAccessType) {

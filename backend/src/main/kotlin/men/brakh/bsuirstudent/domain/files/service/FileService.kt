@@ -3,7 +3,10 @@ package men.brakh.bsuirstudent.domain.files.service
 import men.brakh.bsuirstudent.domain.files.DownloadFileDto
 import men.brakh.bsuirstudent.domain.files.FileDto
 import men.brakh.bsuirstudent.domain.files.UpdateFileRequest
+import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.transaction.annotation.Transactional
 import java.io.InputStream
+import java.lang.Exception
 
 interface FileService {
     /**
@@ -49,4 +52,6 @@ interface FileService {
     fun downloadFile(id: Int): DownloadFileDto
 
     fun update(id: Int, request: UpdateFileRequest): FileDto
+
+    fun delete(id: Int)
 }

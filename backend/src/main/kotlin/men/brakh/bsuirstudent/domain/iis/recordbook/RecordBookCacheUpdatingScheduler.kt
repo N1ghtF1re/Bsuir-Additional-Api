@@ -1,7 +1,7 @@
 package men.brakh.bsuirstudent.domain.iis.recordbook
 
-import men.brakh.bsuirstudent.application.scheduling.AuthorizedCacheUpdatingScheduler
 import men.brakh.bsuirstudent.application.bsuir.BsuirStudentService
+import men.brakh.bsuirstudent.application.scheduling.AuthorizedCacheUpdatingScheduler
 import men.brakh.bsuirstudent.domain.iis.recordbook.mapping.RecordBookBsuirMapping
 import men.brakh.bsuirstudent.domain.iis.recordbook.repository.RecordBookRepository
 import men.brakh.bsuirstudent.security.authentication.credentials.UserCredentialsRepository

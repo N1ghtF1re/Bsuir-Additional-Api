@@ -45,6 +45,7 @@ class FilesController(
         )
     }
 
+
     @PostMapping(path = ["/directories/root/directory", "/directories/{parentId}/directory"])
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
@@ -92,6 +93,12 @@ class FilesController(
     @ResponseBody
     fun updateFile(@PathVariable(name = "fileId") fileId: Int, @RequestBody request: UpdateFileRequest): FileDto {
         return fileService.update(fileId, request)
+    }
+
+
+    @DeleteMapping("/files/{fileId}")
+    fun deleteFile(@PathVariable(name = "fileId") fileId: Int) {
+        return fileService.delete(fileId)
     }
 
 
