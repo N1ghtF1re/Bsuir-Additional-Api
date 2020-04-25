@@ -12,6 +12,7 @@ import java.util.*
 class NewsMapper(
     private val newsSourceRepository: NewsSourceRepository
 ) : CreateDtoMapper<CreateNewsRequest, News> {
+    private val previewLength = 255;
 
     private val urlRegex = "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)"
     override fun mapToEntity(createRequest: CreateNewsRequest): News {
@@ -33,10 +34,12 @@ class NewsMapper(
             .replace("!\\[[^\\]]+\\]\\([^\\)]+\\)".toRegex(), "")
             .replace("\\[[^\\]]+\\]: $urlRegex".toRegex(), "")
 
-        return if (withoutImages.length <= 255) {
+        return if (withoutImages.length <= previewLength) {
             withoutImages
         } else {
-            withoutImages.substring(0..255) + "..."
+            val truncated = withoutImages.substring(0..previewLength)
+            val untilLastWord = truncated.substring(0, truncated.lastIndexOf(' '))
+            "$untilLastWord..."
         }
     }
 
