@@ -37,7 +37,9 @@ open class NewsDto(
     id: Int,
     title: String,
     source: NewsSourceDto,
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     publishedAt: Date,
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     loadedAt: Date,
     url: String,
     urlToImage: String?,
