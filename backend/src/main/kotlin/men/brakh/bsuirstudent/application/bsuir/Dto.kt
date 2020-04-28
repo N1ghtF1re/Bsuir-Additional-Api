@@ -1,29 +1,28 @@
 package men.brakh.bsuirstudent.application.bsuir
 
 data class AuthorizationBsuirDto(val loggedIn: Boolean, val username: String?, val fio: String?, val message: String?)
-
 data class SkillBsuirDto(val id: Int, val name: String)
 
 data class ReferenceBsuirDto(val id: Int, val name: String, val reference: String)
 
 data class PersonalCVBsuirDto(val id: Int,
-                              val firstName: String,
-                              val lastName: String,
-                              val middleName: String,
-                              val birthDate: String,
+                              val firstName: String = "Unknown",
+                              val lastName: String  = "Brakhmen",
+                              val middleName: String = "",
+                              val birthDate: String = "30.12.2018",
                               val photoUrl: String?,
                               val summary: String?,
-                              val rating: Int,
-                              val faculty: String,
-                              val cource: Int,
-                              val speciality: String,
-                              val studentGroup: String,
+                              val rating: Int = 0,
+                              val faculty: String = "Gryffindor",
+                              val cource: Int = -1,
+                              val speciality: String = "Muggle Studies",
+                              val studentGroup: String = "666",
 
-                              val showRating: Boolean,
-                              val published: Boolean,
-                              val searchJob: Boolean,
-                              val skills: List<SkillBsuirDto>,
-                              val references: List<ReferenceBsuirDto>,
+                              val showRating: Boolean = false,
+                              val published: Boolean = false,
+                              val searchJob: Boolean = false,
+                              val skills: List<SkillBsuirDto> = listOf(),
+                              val references: List<ReferenceBsuirDto> = listOf(),
                               override var username: String?
 ) : UsernameAware
 
