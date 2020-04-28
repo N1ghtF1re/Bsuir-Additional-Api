@@ -28,7 +28,7 @@ class StudentBsuirMapping() {
             firstName = bsuirDto.firstName,
             lastName = bsuirDto.lastName,
             middleName = bsuirDto.middleName,
-            birthDay = bsuirDto.birthDate.toDate()!!,
+            birthDay = bsuirDto.birthDate!!.toDate()!!,
             photo = bsuirDto.photoUrl,
             iisId = bsuirDto.id,
             rating = bsuirDto.rating,
@@ -40,9 +40,9 @@ class StudentBsuirMapping() {
         student.educationInfo = EducationInformation(
             student = student,
             course = bsuirDto.cource,
-            faculty = bsuirDto.faculty,
-            group = bsuirDto.studentGroup,
-            speciality = bsuirDto.speciality
+            faculty = bsuirDto.faculty!!,
+            group = bsuirDto.studentGroup!!,
+            speciality = bsuirDto.speciality!!
         )
 
         student.settings = UserSettings(

@@ -6,17 +6,13 @@ data class SkillBsuirDto(val id: Int, val name: String)
 data class ReferenceBsuirDto(val id: Int, val name: String, val reference: String)
 
 data class PersonalCVBsuirDto(val id: Int,
-                              val firstName: String = "Unknown",
-                              val lastName: String  = "Brakhmen",
-                              val middleName: String = "",
-                              val birthDate: String = "30.12.2018",
+                              var firstName: String = "Unknown",
+                              var lastName: String  = "Brakhmen",
+                              var middleName: String = "",
                               val photoUrl: String?,
                               val summary: String?,
                               val rating: Int = 0,
-                              val faculty: String = "Gryffindor",
                               val cource: Int = -1,
-                              val speciality: String = "Muggle Studies",
-                              val studentGroup: String = "666",
 
                               val showRating: Boolean = false,
                               val published: Boolean = false,
@@ -24,7 +20,32 @@ data class PersonalCVBsuirDto(val id: Int,
                               val skills: List<SkillBsuirDto> = listOf(),
                               val references: List<ReferenceBsuirDto> = listOf(),
                               override var username: String?
-) : UsernameAware
+) : UsernameAware {
+    var birthDate: String? = "30.12.2018"
+        set(value) {
+            field = value ?: "30.12.2018"
+        }
+
+    var faculty: String? = "Gryffindor"
+        set(value) {
+            field = value ?: "Gryffindor"
+        }
+
+    var speciality: String? = "Muggle Studies"
+        set(value) {
+            field = value ?: "Muggle Studies"
+        }
+    var studentGroup: String? = "666"
+        set(value) {
+            field = value ?: "666"
+        }
+
+
+
+
+
+
+}
 
 // RecordBook
 data class DiplomaBsuirDto(val name: String?, val theme: String?)
