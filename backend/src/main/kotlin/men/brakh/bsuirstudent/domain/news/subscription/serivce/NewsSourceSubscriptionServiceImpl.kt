@@ -46,7 +46,9 @@ open class NewsSourceSubscriptionServiceImpl(
         val currentUser = studentRepository.findByIdOrNull(me.id)!!
 
         repository.saveAll(
-            request.newsSourcesAliases.map {
+            request.newsSourcesAliases
+                .distinct()
+                .map {
                 NewsSourceSubscription(
                     user = currentUser,
                     entity = newsSourceRepository.findOneByAlias(it)
