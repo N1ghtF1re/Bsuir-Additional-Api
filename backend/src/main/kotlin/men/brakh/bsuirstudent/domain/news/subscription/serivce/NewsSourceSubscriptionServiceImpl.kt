@@ -45,6 +45,8 @@ open class NewsSourceSubscriptionServiceImpl(
         val me = studentService.getMe()
         val currentUser = studentRepository.findByIdOrNull(me.id)!!
 
+        repository.deleteAllByUserId(currentUser.id!!)
+
         repository.saveAll(
             request.newsSourcesAliases
                 .distinct()
