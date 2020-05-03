@@ -27,14 +27,25 @@ open class NotificationServiceImpl(
     override fun subscribe(@RequestBody notificationSubscriptionDto: NotificationSubscriptionDto) {
         val me = studentService.getMe()
 
-        logger.info("Student ${me.id} successfuly added token ${notificationSubscriptionDto.token}")
-        notificationTokenRepository.save(
-            NotificationToken(
-                token = notificationSubscriptionDto.token,
-                type = notificationSubscriptionDto.tokenType,
-                student = studentRepository.findByIdOrNull(me.id)!!
+        if (notificationSubscriptionDto.token.trim().isEmpty()) {
+            throw IllegalArgumentException("Cannot be null")
+        }
+        
+        if (notificationTokenRepository.countAllByStudentIdAndToken(me.id, notificationSubscriptionDto.token) == 0) {
+            logger.info("Student ${me.id} has successfuly added token ${notificationSubscriptionDto.token}")
+            notificationTokenRepository.save(
+                NotificationToken(
+                    token = notificationSubscriptionDto.token,
+                    type = notificationSubscriptionDto.tokenType,
+                    student = studentRepository.findByIdOrNull(me.id)!!
+                )
             )
-        )
+        } else {
+            logger.info("Student ${me.id} already have token ${notificationSubscriptionDto.token}")
+
+        }
+
+       
     }
 
     @Transactional
