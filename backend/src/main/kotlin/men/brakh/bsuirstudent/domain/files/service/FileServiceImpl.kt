@@ -143,8 +143,8 @@ open class FileServiceImpl(private val externalFilesStorageService: ExternalFile
         return listOfNotNull(parentFileDto) + filePresenter.mapListToDto(allFiles, FileDto::class.java)
     }
 
-    private fun getParentFileDto(parent: Directory?): FileDto? {
-        return parent?.let {
+    private fun getParentFileDto(dir: Directory?): FileDto? {
+        return dir?.parent?.let {
             FileDto(
                 id = it.id!!,
                 studentName = "root",
