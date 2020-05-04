@@ -28,7 +28,7 @@ open class NotificationServiceImpl(
         val me = studentService.getMe()
 
         if (notificationSubscriptionDto.token.trim().isEmpty()) {
-            throw IllegalArgumentException("Cannot be null")
+            return
         }
         
         if (notificationTokenRepository.countAllByStudentIdAndToken(me.id, notificationSubscriptionDto.token) == 0) {
