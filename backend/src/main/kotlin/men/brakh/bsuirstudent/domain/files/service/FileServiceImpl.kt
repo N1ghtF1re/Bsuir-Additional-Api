@@ -6,6 +6,7 @@ import men.brakh.bsuirstudent.application.exception.UnauthorizedException
 import men.brakh.bsuirstudent.application.template.CreateTemplate
 import men.brakh.bsuirstudent.application.template.GetTemplate
 import men.brakh.bsuirstudent.application.template.UpdateTemplate
+import men.brakh.bsuirstudent.domain.Dto
 import men.brakh.bsuirstudent.domain.files.*
 import men.brakh.bsuirstudent.domain.files.externalStorage.ExternalFilesStorageService
 import men.brakh.bsuirstudent.domain.files.mapping.FileMapper
@@ -118,7 +119,7 @@ open class FileServiceImpl(private val externalFilesStorageService: ExternalFile
 
     @PreAuthorize("hasPermission(#parentId, 'File', 'READ')")
     @Transactional(readOnly = true)
-    override fun getAvailableFiles(parentId: Int?): List<FileDto> {
+    override fun getAvailableFiles(parentId: Int?): List<Dto> {
         val parent = getParent(parentId)
         val student = studentService.getMe()
 
@@ -143,7 +144,7 @@ open class FileServiceImpl(private val externalFilesStorageService: ExternalFile
         return listOfNotNull(parentFileDto) + filePresenter.mapListToDto(allFiles, FileDto::class.java)
     }
 
-    private fun getParentFileDto(dir: Directory?): FileDto? {
+    private fun getParentFileDto(dir: Directory?): Dto {
         return dir?.parent?.let {
             FileDto(
                 id = it.id!!,
@@ -156,7 +157,7 @@ open class FileServiceImpl(private val externalFilesStorageService: ExternalFile
                 groupOwner = it.groupOwner,
                 studentIisId = it.student.iisId
             )
-        }
+        } ?: RootFileDto()
     }
 
     @PreAuthorize("hasPermission(#id, 'File', 'READ')")

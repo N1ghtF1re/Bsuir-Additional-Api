@@ -17,7 +17,7 @@ data class FileCreateRequest(
 ) : CreateDto
 
 data class FileDto(
-    val id: Int,
+    val id: Int?,
     val type: String,
 
     val studentName: String,
@@ -31,6 +31,11 @@ data class FileDto(
     val parentFileId: Int?,
     var link: String? = null
 ): Dto
+
+class RootFileDto: Dto {
+    val id = "root"
+    val fileName = ".."
+}
 
 class DownloadFileDto (
     val mimeType: String,

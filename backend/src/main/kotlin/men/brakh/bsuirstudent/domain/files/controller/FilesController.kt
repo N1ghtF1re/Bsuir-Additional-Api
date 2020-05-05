@@ -1,6 +1,7 @@
 package men.brakh.bsuirstudent.domain.files.controller
 
 import men.brakh.bsuirstudent.application.exception.BadRequestException
+import men.brakh.bsuirstudent.domain.Dto
 import men.brakh.bsuirstudent.domain.files.CreateDirectoryRequest
 import men.brakh.bsuirstudent.domain.files.CreateLinkRequest
 import men.brakh.bsuirstudent.domain.files.FileDto
@@ -104,7 +105,7 @@ class FilesController(
 
     @GetMapping(path = ["/directories/root/files", "/directories/{id}/files"])
     @ResponseBody
-    fun getFilesInDirectory(@PathVariable(name = "id", required = false) parentId: Int?): List<FileDto> {
+    fun getFilesInDirectory(@PathVariable(name = "id", required = false) parentId: Int?): List<Dto> {
         return fileService.getAvailableFiles(parentId)
     }
 }

@@ -1,5 +1,6 @@
 package men.brakh.bsuirstudent.domain.files.service
 
+import men.brakh.bsuirstudent.domain.Dto
 import men.brakh.bsuirstudent.domain.files.DownloadFileDto
 import men.brakh.bsuirstudent.domain.files.FileDto
 import men.brakh.bsuirstudent.domain.files.UpdateFileRequest
@@ -36,7 +37,7 @@ interface FileService {
      * Get available for the current user files.
      * @param parentId parent directory's id. Null if the root folder.
      */
-    fun getAvailableFiles(parentId: Int? = null): List<FileDto>
+    fun getAvailableFiles(parentId: Int? = null): List<Dto>
 
     /**
      * Get file
