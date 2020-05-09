@@ -76,7 +76,7 @@ abstract class VKParser : Parser {
 
                     CreateNewsRequest(
                             title = title,
-                            content = content,
+                            content = content.replace("\n\n,", ""),
                             loadedAt = Date(),
                             publishedAt = wallPost.publicationDate,
                             sourceAlias = source.alias,
