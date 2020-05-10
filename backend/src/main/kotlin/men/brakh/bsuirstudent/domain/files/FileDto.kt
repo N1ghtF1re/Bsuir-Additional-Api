@@ -34,6 +34,7 @@ data class FileDto(
 
 class RootFileDto: Dto {
     val id = "root"
+    val type = FileType.DIRECTORY.toString()
     val fileName = ".."
 }
 

@@ -144,20 +144,24 @@ open class FileServiceImpl(private val externalFilesStorageService: ExternalFile
         return listOfNotNull(parentFileDto) + filePresenter.mapListToDto(allFiles, FileDto::class.java)
     }
 
-    private fun getParentFileDto(dir: Directory?): Dto {
-        return dir?.parent?.let {
-            FileDto(
-                id = it.id!!,
-                studentName = "root",
-                fileName = "..",
-                type = it.type.toString(),
-                mimeType = it.mimeType,
-                parentFileId = it.parent?.id,
-                accessType = it.accessType.toString(),
-                groupOwner = it.groupOwner,
-                studentIisId = it.student.iisId
-            )
-        } ?: RootFileDto()
+    private fun getParentFileDto(dir: Directory?): Dto? {
+
+        return if (dir == null)
+            null
+        else
+            dir!!.parent?.let {
+                FileDto(
+                    id = it.id!!,
+                    studentName = "root",
+                    fileName = "..",
+                    type = it.type.toString(),
+                    mimeType = it.mimeType,
+                    parentFileId = it.parent?.id,
+                    accessType = it.accessType.toString(),
+                    groupOwner = it.groupOwner,
+                    studentIisId = it.student.iisId
+                )
+            } ?: RootFileDto()
     }
 
     @PreAuthorize("hasPermission(#id, 'File', 'READ')")
