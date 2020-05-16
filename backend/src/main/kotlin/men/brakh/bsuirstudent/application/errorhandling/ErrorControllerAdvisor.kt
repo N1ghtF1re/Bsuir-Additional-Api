@@ -4,6 +4,7 @@ import men.brakh.bsuirstudent.application.exception.BadRequestException
 import men.brakh.bsuirstudent.application.exception.IisException
 import men.brakh.bsuirstudent.application.exception.ResourceNotFoundException
 import men.brakh.bsuirstudent.application.exception.UnauthorizedException
+import men.brakh.bsuirstudent.application.feedback.DeveloperConnectionService
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -15,7 +16,9 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
 
 @ControllerAdvice
-class ErrorControllerAdvisor : ResponseEntityExceptionHandler() {
+class ErrorControllerAdvisor(
+  private val feedbackService: DeveloperConnectionService
+) : ResponseEntityExceptionHandler() {
   private val log = LoggerFactory.getLogger("ControllerAdvisor")
 
   @ExceptionHandler(ResourceNotFoundException::class)
@@ -52,6 +55,7 @@ class ErrorControllerAdvisor : ResponseEntityExceptionHandler() {
     ex: IisException,
     request: WebRequest
   ): ResponseEntity<Any> {
+    feedbackService.handleError(ex, "IIS is down");
     return processUnhandledException(ex, request, HttpStatus.I_AM_A_TEAPOT, message = "Iis is down")
   }
 
@@ -68,6 +72,7 @@ class ErrorControllerAdvisor : ResponseEntityExceptionHandler() {
     request: WebRequest
   ): ResponseEntity<Any> {
     log.error("Unhandler exception", ex)
+    feedbackService.handleError(ex, "Unhandled error on server");
     return processUnhandledException(ex, request, HttpStatus.INTERNAL_SERVER_ERROR)
   }
 
