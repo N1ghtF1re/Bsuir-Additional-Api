@@ -11,6 +11,7 @@ import men.brakh.bsuirstudent.domain.iis.student.mapping.StudentPresenter
 import men.brakh.bsuirstudent.domain.iis.student.repository.StudentRepository
 import men.brakh.bsuirstudent.domain.iis.student.settings.SettingsUpdateTemplate
 import men.brakh.bsuirstudent.security.authentication.credentials.getCurrentUserUsername
+import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.*
 
@@ -29,7 +30,7 @@ open class StudentServiceImpl(
     )
 
     @GetMapping("/me")
-    @Transactional(rollbackFor = [Exception::class])
+    @Transactional(rollbackFor = [Exception::class], propagation = Propagation.REQUIRES_NEW, readOnly = false)
     @ResponseBody
     override fun getMe() : StudentDto {
         val currentUserUsername = getCurrentUserUsername();
