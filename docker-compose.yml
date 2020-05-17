@@ -39,8 +39,6 @@ services:
     restart: always
     environment:
       MYSQL_DATABASE: 'bsuirapi'
-      MYSQL_USER: 'bsuir'
-      MYSQL_PASSWORD: '123321'
       MYSQL_ROOT_PASSWORD: 'root'
     networks:
       - bsuir-network
