@@ -14,9 +14,15 @@ open class BsuirStudentService (
     fun getMarkBook(): MarkBookBsuirDto
         = bsuirApiExecutor.makeAuthorizedGetRequest("/portal/markbook")!!
 
-    fun getDiploma(): DiplomaBsuirDto
-        = bsuirApiExecutor.makeAuthorizedGetRequest("/portal/markbook/diploma")!!
+    fun getDiploma(): DiplomaBsuirDto  {
+        return try {
+            bsuirApiExecutor.makeAuthorizedGetRequest("/portal/markbook/diploma")!!
+        } catch (e: Exception) {
+            DiplomaBsuirDto(name = null, theme = null)
+        }
+    }
 
+    @Throws(exceptionClasses = [ResourceNotFoundException::class])
     fun getUserCV(id: Int): PersonalCVBsuirDto {
         return try {
             bsuirApiExecutor.makeAuthorizedGetRequest("/profiles?id=$id")!!
